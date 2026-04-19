@@ -1,0 +1,168 @@
+/* ─── الألوان المؤسسية (Corporate Light Theme) ─── */
+:root {
+  --z-blue: #0056D2; 
+  --z-blue-dim: #0043A4;
+  --z-blue-glow: rgba(0, 86, 210, 0.1);
+  --z-blue-soft: rgba(0, 86, 210, 0.05);
+  
+  --dark-bg: #F8F9FA; 
+  --dark-surface: #FFFFFF; 
+  --dark-card: #FFFFFF;
+  --dark-card2: #F1F3F5;
+  
+  --border: rgba(0, 0, 0, 0.08);
+  --border-bright: rgba(0, 86, 210, 0.2);
+  
+  --text-primary: #1A1D20; 
+  --text-secondary: #495057; 
+  --text-muted: #6C757D;
+  
+  --success: #198754;
+  --danger: #DC3545;
+  --white: #ffffff;
+  
+  --font-ar: 'Cairo', sans-serif;
+  --font-en: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  font-family: var(--font-ar);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* ─── القائمة العلوية ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.nav-logo { font-family: var(--font-en); font-size: 1.6rem; font-weight: 800; color: var(--z-blue); display: flex; align-items: center; gap: 0.4rem; }
+.nav-logo .dot { width: 10px; height: 10px; background: var(--text-primary); border-radius: 2px; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 600; transition: color 0.2s; }
+.nav-links a:hover { color: var(--z-blue); }
+.nav-cta { background: var(--z-blue); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 6px; font-family: var(--font-ar); font-weight: 700; cursor: pointer; transition: 0.2s; }
+.nav-cta:hover { background: var(--z-blue-dim); }
+
+/* ─── القسم الرئيسي (HERO) ─── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 80px;
+  position: relative;
+}
+.hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; width: 100%; }
+.hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--z-blue-soft); border: 1px solid var(--border-bright); padding: 0.35rem 1rem; border-radius: 100px; font-size: 0.8rem; color: var(--z-blue); font-weight: 700; margin-bottom: 1.5rem; font-family: var(--font-en); letter-spacing: 0.08em; text-transform: uppercase; }
+.hero-title { font-size: clamp(2.2rem, 4vw, 3.6rem); font-weight: 900; line-height: 1.2; margin-bottom: 1rem; color: var(--text-primary); }
+.hero-title .accent { color: var(--z-blue); }
+.hero-subtitle-en { font-family: var(--font-en); font-size: 1rem; color: var(--text-secondary); margin-bottom: 0.5rem; letter-spacing: 0.05em; }
+.hero-desc { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2.5rem; max-width: 480px; }
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary { background: var(--z-blue); color: white; border: none; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.25s; text-decoration: none; }
+.btn-primary:hover { background: var(--z-blue-dim); transform: translateY(-2px); box-shadow: 0 8px 20px var(--z-blue-glow); }
+.btn-outline { background: transparent; color: var(--text-primary); border: 1px solid var(--border); padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.25s; text-decoration: none; }
+.btn-outline:hover { background: var(--dark-card2); border-color: var(--text-secondary); }
+
+/* ─── البطاقات الطافية ─── */
+.float-card { position: absolute; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.8rem; white-space: nowrap; animation: float-card 5s ease-in-out infinite; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.float-card .fc-label { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.2rem; }
+.float-card .fc-value { color: var(--text-primary); font-weight: 700; font-family: var(--font-mono); font-size: 0.9rem; }
+.float-card .fc-value.up { color: var(--success); }
+.float-card .fc-value.blue { color: var(--z-blue); }
+@keyframes float-card { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* ─── الإحصائيات (STATS) ─── */
+.stats-bar { padding: 2.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--dark-surface); }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: center; }
+.stat-num { font-family: var(--font-en); font-size: 2.2rem; font-weight: 800; color: var(--text-primary); }
+.stat-num span { color: var(--z-blue); }
+.stat-label { color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem; font-weight: 600; }
+
+/* ─── العناوين الموحدة للأقسام ─── */
+.section-header { text-align: center; margin-bottom: 4rem; }
+.section-tag { display: inline-block; font-family: var(--font-en); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; color: var(--z-blue); margin-bottom: 1rem; padding: 0.3rem 0.8rem; border: 1px solid var(--border-bright); border-radius: 100px; background: var(--z-blue-soft); }
+.section-title { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900; color: var(--text-primary); line-height: 1.25; margin-bottom: 1rem; }
+.section-title .accent { color: var(--z-blue); }
+.section-desc { color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+/* ─── الشبكات والبطاقات (Grids & Cards) ─── */
+section { padding: 6rem 0; position: relative; }
+.pain-grid, .pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.pain-card, .pillar-card { background: var(--dark-card); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.02); text-align: center; }
+.pain-card:hover, .pillar-card:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); border-color: var(--border-bright); }
+.pain-icon, .pillar-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+.pain-title, .pillar-title { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.75rem; }
+.pain-desc, .pillar-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.65; }
+
+/* ─── التبويبات والجداول (Tabs & Tables) ─── */
+.services-tabs { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 3rem; flex-wrap: wrap; }
+.tab-btn { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 0.6rem 1.4rem; border-radius: 8px; font-family: var(--font-ar); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.tab-btn.active, .tab-btn:hover { background: var(--z-blue); border-color: var(--z-blue); color: white; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.comp-wrapper { overflow-x: auto; border-radius: 16px; border: 1px solid var(--border); background: var(--dark-card); box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
+.comp-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.comp-table th { background: var(--dark-card2); padding: 1.2rem; text-align: center; font-weight: 700; color: var(--text-primary); border-bottom: 1px solid var(--border); }
+.comp-table th:first-child { text-align: right; }
+.comp-table th.highlight { background: var(--z-blue-soft); color: var(--z-blue); border-bottom: 2px solid var(--z-blue); }
+.comp-table td { padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); text-align: center; color: var(--text-secondary); }
+.comp-table td:first-child { text-align: right; color: var(--text-primary); font-weight: 600; }
+.comp-table td.col-highlight { background: var(--z-blue-soft); font-weight: 700; color: var(--z-blue); }
+.check { color: var(--success); font-weight: bold; }
+.cross { color: var(--danger); }
+
+/* ─── الفوتر ─── */
+footer { padding: 2rem 0; text-align: center; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem; background: var(--dark-surface); }
+footer span { color: var(--z-blue); font-weight: 700; font-family: var(--font-en); }
+
+/* ==============================================================
+   حركات التمرير (Parallax) والظهور (Reveal Animations)
+   ============================================================== */
+
+/* تأثير Parallax في الخلفية */
+.parallax-wrapper { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; z-index: 0; }
+.parallax-bg { position: absolute; top: -10%; left: 0; width: 100%; height: 120%; background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.08; will-change: transform; }
+
+/* تأثير تقريب الصور (Image Hover Zoom) */
+.image-card { border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08); position: relative; }
+.image-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+.image-card:hover img { transform: scale(1.05); }
+
+/* تأثير الظهور الاحترافي (Reveal Up) */
+.reveal-up { opacity: 0; transform: translateY(50px) scale(0.97); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+.reveal-up.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+/* ─── التجاوب مع الشاشات (Responsive) ─── */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .pain-grid, .pillars-grid { grid-template-columns: 1fr; }
+}
