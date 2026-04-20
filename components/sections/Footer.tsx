@@ -3,6 +3,8 @@
 import React from 'react';
 import { Phone, Mail, MapPin, Instagram, Twitter, Linkedin } from 'lucide-react';
 
+import Link from 'next/link';
+
 import { Button } from "@/components/ui/Button";
 import { GlassCard } from "@/components/ui/GlassCard";
 
@@ -33,20 +35,20 @@ export default function Footer() {
 
           <div className="flex flex-col gap-4">
             <h4 className="text-[#F0F1FF] font-bold mb-2">روابط سريعة</h4>
-            <a href="#" className="text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">عن الشركة</a>
-            <a href="#" className="text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">خدماتنا</a>
-            <a href="#" className="text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">قصص النجاح</a>
+            <Link href="/#why-us" className="text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">عن الشركة</Link>
+            <Link href="/#services" className="text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">خدماتنا</Link>
+            <Link href="/#work" className="text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">قصص النجاح</Link>
           </div>
 
           <div className="flex flex-col gap-6">
             <h4 className="text-[#F0F1FF] font-bold mb-2">اتصل بنا</h4>
-            <div className="flex items-center gap-3 text-[#9496C0] text-sm">
+            <div className="flex items-center gap-3 text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">
                <Phone className="w-4 h-4 text-[#5B5EFF]" />
-               <span dir="ltr">+966 50 000 0000</span>
+               <a href="tel:+201207416336" dir="ltr">01207416336</a>
             </div>
-            <div className="flex items-center gap-3 text-[#9496C0] text-sm">
+            <div className="flex items-center gap-3 text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">
                <Mail className="w-4 h-4 text-[#5B5EFF]" />
-               <span>hello@ztyx.com</span>
+               <a href="mailto:eslam.hamada@cureztyx.com">eslam.hamada@cureztyx.com</a>
             </div>
           </div>
 
@@ -54,7 +56,7 @@ export default function Footer() {
             <h4 className="text-[#F0F1FF] font-bold mb-2">الموقع</h4>
             <div className="flex items-start gap-3 text-[#9496C0] text-sm">
                <MapPin className="w-4 h-4 text-[#5B5EFF] mt-1" />
-               <span>القاهرة، جمهورية مصر العربية<br />المعادي - شارع 9</span>
+               <span>مبني وزارة الاتصالات كرياتيفا<br />الفيوم، مصر</span>
             </div>
           </div>
         </div>

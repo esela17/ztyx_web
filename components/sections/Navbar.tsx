@@ -51,7 +51,7 @@ export default function Navbar() {
         </div>
 
         {/* CTA */}
-        <Button size="md">
+        <Button size="md" href="/contact">
           تواصل معنا
         </Button>
       </div>

@@ -2,12 +2,14 @@
 
 import React from 'react';
 import { cn } from "@/lib/utils";
+import Link from 'next/link';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'glass' | 'outline';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   children: React.ReactNode;
+  href?: string;
 }
 
 export const Button = ({ 
@@ -15,6 +17,7 @@ export const Button = ({
   size = 'md', 
   className, 
   children, 
+  href,
   ...props 
 }: ButtonProps) => {
   const baseStyles = "rounded-2xl font-bold transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50 disabled:pointer-events-none";
@@ -32,7 +35,7 @@ export const Button = ({
     xl: "px-10 py-5 text-lg",
   };
 
-  return (
+  const content = (
     <button 
       className={cn(baseStyles, variants[variant], sizes[size], className)} 
       {...props}
@@ -40,4 +43,10 @@ export const Button = ({
       {children}
     </button>
   );
+
+  if (href) {
+    return <Link href={href} className="contents">{content}</Link>;
+  }
+
+  return content;
 };

@@ -64,10 +64,10 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-row-reverse items-center gap-4 gsap-reveal">
-            <Button size="xl">
+            <Button size="xl" href="/#services">
               ابدأ الآن
             </Button>
-            <Button variant="glass" size="xl">
+            <Button variant="glass" size="xl" href="/contact">
               استشارة مجانية
             </Button>
           </div>
@@ -79,7 +79,7 @@ export default function Hero() {
           <div className="relative w-full h-full flex items-center justify-center">
             <div className="absolute inset-0 bg-[#5B5EFF]/20 blur-[100px] rounded-full animate-pulse" />
             <img 
-              src="/hero_doctor_patient.png" 
+              src="/hero_doctor.png" 
               alt="Professional Doctor and Patient"
               className="relative z-10 w-[90%] h-[90%] object-cover rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
             />

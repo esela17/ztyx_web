@@ -29,6 +29,7 @@ export default function WhyUs() {
 
   return (
     <section 
+      id="why-us"
       ref={containerRef as any}
       className="py-24 px-6 relative z-10"
     >

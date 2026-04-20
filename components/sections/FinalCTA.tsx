@@ -28,10 +28,10 @@ export default function FinalCTA() {
           </p>
 
           <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-            <Button size="xl" className="w-full md:w-auto shadow-[0_20px_40px_rgba(91,94,255,0.3)]">
+            <Button size="xl" href="/contact" className="w-full md:w-auto shadow-[0_20px_40px_rgba(91,94,255,0.3)]">
               احجز استشارة مجانية
             </Button>
-            <Button variant="glass" size="xl" className="w-full md:w-auto">
+            <Button variant="glass" href="/contact" size="xl" className="w-full md:w-auto">
               تحدث مع خبير
             </Button>
           </div>
