@@ -3,9 +3,6 @@ import React from "react";
 import Link from "next/link";
 import {
   NotepadTextDashed,
-  Twitter,
-  Linkedin,
-  Github,
   Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -113,7 +110,7 @@ export const Footer = ({
         </div>
 
         {/* Large background text - FIXED */}
-        <div 
+        <div
           className="bg-gradient-to-b from-foreground/20 via-foreground/10 to-transparent bg-clip-text text-transparent leading-none absolute left-1/2 -translate-x-1/2 bottom-40 md:bottom-32 font-extrabold tracking-tighter pointer-events-none select-none text-center px-4"
           style={{
             fontSize: 'clamp(3rem, 12vw, 10rem)',

@@ -1,29 +1,32 @@
 "use client";
 import { Footer } from "@/components/ui/modem-animated-footer";
 import {
-  Twitter,
-  Linkedin,
+  X,
   Github,
   Mail,
   NotepadTextDashed,
 } from "lucide-react";
 
+// Linkedin icon as inline SVG (removed from lucide-react v1+)
+const LinkedinIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect x="2" y="9" width="4" height="12" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
+
 export default function FooterDemo() {
   const socialLinks = [
     {
-      icon: <Twitter className="w-6 h-6" />,
+      icon: <X className="w-6 h-6" />,
       href: "https://twitter.com",
       label: "Twitter",
     },
     {
-      icon: <Linkedin className="w-6 h-6" />,
+      icon: <LinkedinIcon className="w-6 h-6" />,
       href: "https://linkedin.com",
       label: "LinkedIn",
-    },
-    {
-      icon: <Github className="w-6 h-6" />,
-      href: "https://github.com",
-      label: "GitHub",
     },
     {
       icon: <Mail className="w-6 h-6" />,
