@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   keywords: ["ZTYX", "medical tech", "marketing agency", "health tech", "Next.js", "React"],
 };
 
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,6 +37,7 @@ export default function RootLayout({
     <html lang="ar" dir="rtl" className={`${cairo.variable} ${syne.variable} ${spaceMono.variable}`}>
       <body className="bg-[#08090E] text-[#F0F1FF] font-sans antialiased selection:bg-[#5B5EFF]/30">
         {children}
+        <WhatsAppButton />
       </body>
     </html>
   );

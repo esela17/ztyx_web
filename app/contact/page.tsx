@@ -39,11 +39,13 @@ export default function ContactPage() {
           {/* Form Side */}
           <div className="gsap-reveal">
              <GlassCard className="p-8 md:p-12 border-[#5B5EFF]/20 bg-[#0D0F1A]/80">
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <form action="https://formspree.io/f/xwvanovg" method="POST" className="space-y-6">
                    <div className="space-y-2 text-right">
                       <label className="text-sm font-bold text-[#F0F1FF]">الاسم الكامل</label>
                       <input 
                         type="text" 
+                        name="name"
+                        required
                         placeholder="أدخل اسمك هنا" 
                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all"
                       />
@@ -52,6 +54,8 @@ export default function ContactPage() {
                       <label className="text-sm font-bold text-[#F0F1FF]">رقم الهاتف</label>
                       <input 
                         type="tel" 
+                        name="phone"
+                        required
                         placeholder="01xxxxxxxxx" 
                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all font-mono"
                         dir="ltr"
@@ -60,12 +64,14 @@ export default function ContactPage() {
                    <div className="space-y-2 text-right">
                       <label className="text-sm font-bold text-[#F0F1FF]">رسالتك</label>
                       <textarea 
+                        name="message"
+                        required
                         rows={5}
                         placeholder="كيف يمكننا مساعدتك؟" 
                         className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all resize-none"
                       />
                    </div>
-                   <Button size="xl" className="w-full shadow-[0_20px_40px_rgba(91,94,255,0.2)]">
+                   <Button type="submit" size="xl" className="w-full shadow-[0_20px_40px_rgba(91,94,255,0.2)]">
                       <Send className="w-5 h-5 ml-2" />
                       إرسال الرسالة الآن
                    </Button>
@@ -79,9 +85,9 @@ export default function ContactPage() {
                 <h2 className="text-3xl font-black text-[#F0F1FF] gsap-reveal">معلومات التواصل</h2>
                 <div className="space-y-6">
                    {[
-                     { icon: <Phone />, label: "اتصل بنا مباشرة", val: "+20 123 456 7890", sub: "متاحون من 9 صباحاً إلى 6 مساءً" },
-                     { icon: <Mail />, label: "راسلنا عبر الإيميل", val: "info@ztyx.com", sub: "نرد خلال أقل من 24 ساعة" },
-                     { icon: <MapPin />, label: "مقرنا في مصر", val: "القاهرة، المعادي، شارع 9", sub: "أهلاً بك في أي وقت" },
+                     { icon: <Phone />, label: "اتصل بنا مباشرة", val: "01207416336", sub: "متاحون من 9 صباحاً إلى 6 مساءً" },
+                     { icon: <Mail />, label: "راسلنا عبر الإيميل", val: "eslam.hamada@cureztyx.com", sub: "نرد خلال أقل من 24 ساعة" },
+                     { icon: <MapPin />, label: "مقرنا في مصر", val: "مبني وزارة الاتصالات كرياتيفا، الفيوم", sub: "أهلاً بك في أي وقت" },
                    ].map((item, i) => (
                      <div key={i} className="flex gap-6 gsap-reveal group">
                         <div className="w-14 h-14 rounded-2xl bg-[#5B5EFF]/10 flex items-center justify-center text-[#5B5EFF] group-hover:bg-[#5B5EFF] group-hover:text-white transition-all">

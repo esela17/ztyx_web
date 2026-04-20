@@ -105,7 +105,7 @@ export default function PricingPage() {
                   ))}
                 </div>
 
-                <Button variant={plan.highlight ? 'primary' : 'outline'} className="w-full">
+                <Button variant={plan.highlight ? 'primary' : 'outline'} className="w-full" href="/contact">
                   طلب عرض سعر
                 </Button>
               </GlassCard>
@@ -158,7 +158,7 @@ export default function PricingPage() {
            <GlassCard className="p-12 space-y-8 bg-gradient-to-b from-[#5B5EFF]/10 to-transparent border-t-[#5B5EFF]/30">
               <h2 className="text-4xl font-black text-[#F0F1FF]">لم تجد الباقة المناسبة؟</h2>
               <p className="text-[#9496C0] text-lg">يمكننا تصميم باقة مخصصة تلبي احتياجاتك الفريدة وميزانيتك المحددة.</p>
-              <Button size="xl" className="group">
+              <Button size="xl" className="group" href="https://wa.me/201068327720">
                  صمم باقتك الآن
                  <HelpCircle className="w-5 h-5 mr-2 opacity-50 group-hover:opacity-100 transition-opacity" />
               </Button>
