@@ -1,19 +1,109 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-z-blue: #5B5EFF;
+  --color-z-blue-dim: #3A3DC8;
+  --color-z-blue-light: #8277FF;
+  --color-z-blue-lighter: #A091FF;
+  --color-z-blue-soft: #BBACFF;
+  --color-z-blue-mist: #D3C7FF;
+  --color-z-blue-pale: #EAE3FF;
+  --color-dark-bg: #08090E;
+  --color-dark-surface: #0D0F1A;
+  --color-dark-card: #111320;
+  --color-text-primary: #F0F1FF;
+  --color-text-secondary: #9496C0;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --font-sans: var(--font-cairo);
+  --font-en: var(--font-syne);
+  --font-mono: var(--font-space-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #08090E;
+  --foreground: #F0F1FF;
 }
 
 body {
-  color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--foreground);
+  overflow-x: hidden;
+}
+
+
+/* 60px Grid Background Overlay */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(91, 94, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 94, 255, 0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Glassmorphism Utility */
+.glass {
+  background: rgba(17, 19, 32, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 241, 255, 0.1);
+}
+
+.glass-blue {
+  border-color: rgba(91, 94, 255, 0.2);
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.95); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+/* Reveal Transitions */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Horizontal Scroll Animation */
+@keyframes scroll-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-scroll-x {
+  display: flex;
+  width: max-content;
+  animation: scroll-x 30s linear infinite;
 }
