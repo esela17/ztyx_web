@@ -9,6 +9,8 @@ import CaseStudy from "@/components/sections/CaseStudy";
 import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/sections/Footer";
 
+import DesignMarquee from "@/components/sections/DesignMarquee";
+
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-[#08090E] selection:bg-[#5B5EFF]/30" dir="rtl">
@@ -24,6 +26,7 @@ export default function Home() {
         <WhyUs />
         <StatsBar />
         <CaseStudy />
+        <DesignMarquee />
         <FinalCTA />
         <Footer />
       </div>

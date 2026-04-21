@@ -11,9 +11,21 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Play, Camera, Film, UserCheck, Heart, Info, TrendingUp } from 'lucide-react';
 import { VideoGallery } from "@/components/ui/VideoGallery";
+import { Lightbox } from "@/components/ui/Lightbox";
+import Image from 'next/image';
 
 export default function MediaProductionPage() {
   const containerRef = useGsapReveal();
+  const [selectedImage, setSelectedImage] = React.useState<{src: string, alt: string} | null>(null);
+
+  const btsImages = [
+    "/category/Screenshot 2026-04-21 133756.png",
+    "/category/Screenshot 2026-04-21 133824.png",
+    "/category/Screenshot 2026-04-21 133909.png",
+    "/category/Screenshot 2026-04-21 133937.png",
+    "/category/Screenshot 2026-04-21 134113.png",
+    "/category/Screenshot 2026-04-21 134152.png",
+  ];
 
   return (
     <main className="relative min-h-screen bg-[#08090E]" dir="rtl" ref={containerRef as any}>
@@ -127,15 +139,38 @@ export default function MediaProductionPage() {
       </section>
 
       {/* Behind the Scenes (Strip) */}
-      <section className="py-12 px-6 relative z-10 overflow-hidden opacity-50">
-         <div className="flex gap-4 animate-scroll-x">
-            {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="flex-shrink-0 w-64 h-40 bg-white/5 rounded-2xl border border-white/5 flex items-center justify-center">
-                 <Camera className="w-8 h-8 text-white/10" />
+      <section className="py-24 px-6 relative z-10 overflow-hidden bg-[#0D0F1A]/30">
+         <div className="max-w-7xl mx-auto mb-12 text-right">
+            <h2 className="text-3xl font-black text-[#F0F1FF]">خلف الكواليس</h2>
+            <p className="text-[#9496C0]">لقطات من مواقع التصوير ومراحل العمل الإبداعي.</p>
+         </div>
+         <div className="flex gap-4 animate-scroll-x hover:[animation-play-state:paused] cursor-zoom-in">
+            {[...btsImages, ...btsImages].map((src, i) => (
+              <div 
+                key={i} 
+                className="flex-shrink-0 w-80 h-52 relative rounded-2xl overflow-hidden border border-white/10 group"
+                onClick={() => setSelectedImage({src, alt: "ZTYX Production BTS"})}
+              >
+                 <Image 
+                   src={src} 
+                   alt="BTS" 
+                   fill 
+                   className="object-cover transition-transform duration-500 group-hover:scale-110" 
+                 />
+                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Camera className="text-white w-8 h-8" />
+                 </div>
               </div>
             ))}
          </div>
       </section>
+
+      <Lightbox 
+        isOpen={!!selectedImage} 
+        onClose={() => setSelectedImage(null)} 
+        src={selectedImage?.src || ""} 
+        alt={selectedImage?.alt || ""}
+      />
 
       {/* CTA */}
       <section className="py-24 px-6 relative z-10">
