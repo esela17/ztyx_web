@@ -9,6 +9,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Code2, ShieldCheck, Zap, MonitorSmartphone, Database, ShoppingCart, Globe } from 'lucide-react';
+import { Boxes } from "@/components/ui/background-boxes";
 
 export default function DevelopmentPage() {
   const containerRef = useGsapReveal();
@@ -36,10 +37,6 @@ export default function DevelopmentPage() {
               <Button size="xl">ابدأ رقمنة عيادتك الآن</Button>
             </div>
           </div>
-import { Boxes } from "@/components/ui/background-boxes";
-
-...
-
           <div className="gsap-reveal relative">
             {/* Background Boxes Visual */}
             <div className="relative w-full aspect-video bg-[#0D0F1A] rounded-[40px] border border-white/10 flex items-center justify-center overflow-hidden">

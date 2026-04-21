@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { motion } from "framer-motion";
 import Navbar from "@/components/sections/Navbar";
 import Footer from "@/components/sections/Footer";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
@@ -43,8 +44,15 @@ export default function SEOPage() {
                    <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center">
                       <Search className="text-[#5B5EFF] w-6 h-6" />
                    </div>
-                   <div className="h-10 flex-1 bg-white/5 rounded-xl border border-white/10 flex items-center px-4 text-[#9496C0] text-sm">
-                      أفضل جراح تجميل في مصر
+                   <div className="h-10 flex-1 bg-white/5 rounded-xl border border-white/10 flex items-center px-4 text-[#9496C0] text-sm overflow-hidden">
+                      <motion.span
+                        initial={{ width: 0 }}
+                        animate={{ width: "100%" }}
+                        transition={{ duration: 3, repeat: Infinity, repeatType: "reverse", repeatDelay: 1 }}
+                        className="whitespace-nowrap inline-block border-l-2 border-[#5B5EFF] overflow-hidden"
+                      >
+                        أفضل جراح تجميل في مصر
+                      </motion.span>
                    </div>
                 </div>
                 <div className="space-y-6">

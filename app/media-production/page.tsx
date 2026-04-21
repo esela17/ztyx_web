@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { motion } from "framer-motion";
 import Navbar from "@/components/sections/Navbar";
 import Footer from "@/components/sections/Footer";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
@@ -20,9 +21,30 @@ export default function MediaProductionPage() {
 
       {/* Hero Section */}
       <section className="pt-40 pb-20 px-6 relative z-10 overflow-hidden">
-         {/* Abstract Video Background Placeholder */}
-         <div className="absolute inset-0 z-0 opacity-20">
-            <div className="absolute inset-0 bg-radial from-[#5B5EFF]/20 to-transparent animate-pulse" />
+         {/* Animated Background Elements */}
+         <div className="absolute inset-0 z-0 pointer-events-none">
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full bg-[#5B5EFF]/10 blur-[100px]"
+                animate={{
+                  x: [0, 100, -100, 0],
+                  y: [0, -50, 50, 0],
+                  scale: [1, 1.2, 0.8, 1],
+                }}
+                transition={{
+                  duration: 10 + i * 2,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+                style={{
+                  width: `${300 + i * 100}px`,
+                  height: `${300 + i * 100}px`,
+                  left: `${20 + i * 20}%`,
+                  top: `${10 + i * 10}%`,
+                }}
+              />
+            ))}
          </div>
 
         <div className="max-w-5xl mx-auto text-center space-y-8 relative z-10">
