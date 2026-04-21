@@ -60,25 +60,25 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center w-full relative z-10">
         
         {/* Left Side: Text Content */}
-        <div className="text-right">
+        <div className="text-center lg:text-right">
           <div className="gsap-reveal">
             <Badge>WHERE HEALTH MEETS 4D</Badge>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black text-[#F0F1FF] leading-[1.1] mb-6 gsap-reveal">
+          <h1 className="text-4xl md:text-7xl font-black text-[#F0F1FF] leading-[1.1] mb-6 gsap-reveal">
             مستقبل الرعاية <br />
             الصحية <span className="text-[#5B5EFF]">يبدأ هنا</span>
           </h1>
           
-          <p className="text-[#9496C0] text-xl max-w-xl ml-auto mb-10 leading-relaxed gsap-reveal">
+          <p className="text-[#9496C0] text-lg md:text-xl max-w-xl mx-auto lg:ml-auto mb-10 leading-relaxed gsap-reveal">
             حلول رقمية متكاملة لنمو عيادتك وتطوير مؤسستك الطبية من خلال استراتيجيات تسويقية وتقنية مبنية على العلم والنتائج.
           </p>
 
-          <div className="flex flex-row-reverse items-center gap-4 gsap-reveal">
-            <Button size="xl" href="/#services">
+          <div className="flex flex-col sm:flex-row-reverse items-center justify-center lg:justify-start gap-4 gsap-reveal">
+            <Button size="xl" className="w-full sm:w-auto" href="/#services">
               ابدأ الآن
             </Button>
-            <Button variant="glass" size="xl" href="/contact">
+            <Button variant="glass" size="xl" className="w-full sm:w-auto" href="/contact">
               استشارة مجانية
             </Button>
           </div>

@@ -60,18 +60,19 @@ export default function WorkPage() {
 
       {/* Filter Tabs */}
       <section className="pb-12 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-4">
-          {categories.map((cat) => (
+        <div className="max-w-7xl mx-auto flex overflow-x-auto pb-4 mb-12 gap-4 no-scrollbar justify-start md:justify-center">
+          {categories.map((category) => (
             <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2 rounded-full text-sm font-bold transition-all border ${
-                activeCategory === cat 
-                ? "bg-[#5B5EFF] text-white border-[#5B5EFF] shadow-[0_10px_20px_rgba(91,94,255,0.3)]" 
-                : "bg-white/5 text-[#9496C0] border-white/10 hover:border-[#5B5EFF]/50"
-              }`}
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={cn(
+                "px-6 py-3 rounded-full text-sm font-bold transition-all flex-shrink-0 border",
+                activeCategory === category
+                  ? "bg-[#5B5EFF] text-white border-[#5B5EFF] shadow-lg shadow-[#5B5EFF]/20"
+                  : "bg-white/5 text-[#9496C0] border-white/10 hover:border-[#5B5EFF]/50"
+              )}
             >
-              {cat === "الكل" ? "جميع الأعمال" : cat}
+              {category === "الكل" ? "جميع الأعمال" : category}
             </button>
           ))}
         </div>

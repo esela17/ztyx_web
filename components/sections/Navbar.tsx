@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Menu, X as CloseIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const serviceLinks = [
   { name: "التسويق الطبي", href: "/medical-marketing" },
@@ -16,6 +17,7 @@ const serviceLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [showServices, setShowServices] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,12 +37,12 @@ export default function Navbar() {
         scrolled ? "glass shadow-2xl shadow-[#5B5EFF]/5" : "bg-transparent border-transparent"
       )}>
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 relative z-[60]">
           <span className="text-2xl font-black tracking-tighter text-[#F0F1FF] font-en">ZTYX</span>
           <div className="w-2.5 h-2.5 bg-[#5B5EFF] rounded-[2px] -skew-x-12 animate-pulse" />
         </Link>
 
-        {/* Links */}
+        {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
           <div 
             className="relative group"
@@ -90,11 +92,77 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* CTA */}
-        <Button size="md" href="/contact">
-          تواصل معنا
-        </Button>
+        {/* Mobile Toggle & CTA */}
+        <div className="flex items-center gap-4 relative z-[60]">
+          <div className="hidden sm:block">
+            <Button size="md" href="/contact">
+              تواصل معنا
+            </Button>
+          </div>
+          
+          <button 
+            className="md:hidden w-10 h-10 flex items-center justify-center glass rounded-xl text-[#F0F1FF]"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-50 bg-[#08090E]/95 backdrop-blur-xl md:hidden flex flex-col p-8 pt-32"
+          >
+            <div className="flex flex-col gap-6 overflow-y-auto">
+              <div className="space-y-4">
+                <p className="text-[#5B5EFF] text-[10px] font-bold uppercase tracking-widest px-4">خدماتنا</p>
+                {serviceLinks.map((service) => (
+                  <Link
+                    key={service.name}
+                    href={service.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-2xl font-black text-[#F0F1FF] hover:text-[#5B5EFF] transition-all px-4 block"
+                  >
+                    {service.name}
+                  </Link>
+                ))}
+              </div>
+              
+              <div className="w-full h-px bg-white/5 my-4" />
+              
+              <div className="space-y-4">
+                {[
+                  { name: 'أعمالنا', href: '/work' },
+                  { name: 'الأسعار', href: '/pricing' },
+                  { name: 'الأسئلة الشائعة', href: '/faq' },
+                  { name: 'اتصل بنا', href: '/contact' },
+                ].map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-2xl font-black text-[#F0F1FF] hover:text-[#5B5EFF] transition-all px-4 block"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+              
+              <div className="mt-auto pt-12">
+                <Button size="xl" className="w-full" href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                  احجز استشارتك الآن
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
