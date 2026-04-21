@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { GlassCard } from "@/components/ui/GlassCard";
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,11 +79,16 @@ export default function Hero() {
           {/* Main Hero Image */}
           <div className="relative w-full h-full flex items-center justify-center">
             <div className="absolute inset-0 bg-[#5B5EFF]/20 blur-[100px] rounded-full animate-pulse" />
-            <img 
-              src="/hero_doctor.png" 
-              alt="Professional Doctor and Patient"
-              className="relative z-10 w-[90%] h-[90%] object-cover rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
-            />
+            <div className="relative z-10 w-[90%] h-[90%] rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 overflow-hidden">
+              <Image 
+                src="/hero_doctor.png" 
+                alt="Professional Doctor and Patient"
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
           </div>
 
 

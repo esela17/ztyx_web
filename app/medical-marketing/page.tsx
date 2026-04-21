@@ -9,6 +9,8 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Share2, TrendingUp, Layout, Globe } from 'lucide-react';
+import Image from 'next/image';
+import { ROICalculator } from "@/components/ui/ROICalculator";
 
 export default function MedicalMarketingPage() {
   const containerRef = useGsapReveal();
@@ -36,13 +38,18 @@ export default function MedicalMarketingPage() {
               <Button size="xl">ابدأ رحلة النجاح الآن</Button>
             </div>
           </div>
-          <div className="gsap-reveal relative">
+          <div className="gsap-reveal relative h-[400px] md:h-[600px]">
             <div className="absolute inset-0 bg-[#5B5EFF]/20 blur-[100px] rounded-full animate-pulse" />
-            <img 
-              src="/marketing_hero.png" 
-              alt="Medical Marketing Visual" 
-              className="relative z-10 w-full h-auto rounded-[40px] shadow-2xl border border-white/10"
-            />
+            <div className="relative z-10 w-full h-full rounded-[40px] shadow-2xl border border-white/10 overflow-hidden">
+              <Image 
+                src="/marketing_hero.png" 
+                alt="Medical Marketing Visual" 
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -50,12 +57,16 @@ export default function MedicalMarketingPage() {
       {/* Problem Section */}
       <section className="py-24 px-6 relative z-10 bg-[#0D0F1A]/50">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div className="gsap-reveal order-2 lg:order-1">
-            <img 
-              src="/empty_clinic.png" 
-              alt="Empty Clinic Pain Point" 
-              className="w-full h-auto rounded-[32px] opacity-80"
-            />
+          <div className="gsap-reveal order-2 lg:order-1 relative h-[300px] md:h-[400px]">
+            <div className="relative w-full h-full rounded-[32px] overflow-hidden">
+              <Image 
+                src="/empty_clinic.png" 
+                alt="Empty Clinic Pain Point" 
+                fill
+                className="object-cover opacity-80"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
           </div>
           <div className="text-right space-y-6 order-1 lg:order-2">
             <h2 className="text-4xl font-black text-[#F0F1FF] gsap-reveal">
@@ -86,12 +97,16 @@ export default function MedicalMarketingPage() {
               subtitle="نعتمد على تحليل سلوك المريض المصري الرقمي لنصنع محتوى يلمس احتياجاته ويؤكد احترافيتك."
             />
           </div>
-          <div className="gsap-reveal">
-            <img 
-              src="/content_examples.png" 
-              alt="Patient Journey Funnel" 
-              className="w-full h-auto rounded-[40px] shadow-3xl"
-            />
+          <div className="gsap-reveal relative h-[400px] md:h-[600px]">
+            <div className="relative w-full h-full rounded-[40px] shadow-3xl overflow-hidden">
+              <Image 
+                src="/content_examples.png" 
+                alt="Patient Journey Funnel" 
+                fill
+                className="object-cover"
+                sizes="100vw"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -115,6 +130,13 @@ export default function MedicalMarketingPage() {
               </GlassCard>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ROI Calculator Section */}
+      <section className="py-24 px-6 relative z-10">
+        <div className="max-w-5xl mx-auto gsap-reveal">
+          <ROICalculator />
         </div>
       </section>
 

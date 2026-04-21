@@ -5,6 +5,7 @@ import { useGsapReveal } from "@/hooks/useGsapReveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
+import Image from 'next/image';
 
 export default function CaseStudy() {
   const containerRef = useGsapReveal();
@@ -26,16 +27,18 @@ export default function CaseStudy() {
         <GlassCard className="p-4 md:p-8 rounded-[40px] overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Image Side */}
-            <div className="gsap-reveal relative rounded-[32px] overflow-hidden group">
-              <img
+            <div className="gsap-reveal relative rounded-[32px] overflow-hidden group h-[300px] md:h-[400px]">
+              <Image 
                 src="/case_study.png"
                 alt="Clinic Transformation Before and After"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
-              <div className="absolute top-4 right-4 glass px-4 py-2 rounded-full text-xs font-bold text-white">
+              <div className="absolute top-4 right-4 glass px-4 py-2 rounded-full text-xs font-bold text-white z-20">
                 Before
               </div>
-              <div className="absolute top-4 left-4 bg-[#5B5EFF] px-4 py-2 rounded-full text-xs font-bold text-white">
+              <div className="absolute top-4 left-4 bg-[#5B5EFF] px-4 py-2 rounded-full text-xs font-bold text-white z-20">
                 After
               </div>
             </div>

@@ -1,16 +1,51 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from "@/components/sections/Navbar";
 import Footer from "@/components/sections/Footer";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Phone, Mail, MapPin, Send, MessageSquare } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2 } from 'lucide-react';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const contactSchema = z.object({
+  name: z.string().min(3, "الاسم يجب أن يكون 3 أحرف على الأقل"),
+  phone: z.string().regex(/^01[0125][0-9]{8}$/, "يرجى إدخال رقم هاتف مصري صحيح"),
+  message: z.string().min(10, "الرسالة يجب أن تكون 10 أحرف على الأقل"),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function ContactPage() {
   const containerRef = useGsapReveal();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const { register, handleSubmit, formState: { errors } } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
+
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("https://formspree.io/f/xwvanovg", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        setIsSuccess(true);
+      }
+    } catch (error) {
+      console.error("Submission error", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <main className="relative min-h-screen bg-[#08090E]" dir="rtl" ref={containerRef as any}>
@@ -39,43 +74,72 @@ export default function ContactPage() {
           {/* Form Side */}
           <div className="gsap-reveal">
              <GlassCard className="p-8 md:p-12 border-[#5B5EFF]/20 bg-[#0D0F1A]/80">
-                <form action="https://formspree.io/f/xwvanovg" method="POST" className="space-y-6">
-                   <div className="space-y-2 text-right">
-                      <label className="text-sm font-bold text-[#F0F1FF]">الاسم الكامل</label>
-                      <input 
-                        type="text" 
-                        name="name"
-                        required
-                        placeholder="أدخل اسمك هنا" 
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all"
-                      />
-                   </div>
-                   <div className="space-y-2 text-right">
-                      <label className="text-sm font-bold text-[#F0F1FF]">رقم الهاتف</label>
-                      <input 
-                        type="tel" 
-                        name="phone"
-                        required
-                        placeholder="01xxxxxxxxx" 
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all font-mono"
-                        dir="ltr"
-                      />
-                   </div>
-                   <div className="space-y-2 text-right">
-                      <label className="text-sm font-bold text-[#F0F1FF]">رسالتك</label>
-                      <textarea 
-                        name="message"
-                        required
-                        rows={5}
-                        placeholder="كيف يمكننا مساعدتك؟" 
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all resize-none"
-                      />
-                   </div>
-                   <Button type="submit" size="xl" className="w-full shadow-[0_20px_40px_rgba(91,94,255,0.2)]">
-                      <Send className="w-5 h-5 ml-2" />
-                      إرسال الرسالة الآن
-                   </Button>
-                </form>
+                {isSuccess ? (
+                  <div className="text-center space-y-6 py-12 animate-in fade-in zoom-in duration-500">
+                    <div className="w-20 h-20 bg-[#25D366]/20 text-[#25D366] rounded-full flex items-center justify-center mx-auto">
+                      <CheckCircle2 size={48} />
+                    </div>
+                    <h3 className="text-2xl font-black text-[#F0F1FF]">تم إرسال رسالتك بنجاح!</h3>
+                    <p className="text-[#9496C0]">سيتواصل معك أحد خبرائنا في أقرب وقت ممكن.</p>
+                    <Button variant="glass" onClick={() => setIsSuccess(false)}>إرسال رسالة أخرى</Button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="space-y-2 text-right">
+                        <label className="text-sm font-bold text-[#F0F1FF]">الاسم الكامل</label>
+                        <input 
+                          {...register("name")}
+                          type="text" 
+                          placeholder="أدخل اسمك هنا" 
+                          className={cn(
+                            "w-full bg-white/5 border rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all",
+                            errors.name ? "border-red-500/50" : "border-white/10"
+                          )}
+                        />
+                        {errors.name && <p className="text-xs text-red-400 font-bold">{errors.name.message}</p>}
+                    </div>
+                    <div className="space-y-2 text-right">
+                        <label className="text-sm font-bold text-[#F0F1FF]">رقم الهاتف</label>
+                        <input 
+                          {...register("phone")}
+                          type="tel" 
+                          placeholder="01xxxxxxxxx" 
+                          className={cn(
+                            "w-full bg-white/5 border rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all font-mono",
+                            errors.phone ? "border-red-500/50" : "border-white/10"
+                          )}
+                          dir="ltr"
+                        />
+                        {errors.phone && <p className="text-xs text-red-400 font-bold">{errors.phone.message}</p>}
+                    </div>
+                    <div className="space-y-2 text-right">
+                        <label className="text-sm font-bold text-[#F0F1FF]">رسالتك</label>
+                        <textarea 
+                          {...register("message")}
+                          rows={5}
+                          placeholder="كيف يمكننا مساعدتك؟" 
+                          className={cn(
+                            "w-full bg-white/5 border rounded-2xl px-6 py-4 text-[#F0F1FF] focus:border-[#5B5EFF] focus:outline-none transition-all resize-none",
+                            errors.message ? "border-red-500/50" : "border-white/10"
+                          )}
+                        />
+                        {errors.message && <p className="text-xs text-red-400 font-bold">{errors.message.message}</p>}
+                    </div>
+                    <Button 
+                      type="submit" 
+                      size="xl" 
+                      disabled={isSubmitting}
+                      className="w-full shadow-[0_20px_40px_rgba(91,94,255,0.2)] disabled:opacity-50"
+                    >
+                        {isSubmitting ? "جاري الإرسال..." : (
+                          <>
+                            <Send className="w-5 h-5 ml-2" />
+                            إرسال الرسالة الآن
+                          </>
+                        )}
+                    </Button>
+                  </form>
+                )}
              </GlassCard>
           </div>
 

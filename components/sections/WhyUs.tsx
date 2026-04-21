@@ -4,6 +4,7 @@ import React from 'react';
 import { useGsapReveal } from "@/hooks/useGsapReveal";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { GlassCard } from "@/components/ui/GlassCard";
+import Image from 'next/image';
 
 const reasons = [
   {
@@ -43,13 +44,17 @@ export default function WhyUs() {
 
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Image Side */}
-          <div className="gsap-reveal relative">
+          <div className="gsap-reveal relative h-[400px] md:h-[500px]">
             <div className="absolute -inset-4 bg-[#5B5EFF]/10 blur-2xl rounded-[40px]" />
-            <img 
-              src="/team_working.png" 
-              alt="ZTYX Team" 
-              className="relative rounded-[40px] border border-white/10 shadow-2xl"
-            />
+            <div className="relative w-full h-full rounded-[40px] border border-white/10 shadow-2xl overflow-hidden">
+              <Image 
+                src="/team_working.png" 
+                alt="ZTYX Team" 
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
           </div>
 
           {/* Content Side */}
