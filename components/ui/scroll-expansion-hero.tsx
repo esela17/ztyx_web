@@ -49,109 +49,79 @@ const ScrollExpandMedia = ({
   }, [mediaType]);
 
   useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handleWheel = (e: any) => {
+      // If we're at the top and scrolling up, and we're expanded, shrink back
       if (mediaFullyExpanded && e.deltaY < 0 && window.scrollY <= 10) {
         setMediaFullyExpanded(false);
         e.preventDefault();
-      } else if (!mediaFullyExpanded) {
+      } 
+      // If we're not fully expanded, hijack the scroll
+      else if (!mediaFullyExpanded) {
         e.preventDefault();
-        // Increased sensitivity for better user experience
-        const sensitivity = isMobileState ? 0.005 : 0.002;
+        const sensitivity = isMobileState ? 0.004 : 0.0025;
         const scrollDelta = e.deltaY * sensitivity;
-        const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
-          1
-        );
         
-        if (newProgress !== scrollProgress) {
-          setScrollProgress(newProgress);
-        }
-
-        if (newProgress >= 1) {
-          setMediaFullyExpanded(true);
-          setShowContent(true);
-        } else if (newProgress < 0.8) {
-          setShowContent(false);
-        }
+        setScrollProgress((prev) => {
+          const next = Math.min(Math.max(prev + scrollDelta, 0), 1);
+          
+          if (next >= 1) {
+            setMediaFullyExpanded(true);
+            setShowContent(true);
+          } else if (next < 0.8) {
+            setShowContent(false);
+          }
+          
+          return next;
+        });
       }
     };
 
-    const handleTouchStart = (e: TouchEvent) => {
+    const handleTouchStart = (e: any) => {
       setTouchStartY(e.touches[0].clientY);
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
+    const handleTouchMove = (e: any) => {
       if (!touchStartY) return;
 
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
 
-      if (mediaFullyExpanded && deltaY < -20 && window.scrollY <= 5) {
+      if (mediaFullyExpanded && deltaY < -10 && window.scrollY <= 10) {
         setMediaFullyExpanded(false);
         e.preventDefault();
       } else if (!mediaFullyExpanded) {
         e.preventDefault();
-        // Increase sensitivity for mobile, especially when scrolling back
-        const scrollFactor = deltaY < 0 ? 0.008 : 0.005; // Higher sensitivity for scrolling back
-        const scrollDelta = deltaY * scrollFactor;
-        const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
-          1
-        );
-        setScrollProgress(newProgress);
-
-        if (newProgress >= 1) {
-          setMediaFullyExpanded(true);
-          setShowContent(true);
-        } else if (newProgress < 0.75) {
-          setShowContent(false);
-        }
-
+        const sensitivity = deltaY < 0 ? 0.01 : 0.006;
+        const scrollDelta = deltaY * sensitivity;
+        
+        setScrollProgress((prev) => {
+          const next = Math.min(Math.max(prev + scrollDelta, 0), 1);
+          if (next >= 1) {
+            setMediaFullyExpanded(true);
+            setShowContent(true);
+          } else if (next < 0.8) {
+            setShowContent(false);
+          }
+          return next;
+        });
         setTouchStartY(touchY);
       }
     };
 
-    const handleTouchEnd = (): void => {
-      setTouchStartY(0);
-    };
-
-    const handleScroll = (): void => {
-      // Removed aggressive window.scrollTo(0,0) to prevent jitter and stuck states
-    };
-
-    window.addEventListener('wheel', handleWheel as unknown as EventListener, {
-      passive: false,
-    });
-    window.addEventListener('scroll', handleScroll as EventListener);
-    window.addEventListener(
-      'touchstart',
-      handleTouchStart as unknown as EventListener,
-      { passive: false }
-    );
-    window.addEventListener(
-      'touchmove',
-      handleTouchMove as unknown as EventListener,
-      { passive: false }
-    );
-    window.addEventListener('touchend', handleTouchEnd as EventListener);
+    // Attach listeners to the window but with passive: false
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
-      window.removeEventListener(
-        'wheel',
-        handleWheel as unknown as EventListener
-      );
-      window.removeEventListener('scroll', handleScroll as EventListener);
-      window.removeEventListener(
-        'touchstart',
-        handleTouchStart as unknown as EventListener
-      );
-      window.removeEventListener(
-        'touchmove',
-        handleTouchMove as unknown as EventListener
-      );
-      window.removeEventListener('touchend', handleTouchEnd as EventListener);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [scrollProgress, mediaFullyExpanded, touchStartY]);
+  }, [mediaFullyExpanded, touchStartY, isMobileState]);
 
   useEffect(() => {
     const checkIfMobile = (): void => {

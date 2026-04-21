@@ -4,13 +4,12 @@ import React, { useRef, useState } from 'react';
 import { cn } from "@/lib/utils";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
-interface GlassCardProps {
+interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  className?: string;
   variant?: 'default' | 'blue';
 }
 
-export const GlassCard = ({ children, className, variant = 'default' }: GlassCardProps) => {
+export const GlassCard = ({ children, className, variant = 'default', ...props }: GlassCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -26,7 +25,7 @@ export const GlassCard = ({ children, className, variant = 'default' }: GlassCar
   }
 
   return (
-    <div 
+    <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       className={cn(
@@ -34,6 +33,7 @@ export const GlassCard = ({ children, className, variant = 'default' }: GlassCar
         variant === 'blue' && "glass-blue",
         className
       )}
+      {...props}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
