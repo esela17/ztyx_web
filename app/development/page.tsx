@@ -36,12 +36,23 @@ export default function DevelopmentPage() {
               <Button size="xl">ابدأ رقمنة عيادتك الآن</Button>
             </div>
           </div>
+import { Boxes } from "@/components/ui/background-boxes";
+
+...
+
           <div className="gsap-reveal relative">
-            {/* Placeholder for Dev Hero Image */}
-            <div className="relative w-full aspect-video bg-gradient-to-br from-[#5B5EFF]/20 to-[#0D0F1A] rounded-[40px] border border-white/10 flex items-center justify-center overflow-hidden">
-              <div className="absolute inset-0 bg-radial from-[#5B5EFF]/10 via-transparent to-transparent animate-pulse" />
-              <MonitorSmartphone className="w-32 h-32 text-[#5B5EFF] opacity-40" />
-              <div className="absolute bottom-8 right-8 text-[#5B5EFF]/50 font-en font-black text-4xl">HIS / CRM</div>
+            {/* Background Boxes Visual */}
+            <div className="relative w-full aspect-video bg-[#0D0F1A] rounded-[40px] border border-white/10 flex items-center justify-center overflow-hidden">
+              <div className="absolute inset-0 w-full h-full bg-[#0D0F1A] z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+              <Boxes />
+              
+              <div className="relative z-30 flex flex-col items-center">
+                <div className="w-24 h-24 rounded-3xl bg-[#5B5EFF]/20 backdrop-blur-xl flex items-center justify-center border border-[#5B5EFF]/30 mb-4 animate-bounce duration-[3000ms]">
+                  <MonitorSmartphone className="w-12 h-12 text-[#5B5EFF]" />
+                </div>
+                <div className="text-[#5B5EFF] font-en font-black text-2xl tracking-[0.2em]">HIS / CRM SYSTEMS</div>
+                <div className="text-[#9496C0] text-[10px] font-bold uppercase tracking-widest mt-2">Enterprise Software Solutions</div>
+              </div>
             </div>
           </div>
         </div>
