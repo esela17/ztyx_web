@@ -11,6 +11,7 @@ import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2 } from 'lucide-r
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { cn } from "@/lib/utils";
 
 const contactSchema = z.object({
   name: z.string().min(3, "الاسم يجب أن يكون 3 أحرف على الأقل"),
