@@ -15,60 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
 import StellarCardGallerySingle from "@/components/ui/3d-image-gallery";
 
-const portfolioItems = [
-  {
-    title: "موقع Cure ZTYX المتكامل",
-    category: "Software Development",
-    image: "/category/Screenshot 2026-04-21 134241.png",
-    link: "https://cureztyx.com",
-    icon: <Globe size={20} />,
-    featured: true
-  },
-  {
-    title: "تصميم هوية بصرية لمركز رعايي",
-    category: "Graphic Design",
-    image: "/category/Logo-Raeei.jpg",
-    icon: <Palette size={20} />,
-  },
-  {
-    title: "تطبيق HIS لإدارة العيادات",
-    category: "Software Development",
-    image: "/category/iPhone 12 Pro 6.1_ Mockup Front View-1.png",
-    icon: <Layout size={20} />,
-  },
-  {
-    title: "حملة تسويقية لمركز النخبة",
-    category: "Medical Marketing",
-    image: "/category/Screenshot 2026-04-21 133648.png",
-    icon: <Globe size={20} />,
-  },
-  {
-    title: "إنتاج فيديو سينمائي طبي",
-    category: "Media Production",
-    image: "/category/Screenshot 2026-04-21 133756.png",
-    icon: <Camera size={20} />,
-  },
-  {
-    title: "تصميم واجهة مستخدم Dashboard",
-    category: "UI/UX Design",
-    image: "/category/Screenshot 2026-04-21 133810.png",
-    icon: <Palette size={20} />,
-  },
-  {
-    title: "مشروع تطوير المنظومة الصحية",
-    category: "Software Development",
-    image: "/category/جامعه.png",
-    icon: <Layout size={20} />,
-  },
-  {
-    title: "تصميمات السوشيال ميديا",
-    category: "Graphic Design",
-    image: "/category/Screenshot 2026-04-21 134012.png",
-    icon: <Palette size={20} />,
-  }
-];
-
-const categories = ["الكل", "Software Development", "Medical Marketing", "Graphic Design", "Media Production", "UI/UX Design"];
+import { portfolioData, categories } from "@/constants/portfolio";
 
 export default function WorkPage() {
   const containerRef = useGsapReveal();
@@ -76,8 +23,8 @@ export default function WorkPage() {
   const [selectedImage, setSelectedImage] = React.useState<{src: string, alt: string} | null>(null);
 
   const filteredItems = activeCategory === "الكل" 
-    ? portfolioItems 
-    : portfolioItems.filter(item => item.category === activeCategory);
+    ? portfolioData 
+    : portfolioData.filter(item => item.category === activeCategory);
 
   return (
     <main className="relative min-h-screen bg-[#08090E]" dir="rtl" ref={containerRef as any}>
@@ -161,7 +108,6 @@ export default function WorkPage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#08090E] via-transparent to-transparent opacity-60" />
                       <div className="absolute bottom-6 right-6">
                          <div className="flex items-center gap-2 bg-[#5B5EFF] text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
-                            {item.icon}
                             {item.category}
                          </div>
                       </div>

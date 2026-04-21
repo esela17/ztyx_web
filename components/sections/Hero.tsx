@@ -15,7 +15,17 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Hero() {
   const containerRef = useGsapReveal();
 
+  const [isLowPower, setIsLowPower] = React.useState(false);
+
+  React.useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setIsLowPower(isMobile || prefersReducedMotion);
+  }, []);
+
   useGSAP(() => {
+    if (isLowPower) return;
+
     // Floating animation for glass cards with slight parallax
     gsap.to(".floating-card", {
       y: -20,
@@ -36,7 +46,7 @@ export default function Hero() {
         scrub: 1
       }
     });
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [isLowPower] });
 
   return (
     <section 
@@ -92,13 +102,17 @@ export default function Hero() {
           </div>
 
 
-          {/* Orbits */}
-          <div className="absolute w-[400px] h-[400px] border border-dashed border-[#5B5EFF]/20 rounded-full animate-spin-slow" />
-          <div className="absolute w-[500px] h-[500px] border border-dashed border-[#5B5EFF]/10 rounded-full animate-spin-slow [animation-direction:reverse] [animation-duration:30s]" />
-          <div className="absolute w-[320px] h-[320px] border border-dashed border-[#5B5EFF]/30 rounded-full animate-spin-slow [animation-duration:15s]" />
+          {/* Orbits - Disabled on Low Power */}
+          {!isLowPower && (
+            <>
+              <div className="absolute w-[400px] h-[400px] border border-dashed border-[#5B5EFF]/20 rounded-full animate-spin-slow" />
+              <div className="absolute w-[500px] h-[500px] border border-dashed border-[#5B5EFF]/10 rounded-full animate-spin-slow [animation-direction:reverse] [animation-duration:30s]" />
+              <div className="absolute w-[320px] h-[320px] border border-dashed border-[#5B5EFF]/30 rounded-full animate-spin-slow [animation-duration:15s]" />
+            </>
+          )}
 
           {/* Floating Glass Cards */}
-          <div className="floating-card absolute top-10 -right-4">
+          <div className={`floating-card absolute top-10 -right-4 ${isLowPower ? 'animate-none' : ''}`}>
             <GlassCard variant="blue" className="p-4">
               <div className="text-[10px] text-[#9496C0] mb-1 font-bold">AI Scheduling</div>
               <div className="text-xl font-black text-white flex items-center gap-2">
