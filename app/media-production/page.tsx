@@ -13,6 +13,7 @@ import { Play, Camera, Film, UserCheck, Heart, Info, TrendingUp } from 'lucide-r
 import { VideoGallery } from "@/components/ui/VideoGallery";
 import { Lightbox } from "@/components/ui/Lightbox";
 import Image from 'next/image';
+import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
 
 export default function MediaProductionPage() {
   const containerRef = useGsapReveal();
@@ -32,53 +33,27 @@ export default function MediaProductionPage() {
       <div className="grid-overlay" />
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="pt-40 pb-20 px-6 relative z-10 overflow-hidden">
-         {/* Animated Background Elements */}
-         <div className="absolute inset-0 z-0 pointer-events-none">
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute rounded-full bg-[#5B5EFF]/10 blur-[100px]"
-                animate={{
-                  x: [0, 100, -100, 0],
-                  y: [0, -50, 50, 0],
-                  scale: [1, 1.2, 0.8, 1],
-                }}
-                transition={{
-                  duration: 10 + i * 2,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-                style={{
-                  width: `${300 + i * 100}px`,
-                  height: `${300 + i * 100}px`,
-                  left: `${20 + i * 20}%`,
-                  top: `${10 + i * 10}%`,
-                }}
-              />
-            ))}
-         </div>
-
-        <div className="max-w-5xl mx-auto text-center space-y-8 relative z-10">
-          <div className="gsap-reveal">
-            <Badge>الإنتاج المرئي والمسموع</Badge>
-          </div>
-          <h1 className="text-5xl md:text-8xl font-black text-[#F0F1FF] leading-[1.1] gsap-reveal">
-            إنتاج مرئي <span className="text-[#5B5EFF]">سينمائي</span> <br />
-            يجسد ريادتك الطبية
-          </h1>
-          <p className="text-[#9496C0] text-xl max-w-2xl mx-auto gsap-reveal leading-relaxed">
-            نحول خبرتك العلمية إلى قصص بصرية ملهمة تبني جسور الثقة مع مرضاك وتبرز احترافيتك بأعلى جودة.
+      {/* Hero Section - Scroll Expand */}
+      <ScrollExpandMedia
+        mediaType="video"
+        mediaSrc="https://me7aitdbxq.ufs.sh/f/2wsMIGDMQRdYuZ5R8ahEEZ4aQK56LizRdfBSqeDMsmUIrJN1"
+        bgImageSrc="/category/Gemini_Generated_Image_j67acfj67acfj67a copy.png"
+        title="الإنتاج المرئي"
+        date="Visual Storytelling"
+        scrollToExpand="اسحب للأسفل لمشاهدة سحر العدسة"
+        textBlend
+      >
+        <div className="text-center space-y-6">
+          <Badge>صناعة المحتوى المرئي والمسموع</Badge>
+          <h2 className="text-4xl md:text-7xl font-black text-[#F0F1FF]">
+            نصنع الواقع <br />
+            بلمسة <span className="text-[#5B5EFF]">سينمائية</span>
+          </h2>
+          <p className="text-[#9496C0] text-xl max-w-2xl mx-auto leading-relaxed">
+            نحول رؤيتك إلى تجربة بصرية مذهلة تبني الثقة وتجذب الانتباه من خلال إنتاج فيديو احترافي وتصوير فوتوغرافي متميز.
           </p>
-          <div className="gsap-reveal pt-4">
-            <Button size="xl" className="group" href="#video-gallery">
-              <Play className="w-5 h-5 ml-2 fill-white group-hover:scale-125 transition-transform" />
-              شاهد أعمالنا
-            </Button>
-          </div>
         </div>
-      </section>
+      </ScrollExpandMedia>
 
       {/* Services Grid */}
       <section className="py-24 px-6 relative z-10">

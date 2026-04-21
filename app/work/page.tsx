@@ -12,6 +12,8 @@ import Image from 'next/image';
 import { ExternalLink, Camera, Layout, Palette, Globe, Filter } from 'lucide-react';
 import { Lightbox } from "@/components/ui/Lightbox";
 import { motion, AnimatePresence } from "framer-motion";
+import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
+import StellarCardGallerySingle from "@/components/ui/3d-image-gallery";
 
 const portfolioItems = [
   {
@@ -87,21 +89,27 @@ export default function WorkPage() {
       
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="pt-40 pb-20 px-6 relative z-10 text-center">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="gsap-reveal">
-            <Badge>معرض الأعمال Portfolio</Badge>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-black text-[#F0F1FF] gsap-reveal">
+      {/* Hero Section - Scroll Expand */}
+      <ScrollExpandMedia
+        mediaType="image"
+        mediaSrc="/category/Screenshot 2026-04-21 134241.png"
+        bgImageSrc="/category/0150556.png"
+        title="أعمالنا الإبداعية"
+        date="Digital Excellence"
+        scrollToExpand="اسحب للأسفل لاستكشاف عالمنا"
+        textBlend
+      >
+        <div className="text-center space-y-6">
+          <Badge>معرض الأعمال Portfolio</Badge>
+          <h2 className="text-4xl md:text-6xl font-black text-[#F0F1FF]">
             أعمالنا تتحدث <br />
             عن <span className="text-[#5B5EFF]">إبداعنا</span>
-          </h1>
-          <p className="text-[#9496C0] text-xl gsap-reveal leading-relaxed">
+          </h2>
+          <p className="text-[#9496C0] text-xl max-w-2xl mx-auto leading-relaxed">
             استعرض نخبة من مشاريعنا في تطوير البرمجيات، التسويق الطبي، والإنتاج المرئي التي ساعدت عملاءنا في الوصول للقمة.
           </p>
         </div>
-      </section>
+      </ScrollExpandMedia>
 
       {/* Filter Tabs */}
       <section className="pb-12 px-6 relative z-10">
@@ -194,6 +202,17 @@ export default function WorkPage() {
         src={selectedImage?.src || ""} 
         alt={selectedImage?.alt || ""}
       />
+
+      {/* 3D Gallery Section */}
+      <section className="py-24 px-6 relative z-10">
+        <div className="max-w-7xl mx-auto space-y-12">
+          <div className="text-center">
+             <Badge>Future of Portfolio</Badge>
+             <h2 className="text-4xl md:text-6xl font-black text-[#F0F1FF] mt-4">استكشف كوننا <span className="text-[#5B5EFF]">الرقمي</span></h2>
+          </div>
+          <StellarCardGallerySingle />
+        </div>
+      </section>
 
       {/* CTA Section */}
       <section className="py-24 px-6 relative z-10">
