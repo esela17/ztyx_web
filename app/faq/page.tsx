@@ -76,8 +76,8 @@ export default function FAQPage() {
               <h2 className="text-4xl font-black text-[#F0F1FF]">لديك سؤال آخر؟</h2>
               <p className="text-[#9496C0] text-lg">فريقنا جاهز للرد على كافة استفساراتك ومساعدتك في اختيار الحل الأنسب لعيادتك.</p>
               <div className="flex flex-wrap justify-center gap-4">
-                 <Button size="xl">تواصل معنا الآن</Button>
-                 <Button variant="glass" size="xl">احجز استشارة مجانية</Button>
+                 <Button size="xl" href="/contact">تواصل معنا الآن</Button>
+                 <Button variant="glass" size="xl" href="https://wa.me/201068327720">احجز استشارة مجانية</Button>
               </div>
            </GlassCard>
         </div>

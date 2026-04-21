@@ -35,7 +35,7 @@ export default function MedicalMarketingPage() {
               نحول عيادتك إلى علامة تجارية رائدة تجذب المرضى وتكسب ثقتهم من خلال استراتيجيات رقمية مبنية على البيانات.
             </p>
             <div className="gsap-reveal pt-4">
-              <Button size="xl">ابدأ رحلة النجاح الآن</Button>
+              <Button size="xl" href="/contact">ابدأ رحلة النجاح الآن</Button>
             </div>
           </div>
           <div className="gsap-reveal relative h-[400px] md:h-[600px]">
@@ -164,7 +164,7 @@ export default function MedicalMarketingPage() {
           <GlassCard className="p-12 text-center space-y-8 bg-gradient-to-br from-[#5B5EFF]/20 to-transparent">
             <h2 className="text-4xl font-black text-[#F0F1FF]">لا تترك نجاحك للصدفة</h2>
             <p className="text-[#9496C0] text-lg">احصل على خطة تسويقية مخصصة لعيادتك اليوم وابدأ في مضاعفة نتائجك.</p>
-            <Button size="xl">اطلب عرض سعر مخصص</Button>
+            <Button size="xl" href="/contact">اطلب عرض سعر مخصص</Button>
           </GlassCard>
         </div>
       </section>

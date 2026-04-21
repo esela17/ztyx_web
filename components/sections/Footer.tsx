@@ -67,8 +67,8 @@ export default function Footer() {
               © 2026 ZTYX. ALL RIGHTS RESERVED.
            </p>
            <div className="flex gap-8 text-[10px] text-[#9496C0] font-bold uppercase tracking-widest">
-              <a href="#" className="hover:text-[#5B5EFF]">Privacy Policy</a>
-              <a href="#" className="hover:text-[#5B5EFF]">Terms of Service</a>
+              <Link href="/privacy" className="hover:text-[#5B5EFF]">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-[#5B5EFF]">Terms of Service</Link>
            </div>
         </div>
       </div>

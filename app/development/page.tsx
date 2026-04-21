@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Code2, ShieldCheck, Zap, MonitorSmartphone, Database, ShoppingCart, Globe } from 'lucide-react';
 import { Boxes } from "@/components/ui/background-boxes";
+import Image from 'next/image';
 
 export default function DevelopmentPage() {
   const containerRef = useGsapReveal();
@@ -34,7 +35,7 @@ export default function DevelopmentPage() {
               نبني لك أنظمة وتطبيقات طبية متكاملة تعزز من كفاءة عيادتك وتوفر لمرضاك تجربة حجز وعلاج لا مثيل لها.
             </p>
             <div className="gsap-reveal pt-4">
-              <Button size="xl">ابدأ رقمنة عيادتك الآن</Button>
+              <Button size="xl" href="/contact">ابدأ رقمنة عيادتك الآن</Button>
             </div>
           </div>
           <div className="gsap-reveal relative">
@@ -108,19 +109,14 @@ export default function DevelopmentPage() {
               ))}
             </div>
           </div>
-          <div className="gsap-reveal">
-            {/* UI Mockup Placeholder */}
-            <div className="relative glass p-4 rounded-[32px] border-[#5B5EFF]/20 shadow-2xl overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#5B5EFF]/5 to-transparent" />
-              <div className="relative space-y-4">
-                <div className="h-8 w-1/3 bg-[#5B5EFF]/20 rounded-lg animate-pulse" />
-                <div className="grid grid-cols-3 gap-4">
-                  {[1, 2, 3].map(i => <div key={i} className="h-24 bg-white/5 rounded-xl border border-white/5" />)}
-                </div>
-                <div className="h-48 bg-white/5 rounded-2xl border border-white/5 relative flex items-center justify-center">
-                  <div className="text-[#5B5EFF]/20 font-black text-xl">DASHBOARD UI</div>
-                </div>
-              </div>
+          <div className="gsap-reveal relative h-[500px]">
+            <div className="relative w-full h-full rounded-[32px] overflow-hidden border border-white/10 shadow-2xl">
+              <Image 
+                src="/category/iPhone 12 Pro 6.1_ Mockup Front View-1.png"
+                alt="Mobile App Interface"
+                fill
+                className="object-contain bg-[#0D0F1A]"
+              />
             </div>
           </div>
         </div>
@@ -153,7 +149,7 @@ export default function DevelopmentPage() {
           <GlassCard className="p-12 text-center space-y-8 border-[#5B5EFF]/30 bg-[#5B5EFF]/5">
             <h2 className="text-4xl font-black text-[#F0F1FF]">جاهز لبناء مستقبلك الرقمي؟</h2>
             <p className="text-[#9496C0] text-lg">دعنا نحول رؤيتك التقنية إلى واقع ملموس يخدم مرضاك وعيادتك.</p>
-            <Button size="xl">تحدث مع فريق التطوير</Button>
+            <Button size="xl" href="/contact">تحدث مع فريق التطوير</Button>
           </GlassCard>
         </div>
       </section>

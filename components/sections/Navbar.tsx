@@ -75,7 +75,7 @@ export default function Navbar() {
           </div>
 
           {[
-            { name: 'أعمالنا', href: '/#work' },
+            { name: 'أعمالنا', href: '/work' },
             { name: 'الأسعار', href: '/pricing' },
             { name: 'الأسئلة الشائعة', href: '/faq' },
             { name: 'اتصل بنا', href: '/contact' },

@@ -10,6 +10,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Play, Camera, Film, UserCheck, Heart, Info, TrendingUp } from 'lucide-react';
+import { VideoGallery } from "@/components/ui/VideoGallery";
 
 export default function MediaProductionPage() {
   const containerRef = useGsapReveal();
@@ -59,7 +60,7 @@ export default function MediaProductionPage() {
             نحول خبرتك العلمية إلى قصص بصرية ملهمة تبني جسور الثقة مع مرضاك وتبرز احترافيتك بأعلى جودة.
           </p>
           <div className="gsap-reveal pt-4">
-            <Button size="xl" className="group">
+            <Button size="xl" className="group" href="#video-gallery">
               <Play className="w-5 h-5 ml-2 fill-white group-hover:scale-125 transition-transform" />
               شاهد أعمالنا
             </Button>
@@ -94,29 +95,13 @@ export default function MediaProductionPage() {
       </section>
 
       {/* Video Showcase */}
-      <section className="py-24 px-6 relative z-10 bg-[#0D0F1A]/50">
+      <section id="video-gallery" className="py-24 px-6 relative z-10 bg-[#0D0F1A]/50">
         <div className="max-w-7xl mx-auto space-y-16">
            <SectionHeader 
              title="أعمال تتحدث عن نفسها" 
              subtitle="جودة بصرية تضاهي الإنتاج العالمي المخصص للقطاع الصحي."
            />
-           <div className="grid md:grid-cols-2 gap-12">
-              {[1, 2].map(i => (
-                <div key={i} className="gsap-reveal relative aspect-video rounded-[32px] overflow-hidden group cursor-pointer">
-                   <div className="absolute inset-0 bg-gradient-to-t from-[#08090E] to-transparent opacity-60 z-10" />
-                   <div className="absolute inset-0 bg-[#5B5EFF]/10 group-hover:bg-transparent transition-all" />
-                   <div className="absolute inset-0 flex items-center justify-center z-20">
-                      <div className="w-20 h-20 rounded-full bg-[#5B5EFF] flex items-center justify-center shadow-2xl scale-90 group-hover:scale-100 transition-transform">
-                         <Play className="w-8 h-8 text-white fill-white" />
-                      </div>
-                   </div>
-                   <div className="absolute bottom-8 right-8 z-20">
-                      <div className="text-white font-black text-xl">مشروع إنتاج طبي - {i}</div>
-                      <div className="text-[#9496C0] text-sm">إخراج زتكس ميديا</div>
-                   </div>
-                </div>
-              ))}
-           </div>
+           <VideoGallery />
         </div>
       </section>
 
@@ -159,8 +144,8 @@ export default function MediaProductionPage() {
             <h2 className="text-4xl font-black text-[#F0F1FF]">قصتك تستحق أن تُروى باحترافية</h2>
             <p className="text-[#9496C0] text-lg">احجز موعد التصوير اليوم واجعل عيادتك تتحدث بلغة الفيديو السينمائي.</p>
             <div className="flex flex-wrap justify-center gap-4">
-               <Button size="xl">احجز موعد تصوير</Button>
-               <Button variant="glass" size="xl">اطلب استشارة فنية</Button>
+               <Button size="xl" href="/contact">احجز موعد تصوير</Button>
+               <Button variant="glass" size="xl" href="/contact">اطلب استشارة فنية</Button>
             </div>
           </GlassCard>
         </div>

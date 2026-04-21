@@ -84,7 +84,7 @@ export const ROICalculator = () => {
       </div>
       
       <div className="mt-12 text-center">
-        <Button size="xl" className="shadow-[0_20px_40px_rgba(91,94,255,0.3)]">
+        <Button size="xl" href="/contact" className="shadow-[0_20px_40px_rgba(91,94,255,0.3)]">
           احصل على خطة تسويقية مجانية لعيادتك
         </Button>
       </div>

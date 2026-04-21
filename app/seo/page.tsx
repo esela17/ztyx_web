@@ -34,7 +34,7 @@ export default function SEOPage() {
               استراتيجيات SEO متخصصة للقطاع الطبي تضمن ظهور موقعك في الصفحة الأولى أمام الباحثين عن خدماتك في تخصصك ومنطقتك.
             </p>
             <div className="gsap-reveal pt-4 flex gap-4">
-              <Button size="xl">افحص موقعك مجاناً</Button>
+              <Button size="xl" href="/contact">افحص موقعك مجاناً</Button>
             </div>
           </div>
           <div className="gsap-reveal relative">
@@ -134,13 +134,15 @@ export default function SEOPage() {
             <div className="gsap-reveal bg-[#0D0F1A] p-8 rounded-[40px] border border-[#5B5EFF]/20 relative overflow-hidden">
                <div className="flex justify-between items-end h-64 gap-2">
                   {[40, 25, 55, 30, 80, 45, 95].map((h, i) => (
-                    <div key={i} className="flex-1 bg-[#5B5EFF]/20 rounded-t-lg relative group">
-                       <div 
-                         className="absolute bottom-0 left-0 right-0 bg-[#5B5EFF] rounded-t-lg transition-all duration-1000 delay-500" 
-                         style={{ height: `${h}%` }}
-                       />
-                       {i === 6 && <Activity className="absolute -top-10 left-1/2 -translate-x-1/2 text-[#5B5EFF] animate-pulse" />}
-                    </div>
+                     <div key={i} className="flex-1 bg-white/5 rounded-t-lg relative group overflow-hidden">
+                        <motion.div 
+                          initial={{ height: 0 }}
+                          whileInView={{ height: `${h}%` }}
+                          transition={{ duration: 1.5, delay: i * 0.1, ease: "easeOut" }}
+                          className="absolute bottom-0 left-0 right-0 bg-[#5B5EFF] shadow-[0_0_20px_rgba(91,94,255,0.5)]"
+                        />
+                        {i === 6 && <Activity className="absolute -top-10 left-1/2 -translate-x-1/2 text-[#5B5EFF] animate-pulse" />}
+                     </div>
                   ))}
                </div>
                <div className="mt-6 flex justify-between text-[#9496C0] text-xs font-mono">
@@ -175,8 +177,8 @@ export default function SEOPage() {
             <h2 className="text-4xl font-black text-[#F0F1FF]">ابدأ في السيطرة على نتائج البحث</h2>
             <p className="text-[#9496C0] text-lg">احصل على فحص مجاني لموقعك الآن واكتشف كيف يمكننا مساعدتك في تصدر جوجل.</p>
             <div className="flex flex-wrap justify-center gap-4">
-               <Button size="xl">فحص مجاني لموقعي</Button>
-               <Button variant="glass" size="xl">تحدث مع خبير SEO</Button>
+               <Button size="xl" href="/contact">فحص مجاني لموقعي</Button>
+               <Button variant="glass" size="xl" href="/contact">تحدث مع خبير SEO</Button>
             </div>
           </GlassCard>
         </div>
