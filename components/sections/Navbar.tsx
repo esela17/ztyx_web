@@ -78,6 +78,7 @@ export default function Navbar() {
 
           {[
             { name: 'أعمالنا', href: '/work' },
+            { name: 'تعلم', href: '/learn' },
             { name: 'الأسعار', href: '/pricing' },
             { name: 'الأسئلة الشائعة', href: '/faq' },
             { name: 'اتصل بنا', href: '/contact' },
@@ -139,6 +140,7 @@ export default function Navbar() {
               <div className="space-y-4">
                 {[
                   { name: 'أعمالنا', href: '/work' },
+                  { name: 'تعلم', href: '/learn' },
                   { name: 'الأسعار', href: '/pricing' },
                   { name: 'الأسئلة الشائعة', href: '/faq' },
                   { name: 'اتصل بنا', href: '/contact' },

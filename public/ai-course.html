@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كورس Prompt Engineering — Minecraft Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MINECRAFT THEME — DAYTIME / LIGHT MODE (HIGH READABILITY)
+   ============================================================ */
+:root {
+  /* Minecraft Blocks Palette */
+  --mc-dirt:     #8B6914;
+  --mc-grass:    #5D9C2A;
+  --mc-stone:    #9E9E9E;
+  --mc-iron:     #E6E6E6;
+  --mc-wood:     #C39A6B; /* Oak plank */
+  --mc-wood-light:#E6C280; /* Birch plank */
+  --mc-diamond:  #44CFCC;
+  --mc-gold:     #FCCA38;
+  --mc-emerald:  #17DD62;
+  --mc-redstone: #FF3A3A;
+  --mc-lapis:    #1A49C8;
+  --mc-sky:      #7DC6FF; /* Bright Day Sky */
+  --mc-sand:     #DBD077;
+  --mc-obsidian: #1A1A2E;
+
+  /* UI & Text Variables */
+  --bg:          var(--mc-sky);
+  --bg-content:  #FFFFFF; /* Pure white for max readability */
+  --panel:       #D5D5D5; /* Light stone */
+  --panel2:      #C0C0C0; /* Darker stone for hover */
+  --border:      #000000;
+  --text-main:   #000000; /* Pure black text */
+  --text-muted:  #333333; /* Dark gray for secondary text */
+  
+  --shadow-hard: 4px 4px 0px #000000;
+  
+  --pixel: 2px;
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-body: 'Cairo', sans-serif;
+}
+
+/* ---- RESET ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; /* Disabled smooth for retro feel */ }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-main);
+  line-height: 1.8;
+  direction: rtl;
+  overflow-x: hidden;
+  font-weight: 700; /* Bolder text for clear reading */
+  -webkit-font-smoothing: none;
+}
+
+/* ---- PIXEL FONTS ---- */
+code, pre, .n, .unit-num, .toc-num, .step-num, .code-lang {
+  font-family: 'VT323', var(--font-pixel);
+}
+
+code, pre, .c-key, .c-val, .c-comment, .c-str {
+  unicode-bidi: isolate;
+}
+
+/* ============================================================
+   DAYTIME CLOUDS BACKGROUND
+   ============================================================ */
+.clouds {
+  position: fixed;
+  top: 10%; left: -200px;
+  width: 100px; height: 30px;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 
+    40px 30px 0 rgba(255,255,255,0.8), 80px 0 0 rgba(255,255,255,0.8), -30px 20px 0 rgba(255,255,255,0.8),
+    600px 100px 0 rgba(255,255,255,0.8), 650px 130px 0 rgba(255,255,255,0.8), 700px 100px 0 rgba(255,255,255,0.8),
+    1200px 50px 0 rgba(255,255,255,0.8), 1250px 80px 0 rgba(255,255,255,0.8), 1150px 70px 0 rgba(255,255,255,0.8);
+  animation: float-clouds 60s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+@keyframes float-clouds {
+  100% { transform: translateX(150vw); }
+}
+
+/* ============================================================
+   HERO (GRASS BLOCK STYLE)
+   ============================================================ */
+.hero {
+  position: relative;
+  padding: 80px 20px 60px;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, #4da6ff 0%, var(--bg) 100%);
+  border-bottom: 8px solid var(--border);
+  z-index: 1;
+}
+
+/* Grass blocks row */
+.hero-ground {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 32px;
+  display: flex;
+}
+.hero-ground-block {
+  flex: 1;
+  height: 32px;
+  border-top: 8px solid var(--mc-grass);
+  background: var(--mc-dirt);
+  border-right: 2px solid rgba(0,0,0,0.3);
+}
+
+/* Floating blocks */
+.float-block {
+  position: absolute;
+  width: 32px; height: 32px;
+  border: 4px solid var(--border);
+  animation: float-bob 3s ease-in-out infinite;
+  image-rendering: pixelated;
+  box-shadow: inset 2px 2px 0 rgba(255,255,255,0.4), inset -2px -2px 0 rgba(0,0,0,0.4);
+}
+.float-block:nth-child(1) { top:15%; left:5%; animation-delay:0s; background: var(--mc-diamond); }
+.float-block:nth-child(2) { top:25%; right:8%; animation-delay:0.5s; background: var(--mc-gold); }
+.float-block:nth-child(3) { top:60%; left:5%; animation-delay:1s; background: var(--mc-emerald); }
+.float-block:nth-child(4) { top:45%; right:6%; animation-delay:1.5s; background: var(--mc-redstone); }
+
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-badge {
+  display: inline-block;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: #000;
+  background: var(--mc-gold);
+  border: 4px solid var(--border);
+  padding: 10px 16px;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-hard);
+}
+
+.hero h1 {
+  font-family: var(--font-pixel);
+  font-size: clamp(16px, 3.5vw, 32px);
+  line-height: 1.6;
+  color: #FFF;
+  text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000; /* Thick stroke effect */
+  margin-bottom: 12px;
+}
+.hero h1 span { color: var(--mc-gold); }
+
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 900;
+  color: #000;
+  background: rgba(255,255,255,0.8);
+  border: 4px solid #000;
+  padding: 4px 12px;
+  display: inline-block;
+  margin: 16px auto 32px;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.hero-stat {
+  background: var(--mc-iron);
+  border: 4px solid var(--border);
+  padding: 12px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-hard);
+}
+.hero-stat .n {
+  font-family: var(--font-pixel);
+  font-size: 24px;
+  color: var(--mc-emerald);
+  text-shadow: 2px 2px 0 #000;
+  display: block;
+}
+.hero-stat .l {
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 16px;
+  color: #000;
+  margin-top: 4px;
+  display: block;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.page-wrapper {
+  display: flex;
+  gap: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  padding-top: 40px;
+}
+
+/* ============================================================
+   SIDEBAR TOC (OAK WOODEN STYLE)
+   ============================================================ */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+  height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 20px 16px;
+  background: var(--mc-wood);
+  border: 4px solid var(--border);
+  box-shadow: inset 4px 4px 0 rgba(255,255,255,0.3), inset -4px -4px 0 rgba(0,0,0,0.3), var(--shadow-hard);
+  scrollbar-width: thin;
+  scrollbar-color: #000 transparent;
+}
+.sidebar::-webkit-scrollbar { width: 8px; }
+.sidebar::-webkit-scrollbar-thumb { background: #000; }
+
+.sidebar-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  color: #FFF;
+  text-shadow: 2px 2px 0 #000;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 4px dashed #000;
+  letter-spacing: 1px;
+}
+
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  color: #000;
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 15px;
+  border: 4px solid transparent;
+  background: rgba(255,255,255,0.2);
+}
+.toc-item:hover, .toc-item.active {
+  background: var(--mc-diamond);
+  border-color: #000;
+  color: #000;
+}
+.toc-num {
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  background: #000;
+  color: #FFF;
+  border: 2px solid #FFF;
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 0 24px 80px;
+}
+
+/* ============================================================
+   UNIT
+   ============================================================ */
+.unit { margin-bottom: 60px; }
+
+.unit-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 24px;
+  background: var(--mc-wood-light); /* Birch plank style */
+  border: 4px solid var(--border);
+  box-shadow: var(--shadow-hard);
+  position: relative;
+}
+
+.unit-num {
+  width: 64px; height: 64px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-pixel);
+  font-size: 28px;
+  border: 4px solid #000;
+  box-shadow: inset 4px 4px 0 rgba(255,255,255,0.4);
+}
+.un-1 { background: var(--mc-emerald); color: #000; }
+.un-2 { background: var(--mc-lapis); color: #FFF; }
+.un-3 { background: var(--mc-gold); color: #000; }
+.un-4 { background: #9B59B6; color: #FFF; }
+.un-5 { background: var(--mc-grass); color: #FFF; }
+.un-6 { background: var(--mc-redstone); color: #FFF; }
+.un-7 { background: #E67E22; color: #FFF; }
+.un-8 { background: var(--mc-diamond); color: #000; }
+
+.unit-title-wrap h2 {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  line-height: 1.6;
+  color: #000;
+  margin-bottom: 6px;
+}
+.unit-title-wrap p { color: var(--text-muted); font-size: 16px; font-weight: 800; }
+.level-tag {
+  display: inline-block;
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  padding: 6px 12px;
+  border: 4px solid #000;
+  margin-top: 8px;
+  background: #FFF;
+}
+.lvl-b { color: var(--mc-emerald); }
+.lvl-m { color: #D89000; }
+.lvl-a { color: var(--mc-redstone); }
+
+/* ============================================================
+   LESSON (STONE BLOCKS)
+   ============================================================ */
+.lesson {
+  margin-bottom: 24px;
+  border: 4px solid var(--border);
+  box-shadow: var(--shadow-hard);
+  background: var(--panel); /* Light stone */
+}
+
+.lesson-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: var(--panel);
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 4px solid var(--border);
+}
+.lesson-header:hover { background: var(--panel2); }
+.lesson-body { display: none; }
+.lesson-body.open { display: block; }
+.lesson-header.open { background: var(--panel2); }
+
+.lesson-icon {
+  width: 48px; height: 48px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  background: #C39A6B; /* Item frame background */
+  border: 4px solid var(--mc-wood-dark);
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+.lesson-title { flex: 1; }
+.lesson-title h3 {
+  font-family: var(--font-body);
+  font-size: 20px;
+  font-weight: 900;
+  color: #000;
+}
+.lesson-title span { font-size: 14px; font-weight: 800; color: var(--text-muted); margin-top: 4px; display: block; }
+
+.toggle-icon {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: #000;
+}
+.lesson-header.open .toggle-icon { transform: rotate(180deg); }
+
+.lesson-content {
+  padding: 32px 40px;
+  background: var(--bg-content); /* Pure White for clear reading */
+  color: var(--text-main);
+}
+
+/* ============================================================
+   CONTENT ELEMENTS — HIGH READABILITY
+   ============================================================ */
+.lesson-content h4 {
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: 900;
+  color: #000;
+  margin: 32px 0 16px;
+  padding-right: 12px;
+  border-right: 8px solid var(--mc-lapis);
+}
+.lesson-content h4:first-child { margin-top: 0; }
+
+.lesson-content p {
+  font-size: 18px;
+  color: #000;
+  margin-bottom: 16px;
+  line-height: 1.9;
+}
+
+/* Clear Blocks */
+.big-idea, .analogy, .example-box, .tip-box {
+  border: 4px solid #000;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 4px 4px 0 #000;
+}
+
+/* Big Idea (Gold) */
+.big-idea { background: #FFF4D2; }
+.big-idea .label {
+  font-family: var(--font-body);
+  font-size: 18px; font-weight: 900;
+  color: #000;
+  background: var(--mc-gold);
+  display: inline-block;
+  padding: 4px 12px;
+  border: 3px solid #000;
+  margin-bottom: 12px;
+}
+.big-idea p { color: #000; margin: 0; font-size: 18px; }
+
+/* Analogy (Diamond) */
+.analogy { background: #E0F7FA; border-color: var(--mc-diamond); box-shadow: 4px 4px 0 var(--mc-diamond); }
+.analogy .label { font-family: var(--font-pixel); font-size: 10px; color: #006B69; margin-bottom: 12px; display: block; }
+.analogy p { color: #000; margin: 0; }
+
+/* Example box (Emerald) */
+.example-box { background: #E8F5E9; border-color: var(--mc-emerald); box-shadow: 4px 4px 0 var(--mc-emerald); }
+.example-box .label { font-family: var(--font-pixel); font-size: 10px; color: #0A6B2A; margin-bottom: 12px; display: block; }
+
+/* Prompt compare */
+.prompt-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+@media(max-width: 640px) { .prompt-compare { grid-template-columns: 1fr; } }
+.prompt-bad { background: #FFEEEE; border: 4px solid var(--mc-redstone); box-shadow: 4px 4px 0 var(--mc-redstone); padding: 16px; }
+.prompt-good { background: #EEFFEE; border: 4px solid var(--mc-emerald); box-shadow: 4px 4px 0 var(--mc-emerald); padding: 16px; }
+.prompt-bad .plabel, .prompt-good .plabel {
+  font-family: var(--font-body);
+  font-weight: 900; font-size: 16px;
+  margin-bottom: 12px; display: block;
+}
+.prompt-bad .plabel { color: #A00; }
+.prompt-good .plabel { color: #080; }
+.prompt-bad code, .prompt-good code {
+  background: rgba(0,0,0,0.8);
+  color: #FFF;
+  padding: 12px;
+  border: 2px solid #000;
+  font-size: 16px;
+  line-height: 1.8;
+  display: block;
+}
+
+/* Code block (Obsidian Style) */
+.code-block {
+  background: var(--mc-obsidian);
+  border: 4px solid var(--border);
+  box-shadow: 6px 6px 0 #000;
+  padding: 0;
+  margin: 24px 0;
+  position: relative;
+}
+.code-block-inner {
+  padding: 24px;
+  overflow-x: auto;
+}
+.code-block pre {
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  color: #88FFAA; /* Bright green text for readability on dark */
+  line-height: 1.8;
+  white-space: pre-wrap;
+  direction: ltr; /* English code direction */
+  text-align: left;
+}
+.code-block .c-comment { color: #A0A0A0; }
+.code-block .c-key { color: var(--mc-gold); }
+.code-block .c-val { color: var(--mc-diamond); }
+.code-block .c-str { color: #F9A875; }
+
+/* Copy button */
+.copy-btn {
+  position: absolute;
+  top: 12px; right: 12px; /* Placed on right for LTR code */
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  background: var(--mc-stone);
+  color: #000;
+  border: 4px solid #000;
+  padding: 8px 12px;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: inset 2px 2px 0 #FFF, inset -2px -2px 0 #555;
+}
+.copy-btn:hover { background: #D5D5D5; }
+.copy-btn:active { box-shadow: inset 2px 2px 0 #555, inset -2px -2px 0 #FFF; transform: translate(2px, 2px); }
+.copy-btn.copied { background: var(--mc-emerald); }
+
+/* Quiz (Sand/Birch Wood) */
+.quiz-box {
+  background: #FFF0D4;
+  border: 4px solid #C49A45;
+  box-shadow: 6px 6px 0 #8B6914;
+  padding: 28px;
+  margin: 32px 0;
+}
+.quiz-box .qlabel {
+  font-family: var(--font-body);
+  font-size: 16px; font-weight: 900;
+  color: #000; background: var(--mc-gold);
+  border: 3px solid #000; padding: 4px 12px;
+  margin-bottom: 16px; display: inline-block;
+}
+.quiz-box .question {
+  font-family: var(--font-body);
+  font-size: 20px; font-weight: 900;
+  color: #000;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+.quiz-options { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.quiz-options li {
+  padding: 14px 18px;
+  border: 4px solid #000;
+  background: #FFF;
+  font-size: 18px; font-weight: 800;
+  cursor: pointer;
+  color: #000;
+  position: relative;
+  box-shadow: inset -2px -2px 0 #CCC;
+}
+.quiz-options li:hover { background: #E0F7FA; border-color: var(--mc-diamond); }
+.quiz-options li.correct { background: var(--mc-emerald); border-color: #000; color: #000; pointer-events: none;}
+.quiz-options li.wrong { background: var(--mc-redstone); border-color: #000; color: #FFF; pointer-events: none; opacity: 0.8;}
+.quiz-options li.disabled { pointer-events: none; }
+
+.quiz-explain {
+  display: none;
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: #FFF;
+  border: 4px dashed var(--mc-emerald);
+  font-size: 18px; font-weight: 800;
+  color: #000;
+  line-height: 1.8;
+}
+.quiz-explain.show { display: block; }
+.retry-btn {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: var(--font-body);
+  font-size: 16px; font-weight: 900;
+  background: var(--panel);
+  color: #000;
+  border: 4px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.retry-btn:active { transform: translate(4px, 4px); box-shadow: none; }
+
+/* Tip box */
+.tip-box {
+  display: flex; gap: 16px;
+  background: #FFF9C4;
+  border: 4px solid var(--mc-gold);
+  box-shadow: 4px 4px 0 var(--mc-gold);
+  padding: 16px 20px;
+  margin: 20px 0;
+  align-items: center;
+}
+.tip-icon { font-size: 32px; flex-shrink: 0; filter: drop-shadow(2px 2px 0 #000); }
+.tip-text { font-size: 18px; font-weight: 800; color: #000; }
+
+/* Steps list */
+.steps-list { list-style: none; margin: 24px 0; }
+.steps-list li { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+.step-num {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: #000; color: #FFF;
+  font-family: var(--font-pixel); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  border: 4px solid var(--mc-stone);
+}
+.step-text { font-size: 18px; font-weight: 800; color: #000; line-height: 1.7; }
+.step-text strong { color: #A00; }
+
+/* Formula */
+.formula-box {
+  background: #E6E6E6;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0 #000;
+  padding: 24px 32px;
+  margin: 24px 0;
+  text-align: center;
+}
+.formula-box .flabel {
+  font-family: var(--font-body); font-weight: 900;
+  font-size: 16px; color: #FFF; background: #000; display: inline-block; padding: 4px 12px;
+  margin-bottom: 16px;
+}
+.formula-box .formula { font-family: var(--font-body); font-weight: 900; font-size: 24px; color: #000; }
+.formula-box .formula span { color: var(--mc-lapis); border-bottom: 4px solid var(--mc-gold); }
+
+/* Callout */
+.callout {
+  border-right: 8px solid var(--mc-emerald);
+  padding: 16px 20px; background: #E8F5E9;
+  margin: 20px 0; font-size: 18px; font-weight: 900; color: #000;
+}
+
+/* Highlight grid */
+.highlight-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px; margin: 24px 0;
+}
+.highlight-card {
+  background: #FFF; border: 4px solid #000; box-shadow: 4px 4px 0 #000;
+  padding: 20px; text-align: center;
+}
+.highlight-card:hover { background: #E0F7FA; border-color: var(--mc-diamond); box-shadow: 4px 4px 0 var(--mc-diamond); }
+.highlight-card .hicon { font-size: 40px; margin-bottom: 12px; filter: drop-shadow(2px 2px 0 #000); }
+.highlight-card .htitle { font-family: var(--font-body); font-weight: 900; font-size: 20px; color: #000; margin-bottom: 8px; }
+.highlight-card .hdesc { font-size: 16px; font-weight: 700; color: var(--text-muted); }
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+#back-to-top {
+  position: fixed; bottom: 30px; left: 30px;
+  width: 60px; height: 60px;
+  background: var(--mc-stone); border: 4px solid #000; box-shadow: inset 4px 4px 0 #FFF, inset -4px -4px 0 #555, 6px 6px 0 #000;
+  display: none; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 999;
+  font-family: var(--font-pixel); font-size: 24px; color: #000;
+}
+#back-to-top:active { box-shadow: inset 4px 4px 0 #555, inset -4px -4px 0 #FFF; transform: translate(4px,4px); }
+#back-to-top.show { display: flex; }
+
+/* ============================================================
+   XP BAR (decoration)
+   ============================================================ */
+.xp-bar-wrap {
+  background: #000; border: 4px solid #555; height: 24px;
+  margin: 20px 0; position: relative; overflow: hidden;
+}
+.xp-bar-fill {
+  height: 100%; background: var(--mc-emerald); border-right: 4px solid #8BFF88;
+}
+.xp-bar-label {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-pixel); font-size: 10px; color: #FFF; text-shadow: 2px 2px 0 #000;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  background: var(--mc-dirt);
+  border-top: 12px solid var(--mc-grass-top);
+  color: #FFF; text-align: center; padding: 40px;
+  font-family: var(--font-body); font-weight: 900; font-size: 18px;
+  position: relative; z-index: 1; text-shadow: 2px 2px 0 #000;
+}
+.footer strong { color: var(--mc-gold); }
+
+/* ============================================================
+   MOBILE RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .page-wrapper { flex-direction: column; padding-top: 20px;}
+  .sidebar { width: 100%; position: static; height: auto; max-height: 400px; border-bottom: 8px solid #000; }
+  .main-content { padding: 20px 16px 60px; }
+  .hero h1 { font-size: 24px; }
+  .hero-stats { gap: 12px; }
+  .hero-stat .n { font-size: 20px; }
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--panel); border-left: 4px solid #000;}
+::-webkit-scrollbar-thumb { background: var(--mc-stone-dark); border: 2px solid #000; }
+</style>
+</head>
+<body>
+
+<!-- Animated Daytime Clouds -->
+<div class="clouds"></div>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="float-block"></div>
+  <div class="float-block"></div>
+  <div class="float-block"></div>
+  <div class="float-block"></div>
+
+  <div class="hero-badge">★ DAY MODE: ON ★</div>
+  <h1>احترف <span>Prompt Engineering</span><br>من الصفر للاحتراف</h1>
+  <p class="hero-sub">٨ وحدات · ٤٢ درس · مئات الأمثلة العملية · اختبارات تفاعلية لكل درس</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="n">٨</span><span class="l">وحدات</span></div>
+    <div class="hero-stat"><span class="n">٤٢</span><span class="l">درس</span></div>
+    <div class="hero-stat"><span class="n">١٠٠+</span><span class="l">مثال عملي</span></div>
+    <div class="hero-stat"><span class="n">٢٠+</span><span class="l">اختبار</span></div>
+  </div>
+
+  <div class="hero-ground">
+    <div class="hero-ground-block"></div><div class="hero-ground-block"></div>
+    <div class="hero-ground-block"></div><div class="hero-ground-block"></div>
+    <div class="hero-ground-block"></div><div class="hero-ground-block"></div>
+    <div class="hero-ground-block"></div><div class="hero-ground-block"></div>
+    <div class="hero-ground-block"></div><div class="hero-ground-block"></div>
+  </div>
+</div>
+
+<!-- PAGE WRAPPER -->
+<div class="page-wrapper">
+
+<!-- SIDEBAR TOC -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-title">📚 فهرس الكورس</div>
+  <a href="#unit1" class="toc-item" data-unit="1"><div class="toc-num" style="color:var(--mc-emerald)">١</div>الأساسيات والمفاهيم</a>
+  <a href="#unit2" class="toc-item" data-unit="2"><div class="toc-num" style="color:var(--mc-lapis)">٢</div>عناصر الـ Prompt المثالي</a>
+  <a href="#unit3" class="toc-item" data-unit="3"><div class="toc-num" style="color:var(--mc-gold)">٣</div>التقنيات المتقدمة</a>
+  <a href="#unit4" class="toc-item" data-unit="4"><div class="toc-num" style="color:#B06AE0">٤</div>Prompts للكتابة والمحتوى</a>
+  <a href="#unit5" class="toc-item" data-unit="5"><div class="toc-num" style="color:var(--mc-grass)">٥</div>Prompts للكود والبرمجة</a>
+  <a href="#unit6" class="toc-item" data-unit="6"><div class="toc-num" style="color:var(--mc-redstone)">٦</div>System Prompts والـ AI</a>
+  <a href="#unit7" class="toc-item" data-unit="7"><div class="toc-num" style="color:#E67E22">٧</div>Prompts للأعمال</a>
+  <a href="#unit8" class="toc-item" data-unit="8"><div class="toc-num" style="color:var(--mc-diamond)">٨</div>مشروع التخرج</a>
+
+  <div style="margin-top:32px; border-top: 4px solid #000; padding-top: 16px;">
+    <div class="sidebar-title" style="color:var(--mc-gold)">⚡ تقدمك (XP)</div>
+    <div class="xp-bar-wrap">
+      <div class="xp-bar-fill" id="xp-fill" style="width:0%"></div>
+      <div class="xp-bar-label" id="xp-label">0 XP</div>
+    </div>
+    <div style="font-family:var(--font-body);font-size:14px;color:#FFF;font-weight:900;text-shadow:2px 2px 0 #000;margin-top:8px" id="xp-text">اجتز درساً للبداية</div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+<!-- ===================================================== -->
+<!-- UNIT 1 -->
+<!-- ===================================================== -->
+<div class="unit" id="unit1">
+  <div class="unit-header">
+    <div class="unit-num un-1">١</div>
+    <div class="unit-title-wrap">
+      <h2>ما هو الـ Prompt Engineering؟</h2>
+      <p>الأساسيات والمفاهيم التي تبني عليها كل شيء</p>
+      <span class="level-tag lvl-b">مبتدئ</span>
+    </div>
+  </div>
+
+  <!-- Lesson 1.1 -->
+  <div class="lesson">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-icon">🧠</div>
+      <div class="lesson-title">
+        <h3>الدرس ١ — إزاي يفكر الـ AI؟ فهم الآلة من الداخل</h3>
+        <span>٥ دقائق قراءة · الأساس اللي كل شيء بيبنى عليه</span>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <div class="big-idea">
+          <div class="label">💡 الفكرة الكبيرة</div>
+          <p>الـ AI مش بيفكر زيك. هو آلة احتمالات ضخمة. لما تفهم ده، هتعرف تتحدث معاه بلغته هو مش بلغتك.</p>
+        </div>
+        <h4>الـ AI مش ذكي — هو ممتاز في التنبؤ</h4>
+        <p>تخيل إنك بتلعب لعبة: أنا بقولك "الجو النهارده..." وأنت هتكمل "حار" أو "جميل" أو "ممطر". مش هتقول "مثلث". ليه؟ لأن عقلك اتدرب على ملايين الجمل وعرف إيه الكلام المنطقي بعد الجملة دي.</p>
+        <p>الـ AI بالظبط كده. اتدرب على مئات المليارات من الكلمات ومقدر يتنبأ بأفضل "كلمة جاية" في كل لحظة. الفرق إنه بيعمل ده بدقة مذهلة على كل المجالات في نفس الوقت.</p>
+        <div class="analogy">
+          <div class="label">🔍 التشبيه</div>
+          <p>الـ AI زي طالب اتذاكر كل الكتب اللي اتكتبت في التاريخ البشري، وبقدر يسحب معلومة من أي كتاب في ثانية. لكن هو لسه طالب — مش شايف العالم الحقيقي، وبيستند على اللي درسه بس.</p>
+        </div>
+        <h4>الـ Token — اللبنة الأساسية</h4>
+        <p>الـ AI مش بيقرأ كلمات كاملة. بيقرأ "tokens" — وهي أجزاء صغيرة من الكلمات. كلمة "Prompt" ممكن تبقى token واحد. كلمة "Engineering" ممكن تتقسم لتكنين. كلمة عربية طويلة ممكن تبقى ٣-٤ tokens.</p>
+        <p>ليه ده مهم؟ لأن الـ AI بيفهم context بالـ tokens مش بالكلمات. وكل نموذج عنده "نافذة" من الـ tokens اللي ممكن يشوفها في نفس الوقت — ده بيتسمى Context Window.</p>
+        <div class="highlight-grid">
+          <div class="highlight-card"><div class="hicon">🎯</div><div class="htitle">Prediction</div><div class="hdesc">الـ AI بيتنبأ بأفضل إجابة بناءً على احتمالات</div></div>
+          <div class="highlight-card"><div class="hicon">🪟</div><div class="htitle">Context Window</div><div class="hdesc">الذاكرة المؤقتة للنموذج — كل ما زادت كلما أحسن</div></div>
+          <div class="highlight-card"><div class="hicon">🎲</div><div class="htitle">Temperature</div><div class="hdesc">درجة العشوائية في الإجابة — صفر = جامد، واحد = إبداعي</div></div>
+          <div class="highlight-card"><div class="hicon">🏋️</div><div class="htitle">Training Data</div><div class="hdesc">البيانات اللي اتدرب عليها = شخصيته ومعرفته</div></div>
+        </div>
+        <h4>ليه ده مهم للـ Prompt Engineer؟</h4>
+        <p>لما تعرف إن الـ AI بيتنبأ، هتفهم إن <strong>الـ Prompt بتاعك هو السياق اللي بتحدد فيه الاتجاه</strong>. كلما كان سياقك أوضح وأدق، كلما كان التنبؤ أدق. هو مش بيفهم "نواياك" — بيفهم الكلمات اللي كتبتها فعلاً.</p>
+        <div class="quiz-box">
+          <span class="qlabel">⚔️ اختبر فهمك</span>
+          <div class="question">لما الـ AI بيجاوبك على سؤال، إيه اللي بيحصل فعلاً؟</div>
+          <ul class="quiz-options">
+            <li onclick="answer(this, false)">بيفكر زي الإنسان ويحلل السؤال</li>
+            <li onclick="answer(this, true)">بيحسب أكثر إجابة محتملة بناءً على التدريب</li>
+            <li onclick="answer(this, false)">بيبحث في الإنترنت ويلخص</li>
+            <li onclick="answer(this, false)">بيسأل قاعدة بيانات ضخمة</li>
+          </ul>
+          <div class="quiz-explain">✅ صح! الـ AI هو في جوهره آلة احتمالات متطورة. بيستخدم patterns تعلمها من التدريب عشان يولد الإجابة الأكثر منطقية. فهم ده بيخليك تكتب prompts أوضح وأدق.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lesson 1.2 -->
+  <div class="lesson">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-icon">⚡</div>
+      <div class="lesson-title">
+        <h3>الدرس ٢ — الفرق بين Prompt عادي واحترافي</h3>
+        <span>مقارنات حقيقية تغير طريقة تفكيرك للأبد</span>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <div class="big-idea">
+          <div class="label">💡 الفكرة الكبيرة</div>
+          <p>الـ Prompt العادي بيسأل "إيه". الـ Prompt الاحترافي بيحدد "مين بيسأل، عشان إيه، بأي أسلوب، وبأي شكل". الفرق في الإجابة زي الفرق بين الأرض والسما.</p>
+        </div>
+        <h4>المقارنة الأولى: طلب بسيط</h4>
+        <div class="prompt-compare">
+          <div class="prompt-bad"><span class="plabel">❌ Prompt عادي</span><code>اكتب عن التسويق</code></div>
+          <div class="prompt-good"><span class="plabel">✅ Prompt احترافي</span><code>أنت خبير تسويق رقمي متخصص في الـ B2B. اكتب لي ٥ استراتيجيات تسويق محتوى لشركة SaaS ناشئة في مرحلة الـ seed، جمهورها المديرون التنفيذيون في قطاع التصنيع. الأسلوب: مقنع وعملي. الشكل: نقاط مع مثال تطبيقي لكل استراتيجية.</code></div>
+        </div>
+        <h4>المقارنة الثانية: طلب إبداعي</h4>
+        <div class="prompt-compare">
+          <div class="prompt-bad"><span class="plabel">❌ Prompt عادي</span><code>اكتبلي قصة</code></div>
+          <div class="prompt-good"><span class="plabel">✅ Prompt احترافي</span><code>اكتب قصة قصيرة (٣٠٠ كلمة) في genre الـ thriller النفسي. البطل: امرأة في الأربعينيات تكتشف إن زوجها اختفى وترك وراءه رسالة مشفرة. الأسلوب: مشوق، جمل قصيرة، نهاية مفتوحة. مستوحاة من أسلوب Gillian Flynn.</code></div>
+        </div>
+        <div class="callout">🔑 القاعدة الذهبية: كل معلومة ناقصة من الـ Prompt = الـ AI هيملأها بأكثر إجابة "متوسطة" احتمالاً. أنت بتكتب الـ Prompt لتتجنب الـ "average".</div>
+        <h4>معادلة الـ Prompt القوي</h4>
+        <div class="formula-box">
+          <span class="flabel">🧮 المعادلة الأساسية</span>
+          <div class="formula">Prompt قوي = <span>من؟</span> + <span>للمين؟</span> + <span>إيه بالظبط؟</span> + <span>إزاي؟</span> + <span>بأي شكل؟</span></div>
+        </div>
+        <div class="quiz-box">
+          <span class="qlabel">⚔️ اختبر فهمك</span>
+          <div class="question">أي من الـ prompts دي هيدي إجابة أدق وأنفع؟</div>
+          <ul class="quiz-options">
+            <li onclick="answer(this, false)">اشرحلي الـ machine learning</li>
+            <li onclick="answer(this, true)">أنت مدرس متخصص. اشرح مفهوم الـ machine learning لطالب ثانوي بمثال من الحياة اليومية، في ٥ أسطر بدون مصطلحات تقنية</li>
+            <li onclick="answer(this, false)">machine learning ايه هو</li>
+            <li onclick="answer(this, false)">اشرح AI</li>
+          </ul>
+          <div class="quiz-explain">✅ الإجابة الثانية هي الأقوى لأنها حددت: الدور (مدرس متخصص)، الجمهور (طالب ثانوي)، أسلوب الشرح (مثال يومي)، الطول (٥ أسطر)، والقيد (بدون مصطلحات تقنية). ده هو الـ Prompt الاحترافي!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lesson 1.3 -->
+  <div class="lesson">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-icon">🏗️</div>
+      <div class="lesson-title">
+        <h3>الدرس ٣ — مكونات الـ Prompt الأساسية: التشريح الكامل</h3>
+        <span>الـ ٦ عناصر اللي لو فهمتهم متبقاش محتاج حاجة تاني</span>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <div class="big-idea">
+          <div class="label">💡 الفكرة الكبيرة</div>
+          <p>الـ Prompt مش جملة — هو وصفة. زي ما الطبيب بيوصف دواء بجرعة ووقت وطريقة، أنت بتوصف للـ AI المهمة بعناصرها الكاملة.</p>
+        </div>
+        <h4>العنصر ١: Role (الشخصية)</h4>
+        <p>امنح الـ AI هوية محددة. مش "خبير" — خبير في إيه؟ بكم سنة خبرة؟ بأي أسلوب؟</p>
+        <div class="example-box">
+          <div class="label">✅ مثال</div>
+          <code style="font-family:monospace;font-size:18px;color:#0A6B2A;display:block;direction:rtl;text-align:right;">أنت مستشار مالي بخبرة ١٥ سنة في الأسواق الناشئة، متخصص في تحليل المخاطر للشركات الصغيرة في منطقة الشرق الأوسط.</code>
+        </div>
+        <h4>العنصر ٢: Context (السياق)</h4>
+        <p>الـ AI مش عارف حاجة عن موقفك. أخبره: مين أنت؟ إيه المشكلة؟ إيه اللي حصل قبل كده؟</p>
+        <h4>العنصر ٣: Task (المهمة)</h4>
+        <p>الفعل الواضح والمحدد. مش "ساعدني" — "اكتب"، "حلل"، "قيّم"، "قارن"، "لخص".</p>
+        <h4>العنصر ٤: Format (الشكل)</h4>
+        <p>حدد شكل الإجابة: نقاط؟ جدول؟ مقال؟ كود؟ قائمة مرقمة؟ عدد الكلمات؟</p>
+        <h4>العنصر ٥: Constraints (القيود)</h4>
+        <p>ما تعملش كده: "بدون مصطلحات تقنية"، "بدون مقدمة طويلة"، "ما تحطش نصائح عامة".</p>
+        <h4>العنصر ٦: Examples (الأمثلة)</h4>
+        <p>الأقوى على الإطلاق. وضّح بمثال إيه اللي تريده وإيه اللي ما تريدوش.</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+          <div class="code-block-inner">
+<pre><span class="c-comment">// مثال Prompt كامل بكل العناصر</span>
+
+<span class="c-key">Role:</span> <span class="c-val">أنت مدير منتج Senior بخبرة ١٠ سنين في شركات تقنية</span>
+
+<span class="c-key">Context:</span> <span class="c-val">عندنا تطبيق لإدارة المهام، ٥٠٠٠ مستخدم، معدل الاحتفاظ بعد ٣٠ يوم ٢٨٪</span>
+
+<span class="c-key">Task:</span> <span class="c-val">حلل المشكلة وقدم ٣ فرضيات لسبب انخفاض الاحتفاظ</span>
+
+<span class="c-key">Format:</span> <span class="c-val">لكل فرضية: العنوان، المنطق، كيفية التحقق منها</span>
+
+<span class="c-key">Constraints:</span> <span class="c-val">استند على data، ما تعطيش نصائح عامة</span>
+
+<span class="c-key">Example:</span> <span class="c-val">فرضية جيدة: "مشكلة في Onboarding" مش "التصميم مش كويس"</span></pre>
+          </div>
+        </div>
+        <div class="quiz-box">
+          <span class="qlabel">⚔️ اختبر فهمك</span>
+          <div class="question">أي عنصر من عناصر الـ Prompt هو الأقوى تأثيراً على جودة الإجابة؟</div>
+          <ul class="quiz-options">
+            <li onclick="answer(this, false)">طول الـ Prompt</li>
+            <li onclick="answer(this, false)">Role فقط</li>
+            <li onclick="answer(this, true)">التفاعل بين كل العناصر معاً</li>
+            <li onclick="answer(this, false)">الأمثلة فقط</li>
+          </ul>
+          <div class="quiz-explain">✅ بالظبط! مفيش عنصر "سحري" واحد. القوة في التآزر بين العناصر. Role بدون Context مش كافي، وTask بدون Format بيدي إجابة عشوائية الشكل. الـ Prompt المثالي بيجمعهم كلهم.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lesson 1.4 -->
+  <div class="lesson">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-icon">🚫</div>
+      <div class="lesson-title">
+        <h3>الدرس ٤ — أشهر ٧ أخطاء المبتدئين (وإزاي تتجنبها)</h3>
+        <span>٩٠٪ من الناس بتقع في نفس الأخطاء — انت هتعرفهم كلهم</span>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <h4>الخطأ ١: الغموض القاتل</h4>
+        <div class="prompt-compare">
+          <div class="prompt-bad"><span class="plabel">❌ غامض</span><code>ساعدني في الشغل</code></div>
+          <div class="prompt-good"><span class="plabel">✅ واضح</span><code>ساعدني في كتابة ايميل لعميل رفض عرضنا، هدفه إعادة فتح الحوار</code></div>
+        </div>
+        <h4>الخطأ ٢: الـ Prompt القصير جداً</h4>
+        <p>الناس بتعتقد إن الـ AI "ذكي وهيفهم". الحقيقة: كل كلمة ناقصة = افتراض عشوائي. الـ Prompt الطويل والمفصل دايماً أحسن من القصير.</p>
+        <h4>الخطأ ٣: ما بتبقاش محدد في الشكل</h4>
+        <div class="prompt-compare">
+          <div class="prompt-bad"><span class="plabel">❌</span><code>اشرحلي الـ SEO</code></div>
+          <div class="prompt-good"><span class="plabel">✅</span><code>اشرح SEO في ٥ نقاط، كل نقطة ٣ أسطر، بمثال تطبيقي</code></div>
+        </div>
+        <h4>الخطأ ٤: ما بتقولش للـ AI مين جمهوره</h4>
+        <p>"اشرح الـ AI" جوابها مختلف تماماً لو الجمهور طفل ١٠ سنين أو مهندس أو رجل أعمال. حدد الجمهور دايماً.</p>
+        <h4>الخطأ ٥: ما بتعطيش context</h4>
+        <p>الـ AI مش عارف حاجة عن موقفك. لو ما قلتلوش السياق، هيفترض الأكثر "عادية".</p>
+        <h4>الخطأ ٦: ما بتكررش المحاولة</h4>
+        <div class="tip-box">
+          <div class="tip-icon">🔁</div>
+          <div class="tip-text"><strong>نصيحة ذهبية:</strong> Prompt Engineering مش رصاصة واحدة. هو حوار. لو الإجابة مش تمام، حسّن الـ Prompt وحاول تاني. الـ Prompt المثالي بيتولد عادةً بعد ٢-٣ iterations.</div>
+        </div>
+        <h4>الخطأ ٧: ما بتحدد حدودش</h4>
+        <p>قل للـ AI إيه اللي ما عايزوش: "بدون مقدمة طويلة"، "بدون نصائح بديهية"، "بدون تعقيد زيادة عن اللازم".</p>
+        <div class="quiz-box">
+          <span class="qlabel">⚔️ اختبر فهمك</span>
+          <div class="question">إيه أكبر خطأ في الـ Prompt ده: "اكتبلي محتوى سوشيال ميديا"؟</div>
+          <ul class="quiz-options">
+            <li onclick="answer(this, false)">الـ Prompt طويل زيادة</li>
+            <li onclick="answer(this, true)">ما بيحددش: المنصة، الجمهور، الهدف، الأسلوب، الطول</li>
+            <li onclick="answer(this, false)">الأمر مش واضح</li>
+            <li onclick="answer(this, false)">الـ Prompt مش باللغة الإنجليزية</li>
+          </ul>
+          <div class="quiz-explain">✅ بالظبط! الـ Prompt ده ناقصه كل حاجة تقريباً: أي منصة (LinkedIn؟ Instagram؟ TikTok؟)، مين الجمهور، إيه الهدف (engagement؟ brand awareness؟)، أي أسلوب (رسمي؟ كوميدي؟)، وكم الطول. من غير دي، الـ AI هيدي أكثر إجابة "متوسطة" وغير مفيدة.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lesson 1.5 -->
+  <div class="lesson">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-icon">🎯</div>
+      <div class="lesson-title">
+        <h3>الدرس ٥ — تمرين عملي: اكتب أول Prompt احترافي</h3>
+        <span>خطوة بخطوة من الصفر — طبق دلوقتي</span>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <div class="big-idea">
+          <div class="label">🎯 هدف التمرين</div>
+          <p>هتحول Prompt "عادي جداً" لـ Prompt احترافي خطوة بخطوة باستخدام الـ RCTFE Framework.</p>
+        </div>
+        <h4>الخطوة ١: ابدأ بالطلب العادي</h4>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+          <div class="code-block-inner"><pre><span class="c-str">"اكتبلي محتوى عن صحة التغذية"</span></pre></div>
+        </div>
+        <h4>الخطوة ٢: أضف الـ Role</h4>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+          <div class="code-block-inner"><pre><span class="c-key">أنت أخصائي تغذية معتمد بخبرة ٨ سنوات، متخصص في تغذية الرياضيين.</span>
+<span class="c-str">"اكتبلي محتوى عن صحة التغذية"</span></pre></div>
+        </div>
+        <h4>الخطوة ٣: أضف الـ Context والـ Task</h4>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+          <div class="code-block-inner"><pre><span class="c-key">أنت أخصائي تغذية معتمد بخبرة ٨ سنوات.</span>
+<span class="c-comment">// Context</span>
+<span class="c-val">عندي Instagram page بـ ٢٠,٠٠٠ متابع، جمهوره شباب ٢٠-٣٠ سنة بيجم gym.</span>
+<span class="c-comment">// Task</span>
+<span class="c-str">اكتب ٣ posts عن أهمية البروتين بعد التمرين.</span></pre></div>
+        </div>
+        <h4>الخطوة ٤: أضف الـ Format والـ Constraints</h4>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+          <div class="code-block-inner"><pre><span class="c-key">أنت أخصائي تغذية معتمد بخبرة ٨ سنوات.</span>
+<span class="c-val">عندي Instagram page بـ ٢٠,٠٠٠ متابع، جمهوره شباب ٢٠-٣٠ سنة بيجم gym.</span>
+<span class="c-str">اكتب ٣ posts عن أهمية البروتين بعد التمرين.</span>
+<span class="c-comment">// Format</span>
+<span class="c-val">كل post: hook قوي (أول جملة)، ٣-٤ نقاط، CTA في النهاية، ٥ hashtags.</span>
+<span class="c-comment">// Constraints</span>
+<span class="c-key">الأسلوب: energetic ومحفز. بدون مصطلحات طبية معقدة. ما تكررش نفس المعلومة.</span></pre></div>
+        </div>
+        <div class="tip-box">
+          <div class="tip-icon">🚀</div>
+          <div class="tip-text">النتيجة: من "محتوى عن التغذية" العشوائي لـ ٣ posts احترافية جاهزة للنشر. ده هو سحر الـ Prompt Engineering.</div>
+        </div>
+        <div class="quiz-box">
+          <span class="qlabel">⚔️ تحدي عملي</span>
+          <div class="question">خذ هذا الـ Prompt العادي: "اكتب لي CV" — أي إضافة هتحسنه أكتر؟</div>
+          <ul class="quiz-options">
+            <li onclick="answer(this, false)">كتابته بالإنجليزي</li>
+            <li onclick="answer(this, false)">إضافة "من فضلك" في البداية</li>
+            <li onclick="answer(this, true)">تحديد: مجال العمل، سنوات الخبرة، المنصب المستهدف، أسلوب الـ CV</li>
+            <li onclick="answer(this, false)">إضافة علامات تعجب</li>
+          </ul>
+          <div class="quiz-explain">✅ ممتاز! الـ CV بيختلف جذرياً حسب المجال والخبرة والمنصب. مهندس بـ ٣ سنوات بيقدم على وظيفة mid-level يختلف تماماً عن مسوق بـ ٨ سنوات بيقدم على director position. السياق والتفاصيل هي السر.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- end unit 1 -->
+
+<!-- ===================================================== -->
+<!-- UNIT 2 -->
+<!-- ===================================================== -->
+<div class="unit" id="unit2">
+  <div class="unit-header">
+    <div class="unit-num un-2">٢</div>
+    <div class="unit-title-wrap">
+      <h2>عناصر الـ Prompt المثالي</h2>
+      <p>التشريح الكامل للـ ٦ عناصر الأساسية مع أمثلة حقيقية</p>
+      <span class="level-tag lvl-b">مبتدئ</span>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-icon">🎭</div>
+      <div class="lesson-title">
+        <h3>الدرس ١ — Role: فن منح الـ AI شخصية وهوية</h3>
+        <span>السر اللي بيضاعف جودة الإجابة ٣ مرات</span>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <div class="big-idea">
+          <div class="label">💡 الفكرة الكبيرة</div>
+          <p>لما بتقول للـ AI "أنت خبير في X"، بتفعّل منطقة ضخمة من التدريب اللي بيعرف فيها X. زي ما بتقول لمحرك بحث "ابحث في هذا الموضوع فقط". الـ Role هو العدسة اللي بيشوف منها الـ AI سؤالك.</p>
+        </div>
+        <div class="analogy">
+          <div class="label">🔍 التشبيه</div>
+          <p>الـ Role زي البدلة اللي بتلبسها لمناسبة معينة. نفس الشخص، لبس بدلة طبيب هيتكلم عن الصحة بطريقة مختلفة عن لما يلبس بدلة فنان. الـ AI نفس الموضوع — الـ Role بيحدد "البدلة".</p>
+        </div>
+        <h4>مستويات الـ Role</h4>
+        <ul class="steps-list">
+          <li><div class="step-num">١</div><div class="step-text"><strong>مبتدئ:</strong> "أنت خبير" — ضعيف جداً، مش كافي</div></li>
+          <li><div class="step-num">٢</div><div class="step-text"><strong>متوسط:</strong> "أنت خبير تسويق" — أفضل، لكن لسه عام</div></li>
+          <li><div class="step-num">٣</div><div class="step-text"><strong>احترافي:</strong> "أنت Chief Marketing Officer بـ ١٢ سنة خبرة في SaaS companies، متخصص في Product-Led Growth" — مثالي</div></li>
+        </ul>
+        <h4>أمثلة Roles احترافية حسب المجال</h4>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+          <div class="code-block-inner">
+<pre><span class="c-comment">// للكتابة والمحتوى</span>
+<span class="c-str">"أنت كاتب محتوى Senior بخبرة ١٠ سنوات، متخصص في Storytelling للـ B2B وأسلوبك مزيج من الدقة التقنية والبساطة"</span>
+
+<span class="c-comment">// للبرمجة</span>
+<span class="c-str">"أنت Senior Software Engineer متخصص في Python وSystem Design، بتركز على clean code ومتحسس جداً من الـ performance"</span>
+
+<span class="c-comment">// لتحليل البيانات</span>
+<span class="c-str">"أنت Data Scientist بخلفية في Business Intelligence، بتترجم الأرقام لقرارات تجارية وبتحب تشرح بالـ visualizations"</span></pre>
+          </div>
+        </div>
+        <div class="quiz-box">
+          <span class="qlabel">⚔️ اختبر فهمك</span>
+          <div class="question">أي Role أكثر فاعلية لطلب نصائح عن بدء مشروع ناشئ؟</div>
+          <ul class="quiz-options">
+            <li onclick="answer(this, false)">أنت ذكي جداً</li>
+            <li onclick="answer(this, false)">أنت خبير أعمال</li>
+            <li onclick="answer(this, true)">أنت مؤسس خرج من Y Combinator وأسست ٣ startups، واحدة منهم اتباعت بـ $٥٠M</li>
+            <li onclick="answer(this, false)">أنت مستشار</li>
+          </ul>
+          <div class="quiz-explain">✅ الثالثة! لأنها بتحدد: نوع الخبرة (Y Combinator = startup ecosystem)، العمق (٣ startups)، والنجاح المثبت (exit بـ $50M). ده بيوجه الـ AI لتفعيل معرفة متخصصة وعميقة في الـ startup world.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-icon">🌍</div>
+      <div class="lesson-title">
+        <h3>الدرس ٢ — Context: السياق هو الملك المطلق</h3>
+        <span>بدون السياق، الـ AI بيخمن — مع السياق، الـ AI بيعرف</span>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <div class="big-idea">
+          <div class="label">💡 الفكرة الكبيرة</div>
+          <p>الـ Context هو الفرق بين "اشرحلي الـ photosynthesis" لطفل ٧ سنين و"اشرحلي الـ photosynthesis" لدكتور بيولوجيا. نفس الكلمات، نتائج متناقضة تماماً.</p>
+        </div>
+        <h4>أبعاد الـ Context الكاملة</h4>
+        <ul class="steps-list">
+          <li><div class="step-num">١</div><div class="step-text"><strong>من أنت؟</strong> خلفيتك، مجالك، مستواك</div></li>
+          <li><div class="step-num">٢</div><div class="step-text"><strong>ما المشكلة؟</strong> وصف دقيق للموقف</div></li>
+          <li><div class="step-num">٣</div><div class="step-text"><strong>إيه اللي حصل قبل كده؟</strong> ما جربته وفشل</div></li>
+          <li><div class="step-num">٤</div><div class="step-text"><strong>مين الجمهور؟</strong> للمين الإجابة دي</div></li>
+          <li><div class="step-num">٥</div><div class="step-text"><strong>إيه القيود؟</strong> وقت، ميزانية، موارد</div></li>
+        </ul>
+        <div class="example-box">
+          <div class="label">✅ مثال: Context ضعيف vs قوي</div>
+          <div class="prompt-compare" style="margin:0">
+            <div class="prompt-bad"><span class="plabel">❌ بدون context</span><code>ساعدني أزيد مبيعاتي</code></div>
+            <div class="prompt-good"><span class="plabel">✅ مع context كامل</span><code>أنا صاحب متجر إلكتروني بيبيع منتجات عناية بالبشرة، ٨ أشهر في السوق، ٢٠٠ طلب شهرياً، معدل تكرار الشراء ١٢٪، ميزانية تسويق $٥٠٠ شهرياً، المنافسين الرئيسيين X وY. إيه أسرع ٣ استراتيجيات لزيادة معدل التكرار؟</code></div>
+          </div>
+        </div>
+        <div class="quiz-box">
+          <span class="qlabel">⚔️ اختبر فهمك</span>
+          <div class="question">لو طلبت من الـ AI يساعدك في مقابلة عمل بدون context، إيه المشكلة؟</div>
+          <ul class="quiz-options">
+            <li onclick="answer(this, false)">الـ AI مش بيعرف يساعد في مقابلات</li>
+            <li onclick="answer(this, true)">الـ AI مش عارف: المجال، المستوى، الشركة، نقاط ضعفك — فهيدي نصائح عامة جداً</li>
+            <li onclick="answer(this, false)">مقابلات العمل موضوع معقد للـ AI</li>
+            <li onclick="answer(this, false)">الـ AI بيحتاج إنجليزي للمقابلات</li>
+          </ul>
+          <div class="quiz-explain">✅ صح! بدون context: المجال مش معروف (مهندس؟ محاسب؟)، المستوى مش معروف (fresh grad؟ senior؟)، الشركة مش معروفة (startup؟ multinational؟)، ما إيه نقاط ضعفك اللي محتاج تتدرب عليها. النتيجة: نصائح عامة بلا قيمة.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end unit 2 -->
+
+<!-- ===================================================== -->
+<!-- UNIT 3 -->
+<!-- ===================================================== -->
+<div class="unit" id="unit3">
+  <div class="unit-header">
+    <div class="unit-num un-3">٣</div>
+    <div class="unit-title-wrap">
+      <h2>التقنيات المتقدمة في الـ Prompting</h2>
+      <p>Chain-of-Thought, Tree of Thoughts, ReAct وأقوى التقنيات</p>
+      <span class="level-tag lvl-m">متوسط</span>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-header" onclick="toggleLesson(this)">
+      <div class="lesson-icon">🔗</div>
+      <div class="lesson-title">
+        <h3>الدرس ١ — Chain-of-Thought: فكّر بصوت عالٍ</h3>
+        <span>التقنية اللي ضاعفت دقة الـ AI في المسائل المعقدة بـ ٤٠٪</span>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-content">
+        <div class="big-idea">
+          <div class="label">💡 الفكرة الكبيرة</div>
+          <p>لما تطلب من الـ AI "يفكر بصوت عالي" قبل ما يجاوب، بتجبره على مسار تفكير منطقي. النتيجة: إجابات أدق، خصوصاً في المسائل الرياضية والمنطقية والمعقدة.</p>
+        </div>
+        <div class="analogy">
+          <div class="label">🔍 التشبيه</div>
+          <p>زي الاختبارات اللي بتتكلم فيها مع نفسك. لو قلت "احسب ٢٣٧ × ٤٨" بدون تفكير، ممكن تغلط. لو اتبعت خطوات — ضرب العشرات، ضرب الوحدات، جمع — هتوصل لنفس إجابة الـ AI لما بيستخدم Chain-of-Thought.</p>
+        </div>
+        <h4>إزاي تفعّل Chain-of-Thought</h4>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+          <div class="code-block-inner">
+<pre><span class="c-comment">// الطريقة ١: التعليم المباشر</span>
+<span class="c-str">"فكر خطوة بخطوة قبل ما تجاوب..."</span>
+<span class="c-str">"اشرح تفكيرك ثم اعطني الإجابة النهائية..."</span>
+
+<span class="c-comment">// الطريقة ٢: Zero-Shot CoT Magic Phrase</span>
+<span class="c-str">"دعنا نفكر في هذا خطوة بخطوة."</span>
+<span class="c-comment">// هذه الجملة وحدها ثبتت علمياً إنها تحسن الدقة بشكل كبير!</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- end unit 3 -->
+
+</main><!-- end main content -->
+</div><!-- end page wrapper -->
+
+<!-- BACK TO TOP -->
+<div id="back-to-top" onclick="window.scrollTo({top:0,behavior:'auto'})" title="العودة للأعلى">▲</div>
+
+<div class="footer">
+  <p>صُنع بـ ❤️ لكل من يريد أن يتحدث مع الآلات بلغتها</p>
+  <p style="margin-top:16px; font-family:'Cairo'; font-weight:900; font-size:20px;"><strong>جميع الحقوق محفوظة ل شركة زتكس لتكنولوجيا المعلومات</strong></p>
+</div>
+
+<script>
+/* ============================================================
+   TOGGLE LESSONS (No smooth animations for retro style)
+   ============================================================ */
+function toggleLesson(header) {
+  const body = header.nextElementSibling;
+  const isOpen = header.classList.contains('open');
+  
+  // Close others in same unit
+  const unit = header.closest('.unit');
+  unit.querySelectorAll('.lesson-header.open').forEach(el => {
+    if(el !== header) {
+      el.classList.remove('open');
+      el.nextElementSibling.classList.remove('open');
+    }
+  });
+
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+  
+  if (body.classList.contains('open')) {
+    updateXP();
+  }
+}
+
+/* ============================================================
+   QUIZ ANSWER SYSTEM
+   ============================================================ */
+let totalXP = 0;
+let answeredQuizzes = new Set();
+
+function answer(el, correct) {
+  const quizBox = el.closest('.quiz-box');
+  const quizId = quizBox.dataset.quizId || Math.random().toString(36);
+  quizBox.dataset.quizId = quizId;
+
+  const options = el.parentElement.querySelectorAll('li');
+  const explain = quizBox.querySelector('.quiz-explain');
+
+  if (correct) {
+    options.forEach(o => { o.classList.add('disabled'); o.classList.remove('wrong'); });
+    el.classList.add('correct');
+    if (explain) explain.classList.add('show');
+    
+    // Remove retry button if it exists
+    const existingRetry = quizBox.querySelector('.retry-btn');
+    if(existingRetry) existingRetry.remove();
+
+    if (!answeredQuizzes.has(quizId)) {
+      answeredQuizzes.add(quizId);
+      totalXP += 10;
+      updateXPBar();
+    }
+  } else {
+    el.classList.add('wrong');
+    el.classList.add('disabled');
+    
+    // Add retry button if not present
+    if (!quizBox.querySelector('.retry-btn')) {
+      const retryBtn = document.createElement('button');
+      retryBtn.className = 'retry-btn';
+      retryBtn.textContent = '↺ حاول تاني';
+      retryBtn.onclick = function() {
+        options.forEach(o => o.classList.remove('correct', 'wrong', 'disabled'));
+        if (explain) explain.classList.remove('show');
+        retryBtn.remove();
+      };
+      if (explain) {
+          explain.after(retryBtn);
+      } else {
+          quizBox.appendChild(retryBtn);
+      }
+    }
+  }
+}
+
+/* ============================================================
+   XP SYSTEM
+   ============================================================ */
+function updateXPBar() {
+  const maxXP = 210; 
+  const pct = Math.min((totalXP / maxXP) * 100, 100);
+  document.getElementById('xp-fill').style.width = pct + '%';
+  document.getElementById('xp-label').textContent = totalXP + ' XP';
+  const lvl = Math.floor(totalXP / 50) + 1;
+  document.getElementById('xp-text').textContent = 'المستوى ' + lvl + ' — ' + totalXP + ' XP';
+}
+function updateXP() { updateXPBar(); }
+
+/* ============================================================
+   COPY CODE
+   ============================================================ */
+function copyCode(btn) {
+  const block = btn.parentElement;
+  const pre = block.querySelector('pre');
+  if (!pre) return;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'COPY';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+const btt = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+  btt.classList.toggle('show', window.scrollY > 400);
+});
+
+/* ============================================================
+   ACTIVE TOC ON SCROLL
+   ============================================================ */
+const units = document.querySelectorAll('.unit[id]');
+const tocItems = document.querySelectorAll('.toc-item[data-unit]');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id.replace('unit','');
+      tocItems.forEach(item => {
+        item.classList.toggle('active', item.dataset.unit === id);
+      });
+    }
+  });
+}, { threshold: 0.1 });
+
+units.forEach(u => observer.observe(u));
+</script>
+</body>
+</html>
