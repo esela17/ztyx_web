@@ -44,7 +44,7 @@ export default function Navbar() {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
-          <div 
+          <div
             className="relative group"
             onMouseEnter={() => setShowServices(true)}
             onMouseLeave={() => setShowServices(false)}
@@ -56,7 +56,7 @@ export default function Navbar() {
               الخدمات
               <ChevronDown className={cn("w-4 h-4 transition-transform", showServices && "rotate-180")} />
             </Link>
-            
+
             {/* Dropdown */}
             <div className={cn(
               "absolute top-full right-0 mt-2 w-64 glass rounded-2xl p-4 transition-all duration-300 origin-top shadow-3xl border-[#5B5EFF]/10",
@@ -100,8 +100,8 @@ export default function Navbar() {
               تواصل معنا
             </Button>
           </div>
-          
-          <button 
+
+          <button
             className="md:hidden w-10 h-10 flex items-center justify-center glass rounded-xl text-[#F0F1FF]"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -134,9 +134,9 @@ export default function Navbar() {
                   </Link>
                 ))}
               </div>
-              
+
               <div className="w-full h-px bg-white/5 my-4" />
-              
+
               <div className="space-y-4">
                 {[
                   { name: 'أعمالنا', href: '/work' },
@@ -155,7 +155,7 @@ export default function Navbar() {
                   </Link>
                 ))}
               </div>
-              
+
               <div className="mt-auto pt-12">
                 <Button size="xl" className="w-full" href="/contact" onClick={() => setIsMobileMenuOpen(false)}>
                   احجز استشارتك الآن

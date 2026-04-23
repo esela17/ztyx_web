@@ -1,6 +1,7 @@
 "use client"
 
 import React, { Suspense } from "react"
+import { cn } from "@/lib/utils"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Environment } from "@react-three/drei"
 import { CardProvider } from "./stellar-gallery/StellarContext"
