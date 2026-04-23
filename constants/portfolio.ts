@@ -153,7 +153,7 @@ export const portfolioData: PortfolioItem[] = [
     id: "20",
     title: "مستقبل الذكاء الاصطناعي",
     category: "Software Development",
-    image: "/category/Gemini_Generated_Image_j67acfj67acfj67a copy.png",
+    image: "/category/Screenshot 2026-04-21 134338.png",
     description: "دمج تقنيات الـ AI في تشخيص وتحليل البيانات الطبية."
   }
 ];

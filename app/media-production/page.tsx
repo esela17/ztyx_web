@@ -37,7 +37,7 @@ export default function MediaProductionPage() {
       <ScrollExpandMedia
         mediaType="video"
         mediaSrc="https://me7aitdbxq.ufs.sh/f/2wsMIGDMQRdYuZ5R8ahEEZ4aQK56LizRdfBSqeDMsmUIrJN1"
-        bgImageSrc="/category/Gemini_Generated_Image_j67acfj67acfj67a copy.png"
+        bgImageSrc="/category/Screenshot 2026-04-21 134338.png"
         title="الإنتاج المرئي"
         date="Visual Storytelling"
         scrollToExpand="اسحب للأسفل لمشاهدة سحر العدسة"

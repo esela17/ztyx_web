@@ -42,7 +42,7 @@ export default function WorkPage() {
       <ScrollExpandMedia
         mediaType="image"
         mediaSrc="/category/Screenshot 2026-04-21 134241.png"
-        bgImageSrc="/category/Gemini_Generated_Image_j67acfj67acfj67a copy.png"
+        bgImageSrc="/category/Screenshot 2026-04-21 134338.png"
         title="أعمالنا الإبداعية"
         date="Digital Excellence"
         scrollToExpand="اسحب للأسفل لاستكشاف عالمنا"

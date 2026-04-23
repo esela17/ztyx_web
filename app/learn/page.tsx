@@ -66,7 +66,7 @@ export default function LearnPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-40 pb-20 px-6 z-10">
+      <section className="relative pt-40 pb-16 px-6 z-10">
         <div className="max-w-7xl mx-auto text-center space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -88,8 +88,12 @@ export default function LearnPage() {
       </section>
 
       {/* Featured AI Course */}
-      <section className="py-10 px-6 relative z-10">
+      <section className="py-12 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-8 flex items-center gap-4">
+             <div className="w-2 h-8 bg-[#5B5EFF] rounded-full" />
+             <h2 className="text-3xl font-bold text-white">أحدث الإصدارات</h2>
+          </div>
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -100,14 +104,14 @@ export default function LearnPage() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-[#5B5EFF]/10 rounded-full blur-[80px] -z-10" />
               
               <div className="space-y-6 flex-1 relative z-10">
-                <Badge className="bg-[#5B5EFF] text-white border-transparent">
-                  كورس مميز
+                <Badge className="bg-[#5B5EFF] text-white border-transparent w-max px-4 py-1.5 text-sm">
+                  كورس مميز 🌟
                 </Badge>
                 <h2 className="text-3xl md:text-5xl font-black text-[#F0F1FF] leading-tight">
-                  تحدث مع الذكاء الاصطناعي بذكاء
+                  التحدث مع الغباء الاصطناعي بذكاء
                 </h2>
                 <p className="text-[#9496C0] text-lg max-w-xl">
-                  كورس شامل (Prompt Engineering) يعلمك فن هندسة الأوامر وكيفية التعامل مع أدوات الذكاء الاصطناعي باحترافية.
+                  كورس شامل يعلمك فن هندسة الأوامر (Prompt Engineering) وكيفية التعامل مع أدوات الذكاء الاصطناعي باحترافية للوصول لأفضل النتائج في عملك.
                 </p>
                 <a 
                   href="/ai-course.html" 
@@ -127,8 +131,12 @@ export default function LearnPage() {
       </section>
 
       {/* Categories Grid */}
-      <section className="py-20 px-6 relative z-10">
+      <section className="py-20 px-6 relative z-10 bg-white/[0.02] border-t border-white/5 mt-12">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-12 flex flex-col items-center text-center space-y-4">
+             <h2 className="text-3xl md:text-4xl font-black text-white">تصفح مسارات التعلم</h2>
+             <p className="text-[#9496C0] max-w-2xl">اختر المجال الذي ترغب في احترافه وابدأ رحلتك معنا من خلال مجموعة من أفضل الكورسات المصممة للسوق العربي.</p>
+          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {categories.map((category, index) => (
               <motion.div
