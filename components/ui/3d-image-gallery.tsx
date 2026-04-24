@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Suspense } from "react"
+import React, { Suspense, useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Environment } from "@react-three/drei"
@@ -10,10 +10,19 @@ import { GalleryGalaxy } from "./stellar-gallery/GalleryGalaxy"
 import { CardModal } from "./stellar-gallery/CardModal"
 
 export default function StellarCardGallerySingle() {
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [dpr, setDpr] = useState(2);
 
-  React.useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
+  useEffect(() => {
+    const checkDevice = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setDpr(mobile ? 1.5 : Math.min(window.devicePixelRatio, 2));
+    };
+    
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
   }, []);
 
   return (
@@ -32,7 +41,12 @@ export default function StellarCardGallerySingle() {
             fov: isMobile ? 75 : 60 
           }}
           className="absolute inset-0 z-10"
-          gl={{ antialias: true }}
+          gl={{ 
+            antialias: true,
+            powerPreference: "high-performance",
+            alpha: true
+          }}
+          dpr={dpr}
           onCreated={({ gl }) => {
             gl.domElement.style.pointerEvents = "auto"
           }}

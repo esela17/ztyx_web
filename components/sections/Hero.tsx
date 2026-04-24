@@ -26,7 +26,6 @@ export default function Hero() {
   useGSAP(() => {
     if (isLowPower) return;
 
-    // Floating animation for glass cards with slight parallax
     gsap.to(".floating-card", {
       y: -20,
       duration: 2,
@@ -36,7 +35,6 @@ export default function Hero() {
       stagger: 0.5
     });
 
-    // Parallax for background orbs
     gsap.to(".parallax-orb", {
       y: -100,
       scrollTrigger: {

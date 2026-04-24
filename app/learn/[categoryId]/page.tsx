@@ -10,7 +10,6 @@ import { Clock, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CategoryCoursePage({ params }: { params: { categoryId: string } }) {
-  // This is a placeholder page until the user provides the specific course design
   return (
     <main className="relative min-h-screen bg-[#08090E]" dir="rtl">
       <div className="grid-overlay" />

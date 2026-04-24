@@ -1,8 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-
 import React from 'react';
+import { cn } from "@/lib/utils";
 import Navbar from "@/components/sections/Navbar";
 import Footer from "@/components/sections/Footer";
 import { useGsapReveal } from "@/hooks/useGsapReveal";
@@ -11,13 +10,15 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import Image from 'next/image';
-import { ExternalLink, Camera, Layout, Palette, Globe, Filter } from 'lucide-react';
+import { ExternalLink, Layout } from 'lucide-react';
 import { Lightbox } from "@/components/ui/Lightbox";
 import { motion, AnimatePresence } from "framer-motion";
 import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
-import StellarCardGallerySingle from "@/components/ui/3d-image-gallery";
 
 import { portfolioData, categories } from "@/constants/portfolio";
+import { lazy, Suspense } from "react";
+
+const StellarCardGallerySingle = lazy(() => import("@/components/ui/3d-image-gallery"));
 
 export default function WorkPage() {
   const containerRef = useGsapReveal();
@@ -159,7 +160,13 @@ export default function WorkPage() {
              <Badge>Future of Portfolio</Badge>
              <h2 className="text-4xl md:text-6xl font-black text-[#F0F1FF] mt-4">استكشف كوننا <span className="text-[#5B5EFF]">الرقمي</span></h2>
           </div>
-          <StellarCardGallerySingle />
+          <Suspense fallback={
+            <div className="h-[500px] md:h-[600px] rounded-[40px] bg-white/5 animate-pulse flex items-center justify-center">
+              <span className="text-[#9496C0]">جاري التحميل...</span>
+            </div>
+          }>
+            <StellarCardGallerySingle />
+          </Suspense>
         </div>
       </section>
 

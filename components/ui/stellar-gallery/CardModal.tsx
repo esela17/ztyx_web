@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react"
 import { Heart, X, ExternalLink } from "lucide-react"
 import { useCard } from "./StellarContext"
+import Image from "next/image"
 
 export function CardModal() {
   const { selectedCard, setSelectedCard } = useCard()
@@ -55,11 +56,13 @@ export function CardModal() {
             onMouseLeave={handleMouseLeave}
           >
             <div className="relative w-full mb-6" style={{ aspectRatio: "16 / 9" }}>
-              <img
+              <Image
+                fill
                 loading="lazy"
                 className="absolute inset-0 h-full w-full rounded-xl bg-black object-cover"
                 alt={selectedCard.title}
                 src={selectedCard.image || "/placeholder.svg"}
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
 

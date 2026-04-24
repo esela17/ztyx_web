@@ -3,7 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +36,12 @@ export function useGsapReveal() {
       );
     });
   }, { scope: containerRef });
+
+  useEffect(() => {
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
 
   return containerRef;
 }
