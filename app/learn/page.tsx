@@ -120,11 +120,6 @@ export default function LearnPage() {
                   ابدأ الكورس الآن
                 </a>
               </div>
-              
-              <div className="flex-shrink-0 w-48 h-48 md:w-64 md:h-64 relative flex items-center justify-center bg-white/5 backdrop-blur-sm rounded-full border border-white/10 group">
-                 <div className="absolute inset-0 rounded-full border-2 border-[#5B5EFF]/50 border-dashed animate-[spin_10s_linear_infinite]" />
-                 <Sparkles className="w-20 h-20 md:w-28 md:h-28 text-[#5B5EFF] group-hover:scale-110 transition-transform duration-500" />
-              </div>
             </GlassCard>
           </motion.div>
         </div>
