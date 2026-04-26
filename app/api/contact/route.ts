@@ -3,13 +3,15 @@ import { prisma } from "@/lib/db";
 import { ratelimit, redis, invalidateCache } from "@/lib/cache/redis";
 
 export async function POST(request: NextRequest) {
-  const { success } = await ratelimit.limit("contact-form");
-  
-  if (!success) {
-    return NextResponse.json(
-      { error: "Too many requests. Please try again later." },
-      { status: 429 }
-    );
+  // Only apply rate limiting if Redis is configured
+  if (ratelimit) {
+    const { success } = await ratelimit.limit("contact-form");
+    if (!success) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
   }
 
   try {
@@ -50,10 +52,12 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  const cached = await redis.get("contact:submissions");
-  
-  if (cached) {
-    return NextResponse.json(JSON.parse(cached as string));
+  // Only use Redis cache if configured
+  if (redis) {
+    const cached = await redis.get("contact:submissions");
+    if (cached) {
+      return NextResponse.json(JSON.parse(cached as string));
+    }
   }
 
   const submissions = await prisma.contactSubmission.findMany({
@@ -62,7 +66,9 @@ export async function GET() {
     take: 50,
   });
 
-  await redis.set("contact:submissions", JSON.stringify(submissions), { ex: 300 });
+  if (redis) {
+    await redis.set("contact:submissions", JSON.stringify(submissions), { ex: 300 });
+  }
 
   return NextResponse.json(submissions);
 }
