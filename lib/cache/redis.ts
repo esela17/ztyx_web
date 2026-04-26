@@ -4,16 +4,16 @@ import { Ratelimit } from "@upstash/ratelimit";
 // Use a mock/dummy client if env vars are missing to avoid crashes
 const isRedisConfigured = !!process.env.UPSTASH_REDIS_REST_URL && !!process.env.UPSTASH_REDIS_REST_TOKEN;
 
-export const redis = isRedisConfigured 
+export const redis: Redis | null = isRedisConfigured 
   ? new Redis({
       url: process.env.UPSTASH_REDIS_REST_URL!,
       token: process.env.UPSTASH_REDIS_REST_TOKEN!,
     })
-  : null as any; // Cast to any to avoid type errors in other places, we'll guard it
+  : null;
 
 export const ratelimit = isRedisConfigured 
   ? new Ratelimit({
-      redis: redis,
+      redis: redis!,
       limiter: Ratelimit.slidingWindow(10, "10 s"),
     })
   : null;
@@ -28,7 +28,7 @@ export async function getCached<T>(
   }
 
   try {
-    const cached = await redis.get<T>(key);
+    const cached = await (redis as Redis).get<T>(key);
     
     if (cached) {
       return cached;
@@ -37,7 +37,7 @@ export async function getCached<T>(
     const data = await fetcher();
     
     if (data) {
-      await redis.set(key, JSON.stringify(data), { ex: ttl });
+      await (redis as Redis).set(key, JSON.stringify(data), { ex: ttl });
     }
     
     return data;
@@ -51,9 +51,9 @@ export async function invalidateCache(pattern: string): Promise<void> {
   if (!isRedisConfigured) return;
   
   try {
-    const keys = await redis.keys(pattern);
+    const keys = await (redis as Redis).keys(pattern);
     if (keys.length > 0) {
-      await redis.del(...keys);
+      await (redis as Redis).del(...keys);
     }
   } catch (error) {
     console.warn("Redis invalidate error:", error);
