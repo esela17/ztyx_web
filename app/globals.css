@@ -12,13 +12,18 @@
   --color-dark-surface: #0D0F1A;
   --color-dark-card: #111320;
   --color-text-primary: #F0F1FF;
-  --color-text-secondary: #9496C0;
+  --color-text-secondary: #A0A4C8;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   
   --font-sans: var(--font-cairo);
   --font-en: var(--font-syne);
   --font-mono: var(--font-space-mono);
+  
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+  --radius-xl: 40px;
 }
 
 :root {
@@ -117,4 +122,46 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+/* Performance: will-change for animated elements */
+.parallax-orb {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.floating-card {
+  will-change: transform;
+}
+
+.animate-spin-slow {
+  will-change: transform;
+}
+
+/* Skeleton Loading Animation */
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 0.08;
+  }
+  50% {
+    opacity: 0.16;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(240, 241, 255, 0.08) 25%,
+    rgba(240, 241, 255, 0.16) 50%,
+    rgba(240, 241, 255, 0.08) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+/* Glass skeleton variant */
+.skeleton-glass {
+  background: rgba(240, 241, 255, 0.04);
+  border: 1px solid rgba(240, 241, 255, 0.08);
 }

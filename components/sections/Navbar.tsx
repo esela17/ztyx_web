@@ -102,7 +102,7 @@ export default function Navbar() {
           </div>
 
           <button
-            className="md:hidden w-10 h-10 flex items-center justify-center glass rounded-xl text-[#F0F1FF]"
+            className="md:hidden w-12 h-12 flex items-center justify-center glass rounded-2xl text-[#F0F1FF] touch-manipulation"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <CloseIcon className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

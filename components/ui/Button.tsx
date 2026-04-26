@@ -23,9 +23,9 @@ export const Button = ({
   const baseStyles = "rounded-2xl font-bold transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50 disabled:pointer-events-none";
   
   const variants = {
-    primary: "bg-[#5B5EFF] text-white hover:bg-[#3A3DC8] shadow-xl shadow-[#5B5EFF]/25",
-    glass: "glass border-[#9496C0]/20 text-[#F0F1FF] hover:bg-white/5",
-    outline: "border border-[#5B5EFF]/40 text-[#F0F1FF] hover:bg-[#5B5EFF]/10",
+    primary: "bg-[#5B5EFF] text-white hover:bg-[#4B4EEF] hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#5B5EFF]/30 active:scale-[0.98] shadow-lg shadow-[#5B5EFF]/20",
+    glass: "glass border-[#9496C0]/20 text-[#F0F1FF] hover:bg-white/10 hover:border-[#5B5EFF]/30 active:scale-[0.98]",
+    outline: "border border-[#5B5EFF]/40 text-[#F0F1FF] hover:bg-[#5B5EFF]/15 hover:border-[#5B5EFF]/60 active:scale-[0.98]",
   };
 
   const sizes = {

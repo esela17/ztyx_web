@@ -31,17 +31,17 @@ export default function Hero() {
       duration: 2,
       repeat: -1,
       yoyo: true,
-      ease: "sine.inOut",
-      stagger: 0.5
+      ease: "power2.inOut",
+      stagger: 0.3
     });
 
     gsap.to(".parallax-orb", {
-      y: -100,
+      y: -50,
       scrollTrigger: {
         trigger: "body",
         start: "top top",
         end: "bottom top",
-        scrub: 1
+        scrub: 0.5
       }
     });
   }, { scope: containerRef, dependencies: [isLowPower] });
@@ -49,7 +49,7 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef as any}
-      className="min-height-[100vh] pt-32 pb-20 px-6 flex items-center justify-center relative overflow-hidden"
+      className="min-h-screen pt-24 pb-16 md:pt-32 md:pb-20 px-4 md:px-6 flex items-center justify-center relative overflow-hidden"
     >
       {/* Parallax Orbs */}
       <div className="parallax-orb fixed top-[20%] -left-64 w-[500px] h-[500px] bg-[#5B5EFF]/5 rounded-full blur-[120px] pointer-events-none z-0" />
@@ -63,7 +63,7 @@ export default function Hero() {
             <Badge>WHERE HEALTH MEETS 4D</Badge>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-black text-[#F0F1FF] leading-[1.1] mb-6 gsap-reveal">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-[#F0F1FF] leading-[1.1] mb-6 gsap-reveal">
             مستقبل الرعاية <br />
             الصحية <span className="text-[#5B5EFF]">يبدأ هنا</span>
           </h1>
