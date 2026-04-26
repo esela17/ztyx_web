@@ -91,9 +91,7 @@ export default function RootLayout({
             })
           }}
         />
-        <PageTransition>
-          {children}
-        </PageTransition>
+        {children}
         <WhatsAppButton />
       </body>
     </html>
