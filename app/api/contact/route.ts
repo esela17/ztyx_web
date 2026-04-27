@@ -4,14 +4,12 @@ import { ratelimit, redis, invalidateCache } from "@/lib/cache/redis";
 
 export async function POST(request: NextRequest) {
   // Only apply rate limiting if Redis is configured
-  if (ratelimit) {
-    const { success } = await ratelimit.limit("contact-form");
-    if (!success) {
-      return NextResponse.json(
-        { error: "Too many requests. Please try again later." },
-        { status: 429 }
-      );
-    }
+  const rateLimitResult = await ratelimit?.limit("contact-form");
+  if (rateLimitResult && !rateLimitResult.success) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 }
+    );
   }
 
   try {
