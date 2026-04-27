@@ -4,14 +4,19 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function useGsapReveal() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useGSAP(() => {
     if (!containerRef.current) return;
+
+    // Refresh ScrollTrigger to ensure positions are correct after navigation
+    ScrollTrigger.refresh();
 
     const elements = containerRef.current.querySelectorAll(".gsap-reveal");
     
@@ -31,17 +36,22 @@ export function useGsapReveal() {
             trigger: el,
             start: "top 85%",
             toggleActions: "play none none none",
+            // Ensure trigger is recalculated if layout changes
+            invalidateOnRefresh: true,
           }
         }
       );
     });
-  }, { scope: containerRef });
 
-  useEffect(() => {
+    // Cleanup triggers for this scope on unmount
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach(t => {
+        if (t.vars.trigger === containerRef.current || containerRef.current?.contains(t.vars.trigger as Node)) {
+          t.kill();
+        }
+      });
     };
-  }, []);
+  }, { scope: containerRef, dependencies: [pathname] });
 
   return containerRef;
 }
