@@ -145,6 +145,13 @@ model FavoritePortfolio {
   @@unique([userId, portfolioId])
 }
 
+// Python Course Seat Counter
+model SeatCounter {
+  id        String   @id @default("python-course")
+  remaining Int      @default(20)
+  updatedAt DateTime @updatedAt
+}
+
 // Contact Form Submissions
 model ContactSubmission {
   id        String   @id @default(cuid())
