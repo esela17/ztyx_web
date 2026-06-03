@@ -124,11 +124,6 @@ function PythonCourseWidget() {
                 <p className="text-[#9496C0] text-base max-w-lg leading-relaxed mb-3">
                   ادخل عالم البرمجة من الصفر مع دبلومة Python المصممة خصيصًا لتخرّجك محترفاً جاهزاً للسوق.
                 </p>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-black text-[#4ADE80]">1000 جنيه</span>
-                  <span className="text-sm text-[#9496C0] line-through">2000 جنيه</span>
-                  <span className="text-xs px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20">خصم 50%</span>
-                </div>
               </div>
 
               <div className="flex flex-wrap gap-2 justify-start">

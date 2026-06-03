@@ -213,7 +213,7 @@ export default function PythonDiplomaPage() {
                     </div>
                     <div className="flex items-center gap-2 text-sm text-[#9496C0] bg-white/5 px-4 py-2 rounded-xl">
                       <Tag className="w-5 h-5 text-[#4ADE80]" />
-                      <span>خصم <strong className="text-[#4ADE80]">50%</strong> (1000 جنيه فقط)</span>
+                      <span>خصم <strong className="text-[#4ADE80]">50%</strong> لفترة محدودة</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-[#9496C0] bg-white/5 px-4 py-2 rounded-xl">
                       <Clock className="w-5 h-5 text-[#9496C0]" />
@@ -428,18 +428,19 @@ export default function PythonDiplomaPage() {
                     </p>
                   </div>
 
-                  {/* Promo Banner */}
+                  {/* Promo Banner / Price */}
                   <div
-                    className="flex items-start gap-3 p-5 rounded-2xl mb-6"
+                    className="flex flex-col items-center justify-center p-5 rounded-2xl mb-6 gap-3"
                     style={{
                       background: "linear-gradient(135deg, rgba(255,212,59,0.12) 0%, rgba(255,212,59,0.03) 100%)",
                       border: "1px solid rgba(255,212,59,0.25)",
                     }}
                   >
-                    <Clock className="w-6 h-6 text-[#FFD43B] flex-shrink-0 mt-0.5 animate-pulse" />
-                    <div>
-                      <p className="text-white font-bold text-base mb-1">⚡ اشترك خلال 24 ساعة بـ 1000 جنيه بدل 2000!</p>
-                      <p className="text-[#9496C0] text-sm">العرض متاح لفترة محدودة لضمان مكانك بالتخفيض.</p>
+                    <p className="text-white font-bold text-base">⚡ اشترك خلال 24 ساعة للحصول على الخصم!</p>
+                    <div className="flex items-center gap-3 bg-black/20 px-6 py-4 rounded-xl w-full justify-center" style={{ border: "1px solid rgba(255,255,255,0.05)" }}>
+                      <span className="text-2xl font-black text-[#4ADE80]">1000 جنيه</span>
+                      <span className="text-sm text-[#9496C0] line-through">2000 جنيه</span>
+                      <span className="text-xs px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20">خصم 50%</span>
                     </div>
                   </div>
 
