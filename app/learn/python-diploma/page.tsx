@@ -185,8 +185,8 @@ export default function PythonDiplomaPage() {
 
                   <p className="text-[#9496C0] text-sm md:text-base leading-relaxed mb-6">
                     دبلومة Python مصممة خصيصًا للطلاب الذين يريدون دخول عالم التكنولوجيا والبرمجة. تحت إشراف{" "}
-                    <span className="text-white font-semibold">المهندس إسلام حمادة</span> وفريق من المدربين المتخصصين،
-                    مع التركيز على التطبيق العملي وبناء أساس قوي في البرمجة. 🚀
+                    <strong className="text-white font-bold text-base md:text-lg">المهندس إسلام حمادة</strong> وفريق من المدربين المتخصصين،
+                    مع التركيز على التطبيق العملي وبناء <strong className="text-white font-bold">أساس قوي</strong> في البرمجة. 🚀
                   </p>
 
                   {/* Topics */}
@@ -224,20 +224,20 @@ export default function PythonDiplomaPage() {
                   <div className="flex gap-4 flex-col-reverse sm:flex-row">
                     <Link
                       href="/learn"
-                      className="h-14 px-8 rounded-2xl font-semibold text-sm text-[#9496C0] flex items-center justify-center transition-all hover:text-white hover:bg-white/5 border border-white/10"
+                      className="h-16 px-8 rounded-2xl font-bold text-sm text-[#9496C0] flex items-center justify-center transition-all hover:text-white hover:bg-white/5 border border-white/10 hover:border-white/20"
                     >
                       تصفح الكورسات الأخرى
                     </Link>
                     <button
                       onClick={() => setStep("form")}
-                      className="flex-1 h-14 rounded-2xl font-bold text-lg text-[#F0F1FF] flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-1"
+                      className="flex-1 h-16 rounded-2xl font-black text-xl text-white flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                       style={{
                         background: "linear-gradient(135deg, #5B5EFF 0%, #7B7EFF 100%)",
-                        boxShadow: "0 4px 20px rgba(91,94,255,0.3)",
+                        boxShadow: "0 8px 30px rgba(91,94,255,0.4)",
                       }}
                     >
                       التسجيل الآن
-                      <ChevronRight className="w-5 h-5 font-bold" />
+                      <ChevronRight className="w-6 h-6 font-black" />
                     </button>
                   </div>
                 </motion.div>
@@ -372,14 +372,14 @@ export default function PythonDiplomaPage() {
                       </div>
                     )}
 
-                    <div className="pt-4">
+                    <div className="pt-6">
                       <button
                         type="submit"
                         disabled={isSubmitting || fsState.submitting}
-                        className="w-full h-14 rounded-2xl font-bold text-lg text-white flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-1 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                        className="w-full h-16 rounded-2xl font-black text-xl text-white flex items-center justify-center gap-3 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                         style={{
                           background: "linear-gradient(135deg, #5B5EFF 0%, #7B7EFF 100%)",
-                          boxShadow: "0 4px 20px rgba(91,94,255,0.3)",
+                          boxShadow: "0 8px 30px rgba(91,94,255,0.4)",
                         }}
                       >
                         {isSubmitting || fsState.submitting ? (
