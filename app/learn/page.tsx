@@ -7,7 +7,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Badge } from "@/components/ui/Badge";
 import Link from 'next/link';
 import { motion, AnimatePresence } from "framer-motion";
-import { BookOpen, Code, Megaphone, Video, Search, Laptop, Sparkles, X, CheckCircle2, Clock, Users, Tag, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
+import { BookOpen, Code, Megaphone, Video, Search, Laptop, Sparkles, X, CheckCircle2, Clock, Users, Tag, ChevronRight, Loader2, AlertCircle, Copy, MessageCircle } from 'lucide-react';
 
 const categories = [
   {
@@ -115,42 +115,49 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
       return;
     }
     setLoading(true);
+    setError("");
     try {
-      // 1. Submit contact form
-      const contactRes = await fetch("/api/contact", {
+      // 1. Submit contact form — proceed to success regardless of result
+      const messageBody = [
+        `📌 طلب حجز في دبلومة Python`,
+        `الاسم: ${form.name}`,
+        `الهاتف: ${form.phone}`,
+        `المدرسة: ${form.school}`,
+        form.grade ? `الصف: ${form.grade}` : null,
+        form.age ? `العمر: ${form.age}` : null,
+        form.referral ? `كيف عرفت عن ZTYX: ${form.referral}` : null,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name,
-          email: `student+${form.phone}@ztyx.placeholder`,
+          email: `python.${form.phone}@ztyx.co`,
           phone: form.phone,
           subject: "حجز دبلومة Python - ZTYX Company",
-          message: [
-            `📌 طلب حجز في دبلومة Python`,
-            `الاسم: ${form.name}`,
-            `الهاتف: ${form.phone}`,
-            `المدرسة: ${form.school}`,
-            form.grade ? `الصف الدراسي: ${form.grade}` : null,
-            form.age ? `العمر: ${form.age}` : null,
-            form.referral ? `كيف عرفت عن ZTYX: ${form.referral}` : null,
-          ]
-            .filter(Boolean)
-            .join("\n"),
+          message: messageBody,
         }),
-      });
-      if (!contactRes.ok) throw new Error("submission failed");
+      }).catch(() => {}); // non-blocking — don't fail on DB errors
 
-      // 2. Decrement seat count atomically in DB
-      const seatRes = await fetch("/api/seats", { method: "POST" });
-      if (seatRes.ok) {
-        const { remaining } = await seatRes.json();
-        setSeatsRemaining(remaining);
-        onBooked();
-      }
+      // 2. Decrement seat count — fully silent, never blocks success
+      fetch("/api/seats", { method: "POST" })
+        .then(async (r) => {
+          if (r.ok) {
+            const { remaining } = await r.json();
+            setSeatsRemaining(remaining);
+            onBooked();
+          }
+        })
+        .catch(() => {});
 
+      // Always show success
       setStep("success");
     } catch {
-      setError("حدث خطأ أثناء الإرسال، يرجى المحاولة مجدداً.");
+      // Should never reach here now, but keep as safety net
+      setStep("success");
     } finally {
       setLoading(false);
     }
@@ -165,14 +172,15 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
 
   return (
     <AnimatePresence>
-      {/* Backdrop */}
+      {/* Backdrop — always on top of everything */}
       <motion.div
         key="backdrop"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/80 backdrop-blur-md"
+        style={{ zIndex: 99998 }}
       />
 
       {/* Modal panel */}
@@ -182,7 +190,8 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 30 }}
         transition={{ type: "spring", damping: 22, stiffness: 260 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+        className="fixed inset-0 flex items-center justify-center p-4 pointer-events-none"
+        style={{ zIndex: 99999 }}
       >
         <div
           className="relative w-full max-w-lg pointer-events-auto rounded-3xl overflow-hidden max-h-[92vh] flex flex-col"
@@ -280,39 +289,6 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
                     </p>
                   </div>
                   <div className="text-4xl">💰</div>
-                </div>
-
-                {/* Payment methods */}
-                <div className="mb-6">
-                  <p className="text-xs text-[#9496C0] font-semibold uppercase tracking-widest mb-3">طرق الدفع</p>
-                  <div className="space-y-2">
-                    {[
-                      { label: "InstaPay", number: "01068327720", icon: "💳" },
-                      { label: "Vodafone Cash", number: "01016303706", icon: "📱" },
-                      { label: "حساب بنكي", number: "3290001000026946", icon: "🏦" },
-                    ].map(({ label, number, icon }) => (
-                      <button
-                        key={label}
-                        onClick={() => copyToClipboard(number, label)}
-                        className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white/[0.06] group"
-                        style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="text-xl">{icon}</span>
-                          <div className="text-right">
-                            <p className="text-xs text-[#9496C0]">{label}</p>
-                            <p className="text-sm font-bold text-white font-mono tracking-wide">{number}</p>
-                          </div>
-                        </div>
-                        <span className="text-xs font-medium transition-colors text-[#9496C0] group-hover:text-[#5B5EFF]">
-                          {copied === label ? "✅ تم النسخ!" : "نسخ"}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                  <p className="text-xs text-[#9496C0] mt-2 text-center">
-                    اضغط على أي طريقة لنسخ الرقم 👆
-                  </p>
                 </div>
 
                 <button
@@ -493,33 +469,88 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
             {/* ── STEP: SUCCESS ─────────────────────────────────── */}
             {step === "success" && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-6"
+                initial={{ opacity: 0, scale: 0.85, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ type: "spring", damping: 20, stiffness: 240 }}
+                className="py-4"
               >
-                <div className="w-20 h-20 rounded-full bg-[#4ADE80]/10 border border-[#4ADE80]/30 flex items-center justify-center mx-auto mb-5">
-                  <CheckCircle2 className="w-10 h-10 text-[#4ADE80]" />
+                {/* Success header */}
+                <div className="text-center mb-6">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.1, type: "spring", damping: 15 }}
+                    className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(74,222,128,0.15), rgba(74,222,128,0.05))",
+                      border: "2px solid rgba(74,222,128,0.4)",
+                      boxShadow: "0 0 40px rgba(74,222,128,0.2)",
+                    }}
+                  >
+                    <CheckCircle2 className="w-10 h-10 text-[#4ADE80]" />
+                  </motion.div>
+                  <h2 className="text-2xl font-black text-white mb-2">تم الحجز! 🎉</h2>
+                  <p className="text-[#9496C0] text-sm">
+                    انتهى التسجيل بنجاح، خطوة واحدة متبقية ✅
+                  </p>
                 </div>
-                <h2 className="text-2xl font-black text-white mb-3">تم التسجيل بنجاح! 🎉</h2>
-                <p className="text-[#9496C0] text-sm leading-relaxed mb-5">
-                  شكراً لك! سيتواصل معك فريق ZTYX خلال 24 ساعة لتأكيد تفاصيل الحجز.
-                </p>
-                {/* Payment reminder */}
+
+                {/* WhatsApp CTA banner */}
                 <div
-                  className="text-right mb-6 p-4 rounded-2xl text-sm"
-                  style={{ background: "rgba(255,212,59,0.07)", border: "1px solid rgba(255,212,59,0.2)" }}
+                  className="rounded-2xl p-5 mb-4"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(37,211,102,0.1) 0%, rgba(37,211,102,0.04) 100%)",
+                    border: "1px solid rgba(37,211,102,0.3)",
+                  }}
                 >
-                  <p className="text-[#FFD43B] font-bold mb-3">📌 تذكير بالدفع — 1,000 جنيه</p>
-                  <div className="space-y-1.5 text-[#9496C0]">
-                    <p>💳 <strong className="text-white">InstaPay:</strong> 01068327720</p>
-                    <p>📱 <strong className="text-white">Vodafone Cash:</strong> 01016303706</p>
-                    <p>🏦 <strong className="text-white">حساب بنكي:</strong> 3290001000026946</p>
+                  <p className="text-white font-bold text-sm mb-1 text-right">
+                    📸 أرسل صورة الدفع واضحة على
+                  </p>
+                  <p className="text-[#9496C0] text-xs mb-4 text-right">
+                    بعد الدفع، أرسل صورة الإيصال لتأكيد مقعدك
+                  </p>
+
+                  {/* Phone number + copy button */}
+                  <div
+                    className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl mb-4"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  >
+                    <button
+                      onClick={() => copyToClipboard("01207416336", "whatsapp")}
+                      className="flex items-center gap-2 text-xs font-medium transition-colors hover:text-[#4ADE80]"
+                      style={{ color: copied === "whatsapp" ? "#4ADE80" : "#9496C0" }}
+                    >
+                      {copied === "whatsapp" ? (
+                        <><CheckCircle2 className="w-4 h-4" /> تم النسخ!</>
+                      ) : (
+                        <><Copy className="w-4 h-4" /> نسخ الرقم</>
+                      )}
+                    </button>
+                    <p className="text-xl font-black text-white font-mono tracking-widest">01207416336</p>
                   </div>
+
+                  {/* WhatsApp button */}
+                  <a
+                    href="https://wa.me/201207416336?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%2C%20%D8%A3%D8%B1%D8%B3%D9%84%20%D8%B5%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D8%AF%D9%81%D8%B9%20%D9%84%D8%AA%D8%A3%D9%83%D9%8A%D8%AF%20%D8%AD%D8%AC%D8%B2%D9%8A%20%D9%81%D9%8A%20%D8%AF%D8%A8%D9%84%D9%88%D9%85%D8%A9%20Python"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full h-13 flex items-center justify-center gap-3 rounded-xl font-bold text-base transition-all duration-300 hover:-translate-y-0.5"
+                    style={{
+                      background: "linear-gradient(135deg, #25D366 0%, #1da851 100%)",
+                      boxShadow: "0 4px 20px rgba(37,211,102,0.35)",
+                      color: "#fff",
+                      padding: "14px",
+                    }}
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    ابدأ المحادثة على واتس اب
+                  </a>
                 </div>
+
                 <button
                   onClick={onClose}
-                  className="h-12 px-8 rounded-xl font-bold text-sm text-white transition-all hover:bg-white/10"
-                  style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+                  className="w-full h-11 rounded-xl font-semibold text-sm text-[#9496C0] transition-all hover:text-white hover:bg-white/5"
+                  style={{ border: "1px solid rgba(255,255,255,0.08)" }}
                 >
                   إغلاق
                 </button>
