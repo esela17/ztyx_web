@@ -68,8 +68,17 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
   const [step, setStep] = useState<"details" | "form" | "success">("details");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [form, setForm] = useState({
+    name: "",
+    phone: "",
+    school: "",
+    grade: "",
+    age: "",
+    referral: "",
+    policyAccepted: false,
+  });
   const [seatsRemaining, setSeatsRemaining] = useState<number | null>(null);
+  const [copied, setCopied] = useState<string | null>(null);
 
   // Fetch live seat count when modal opens
   React.useEffect(() => {
@@ -79,15 +88,30 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
       .catch(() => setSeatsRemaining(null));
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const target = e.target as HTMLInputElement;
+    setForm({
+      ...form,
+      [target.name]: target.type === "checkbox" ? target.checked : target.value,
+    });
     setError("");
+  };
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(label);
+      setTimeout(() => setCopied(null), 2000);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.phone) {
-      setError("يرجى ملء جميع الحقول المطلوبة");
+    if (!form.name || !form.phone || !form.school) {
+      setError("يرجى ملء الحقول المطلوبة: الاسم، الهاتف، اسم المدرسة");
+      return;
+    }
+    if (!form.policyAccepted) {
+      setError("يرجى الموافقة على السياسات قبل المتابعة");
       return;
     }
     setLoading(true);
@@ -98,10 +122,20 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name,
-          email: form.email,
+          email: `student+${form.phone}@ztyx.placeholder`,
           phone: form.phone,
           subject: "حجز دبلومة Python - ZTYX Company",
-          message: `طلب حجز في دبلومة Python\nالاسم: ${form.name}\nالإيميل: ${form.email}\nالهاتف: ${form.phone}`,
+          message: [
+            `📌 طلب حجز في دبلومة Python`,
+            `الاسم: ${form.name}`,
+            `الهاتف: ${form.phone}`,
+            `المدرسة: ${form.school}`,
+            form.grade ? `الصف الدراسي: ${form.grade}` : null,
+            form.age ? `العمر: ${form.age}` : null,
+            form.referral ? `كيف عرفت عن ZTYX: ${form.referral}` : null,
+          ]
+            .filter(Boolean)
+            .join("\n"),
         }),
       });
       if (!contactRes.ok) throw new Error("submission failed");
@@ -111,7 +145,7 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
       if (seatRes.ok) {
         const { remaining } = await seatRes.json();
         setSeatsRemaining(remaining);
-        onBooked(); // notify parent to update the widget counter
+        onBooked();
       }
 
       setStep("success");
@@ -121,6 +155,13 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
       setLoading(false);
     }
   };
+
+  const inputStyle = {
+    background: "rgba(255,255,255,0.05)",
+    border: "1px solid rgba(255,255,255,0.1)",
+  };
+  const inputClass =
+    "w-full h-12 px-4 rounded-xl text-white placeholder-[#5a5c7a] text-sm outline-none transition-all";
 
   return (
     <AnimatePresence>
@@ -144,7 +185,7 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
         className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
       >
         <div
-          className="relative w-full max-w-lg pointer-events-auto rounded-3xl overflow-hidden"
+          className="relative w-full max-w-lg pointer-events-auto rounded-3xl overflow-hidden max-h-[92vh] flex flex-col"
           style={{
             background: "linear-gradient(135deg, #0D0E1A 0%, #111228 100%)",
             border: "1px solid rgba(91,94,255,0.3)",
@@ -162,7 +203,10 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
             <X className="w-5 h-5" />
           </button>
 
-          <div className="p-8">
+          {/* Scrollable content */}
+          <div className="p-8 overflow-y-auto flex-1">
+
+            {/* ── STEP: DETAILS ─────────────────────────────────── */}
             {step === "details" && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -170,8 +214,8 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
                 exit={{ opacity: 0, x: -20 }}
               >
                 {/* Header */}
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FFD43B]/20 to-[#5B5EFF]/20 flex items-center justify-center text-2xl">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FFD43B]/20 to-[#5B5EFF]/20 flex items-center justify-center text-2xl flex-shrink-0">
                     🐍
                   </div>
                   <div>
@@ -180,12 +224,16 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
                   </div>
                 </div>
 
-                <p className="text-[#9496C0] text-sm leading-relaxed mb-6">
-                  دبلومة Python من ZTYX Company مصممة خصيصًا للطلاب الذين يريدون دخول عالم التكنولوجيا والبرمجة. من خلال الدبلومة ستتعلم:
+                {/* Description */}
+                <p className="text-[#9496C0] text-sm leading-relaxed mb-4">
+                  دبلومة Python مصممة خصيصًا للطلاب الذين يريدون دخول عالم التكنولوجيا والبرمجة. تحت إشراف{" "}
+                  <span className="text-white font-semibold">المهندس إسلام حمادة</span> وفريق من المدربين المتخصصين،
+                  مع التركيز على التطبيق العملي وبناء أساس قوي في البرمجة يساعدك على الانطلاق نحو مجالات مثل
+                  الذكاء الاصطناعي وتطوير البرمجيات. 🚀
                 </p>
 
                 {/* Topics */}
-                <div className="grid grid-cols-2 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-2 mb-5">
                   {pythonTopics.map((topic) => (
                     <div key={topic} className="flex items-center gap-2 text-sm text-[#F0F1FF]">
                       <CheckCircle2 className="w-4 h-4 text-[#5B5EFF] flex-shrink-0" />
@@ -195,7 +243,7 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
                 </div>
 
                 {/* Stats row */}
-                <div className="flex gap-4 mb-6">
+                <div className="flex flex-wrap gap-3 mb-5">
                   <div className="flex items-center gap-2 text-xs text-[#9496C0]">
                     <Users className="w-4 h-4 text-[#FFD43B]" />
                     <span>
@@ -212,17 +260,59 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
                   </div>
                   <div className="flex items-center gap-2 text-xs text-[#9496C0]">
                     <Clock className="w-4 h-4 text-[#9496C0]" />
-                    <span>عرض ينتهي قريباً</span>
+                    <span>استثمر إجازتك في مهارة تفتح أبوابًا كبيرة</span>
                   </div>
                 </div>
 
-                {/* Price */}
-                <div className="flex items-center gap-3 mb-8 p-4 rounded-2xl bg-white/[0.04] border border-white/[0.06]">
-                  <span className="text-3xl font-black text-white">اشترك الآن</span>
-                  <div className="flex flex-col">
-                    <span className="text-xs text-[#9496C0] line-through">السعر الأصلي</span>
-                    <span className="text-sm font-bold text-[#4ADE80]">خصم 50% — عرض محدود!</span>
+                {/* Price box */}
+                <div
+                  className="flex items-center justify-between gap-4 mb-5 p-4 rounded-2xl"
+                  style={{ background: "rgba(255,212,59,0.07)", border: "1px solid rgba(255,212,59,0.2)" }}
+                >
+                  <div>
+                    <p className="text-xs text-[#9496C0] mb-0.5">السعر بعد الخصم</p>
+                    <p className="text-3xl font-black text-white">
+                      1,000{" "}
+                      <span className="text-lg font-bold text-[#FFD43B]">جنيه</span>
+                    </p>
+                    <p className="text-xs text-[#9496C0] mt-1">
+                      يضمن هذا المبلغ جدية والتزام الطلاب لتحقيق أقصى استفادة
+                    </p>
                   </div>
+                  <div className="text-4xl">💰</div>
+                </div>
+
+                {/* Payment methods */}
+                <div className="mb-6">
+                  <p className="text-xs text-[#9496C0] font-semibold uppercase tracking-widest mb-3">طرق الدفع</p>
+                  <div className="space-y-2">
+                    {[
+                      { label: "InstaPay", number: "01068327720", icon: "💳" },
+                      { label: "Vodafone Cash", number: "01016303706", icon: "📱" },
+                      { label: "حساب بنكي", number: "3290001000026946", icon: "🏦" },
+                    ].map(({ label, number, icon }) => (
+                      <button
+                        key={label}
+                        onClick={() => copyToClipboard(number, label)}
+                        className="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl transition-all hover:bg-white/[0.06] group"
+                        style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl">{icon}</span>
+                          <div className="text-right">
+                            <p className="text-xs text-[#9496C0]">{label}</p>
+                            <p className="text-sm font-bold text-white font-mono tracking-wide">{number}</p>
+                          </div>
+                        </div>
+                        <span className="text-xs font-medium transition-colors text-[#9496C0] group-hover:text-[#5B5EFF]">
+                          {copied === label ? "✅ تم النسخ!" : "نسخ"}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-[#9496C0] mt-2 text-center">
+                    اضغط على أي طريقة لنسخ الرقم 👆
+                  </p>
                 </div>
 
                 <button
@@ -239,13 +329,14 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
               </motion.div>
             )}
 
+            {/* ── STEP: FORM ────────────────────────────────────── */}
             {step === "form" && (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
               >
-                <div className="mb-6">
+                <div className="mb-5">
                   <button
                     onClick={() => setStep("details")}
                     className="text-[#9496C0] hover:text-white text-sm flex items-center gap-1 mb-4 transition-colors"
@@ -262,35 +353,9 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
                   <div>
                     <label className="text-xs text-[#9496C0] mb-1.5 block font-medium">الاسم بالكامل *</label>
                     <input
-                      type="text"
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
+                      type="text" name="name" value={form.name} onChange={handleChange}
                       placeholder="أدخل اسمك الكامل"
-                      className="w-full h-12 px-4 rounded-xl text-white placeholder-[#5a5c7a] text-sm outline-none transition-all focus:border-[#5B5EFF]"
-                      style={{
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }}
-                      onFocus={(e) => (e.target.style.borderColor = "#5B5EFF")}
-                      onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
-                    />
-                  </div>
-
-                  {/* Email */}
-                  <div>
-                    <label className="text-xs text-[#9496C0] mb-1.5 block font-medium">البريد الإلكتروني *</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="example@email.com"
-                      className="w-full h-12 px-4 rounded-xl text-white placeholder-[#5a5c7a] text-sm outline-none transition-all"
-                      style={{
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }}
+                      className={inputClass} style={inputStyle}
                       onFocus={(e) => (e.target.style.borderColor = "#5B5EFF")}
                       onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                     />
@@ -300,20 +365,97 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
                   <div>
                     <label className="text-xs text-[#9496C0] mb-1.5 block font-medium">رقم الهاتف *</label>
                     <input
-                      type="tel"
-                      name="phone"
-                      value={form.phone}
-                      onChange={handleChange}
+                      type="tel" name="phone" value={form.phone} onChange={handleChange}
                       placeholder="01xxxxxxxxx"
-                      className="w-full h-12 px-4 rounded-xl text-white placeholder-[#5a5c7a] text-sm outline-none transition-all"
-                      style={{
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }}
+                      className={inputClass} style={inputStyle}
                       onFocus={(e) => (e.target.style.borderColor = "#5B5EFF")}
                       onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
                     />
                   </div>
+
+                  {/* School */}
+                  <div>
+                    <label className="text-xs text-[#9496C0] mb-1.5 block font-medium">اسم المدرسة *</label>
+                    <input
+                      type="text" name="school" value={form.school} onChange={handleChange}
+                      placeholder="اسم مدرستك"
+                      className={inputClass} style={inputStyle}
+                      onFocus={(e) => (e.target.style.borderColor = "#5B5EFF")}
+                      onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                    />
+                  </div>
+
+                  {/* Grade + Age */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs text-[#9496C0] mb-1.5 block font-medium">الصف الدراسي</label>
+                      <input
+                        type="text" name="grade" value={form.grade} onChange={handleChange}
+                        placeholder="مثال: الأول الثانوي"
+                        className={inputClass} style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "#5B5EFF")}
+                        onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs text-[#9496C0] mb-1.5 block font-medium">العمر</label>
+                      <input
+                        type="number" name="age" value={form.age} onChange={handleChange}
+                        placeholder="مثال: 16"
+                        min={10} max={30}
+                        className={inputClass} style={inputStyle}
+                        onFocus={(e) => (e.target.style.borderColor = "#5B5EFF")}
+                        onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                      />
+                    </div>
+                  </div>
+
+                  {/* How did you hear */}
+                  <div>
+                    <label className="text-xs text-[#9496C0] mb-1.5 block font-medium">كيف عرفت عن ZTYX؟</label>
+                    <select
+                      name="referral" value={form.referral}
+                      onChange={handleChange}
+                      className={`${inputClass} cursor-pointer`}
+                      style={{ ...inputStyle, appearance: "none" } as React.CSSProperties}
+                      onFocus={(e) => (e.target.style.borderColor = "#5B5EFF")}
+                      onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.1)")}
+                    >
+                      <option value="" style={{ background: "#111228" }}>اختر...</option>
+                      <option value="Instagram" style={{ background: "#111228" }}>Instagram</option>
+                      <option value="Facebook" style={{ background: "#111228" }}>Facebook</option>
+                      <option value="TikTok" style={{ background: "#111228" }}>TikTok</option>
+                      <option value="صديق أو معارف" style={{ background: "#111228" }}>صديق أو معارف</option>
+                      <option value="بحث Google" style={{ background: "#111228" }}>بحث Google</option>
+                      <option value="أخرى" style={{ background: "#111228" }}>أخرى</option>
+                    </select>
+                  </div>
+
+                  {/* Policy checkbox */}
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <div className="relative mt-0.5 flex-shrink-0">
+                      <input
+                        type="checkbox" name="policyAccepted"
+                        checked={form.policyAccepted}
+                        onChange={handleChange}
+                        className="sr-only"
+                      />
+                      <div
+                        className="w-5 h-5 rounded-md flex items-center justify-center transition-all"
+                        style={{
+                          background: form.policyAccepted ? "#5B5EFF" : "rgba(255,255,255,0.05)",
+                          border: `1px solid ${form.policyAccepted ? "#5B5EFF" : "rgba(255,255,255,0.15)"}`,
+                        }}
+                      >
+                        {form.policyAccepted && (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                        )}
+                      </div>
+                    </div>
+                    <span className="text-xs text-[#9496C0] leading-relaxed group-hover:text-white transition-colors">
+                      I confirm that I will respect all policies — أؤكد أنني سألتزم بجميع سياسات الدبلومة وأهدافها
+                    </span>
+                  </label>
 
                   {/* Error */}
                   {error && (
@@ -348,19 +490,32 @@ function PythonCourseModal({ onClose, onBooked }: { onClose: () => void; onBooke
               </motion.div>
             )}
 
+            {/* ── STEP: SUCCESS ─────────────────────────────────── */}
             {step === "success" && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-8"
+                className="text-center py-6"
               >
-                <div className="w-20 h-20 rounded-full bg-[#4ADE80]/10 border border-[#4ADE80]/30 flex items-center justify-center mx-auto mb-6">
+                <div className="w-20 h-20 rounded-full bg-[#4ADE80]/10 border border-[#4ADE80]/30 flex items-center justify-center mx-auto mb-5">
                   <CheckCircle2 className="w-10 h-10 text-[#4ADE80]" />
                 </div>
-                <h2 className="text-2xl font-black text-white mb-3">تم الحجز بنجاح! 🎉</h2>
-                <p className="text-[#9496C0] text-sm leading-relaxed mb-6">
-                  شكراً لك! سيتواصل معك فريق ZTYX خلال 24 ساعة لتأكيد تفاصيل الحجز في دبلومة Python.
+                <h2 className="text-2xl font-black text-white mb-3">تم التسجيل بنجاح! 🎉</h2>
+                <p className="text-[#9496C0] text-sm leading-relaxed mb-5">
+                  شكراً لك! سيتواصل معك فريق ZTYX خلال 24 ساعة لتأكيد تفاصيل الحجز.
                 </p>
+                {/* Payment reminder */}
+                <div
+                  className="text-right mb-6 p-4 rounded-2xl text-sm"
+                  style={{ background: "rgba(255,212,59,0.07)", border: "1px solid rgba(255,212,59,0.2)" }}
+                >
+                  <p className="text-[#FFD43B] font-bold mb-3">📌 تذكير بالدفع — 1,000 جنيه</p>
+                  <div className="space-y-1.5 text-[#9496C0]">
+                    <p>💳 <strong className="text-white">InstaPay:</strong> 01068327720</p>
+                    <p>📱 <strong className="text-white">Vodafone Cash:</strong> 01016303706</p>
+                    <p>🏦 <strong className="text-white">حساب بنكي:</strong> 3290001000026946</p>
+                  </div>
+                </div>
                 <button
                   onClick={onClose}
                   className="h-12 px-8 rounded-xl font-bold text-sm text-white transition-all hover:bg-white/10"
