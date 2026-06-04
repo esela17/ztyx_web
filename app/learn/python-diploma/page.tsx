@@ -39,6 +39,7 @@ export default function PythonDiplomaPage() {
     grade: "",
     age: "",
     referral: "",
+    discountCode: "",
     policyAccepted: false,
   });
   const [seatsRemaining, setSeatsRemaining] = useState<number | null>(null);
@@ -130,6 +131,7 @@ export default function PythonDiplomaPage() {
           localForm.grade ? `الصف: ${localForm.grade}` : null,
           localForm.age ? `العمر: ${localForm.age}` : null,
           localForm.referral ? `كيف عرفت عن ZTYX: ${localForm.referral}` : null,
+          localForm.discountCode ? `كود الخصم: ${localForm.discountCode}` : null,
         ]
           .filter(Boolean)
           .join("\n"),
@@ -330,6 +332,31 @@ export default function PythonDiplomaPage() {
                         <option value="بحث Google" style={{ background: "#111228" }}>بحث Google</option>
                         <option value="أخرى" style={{ background: "#111228" }}>أخرى</option>
                       </select>
+                    </div>
+
+                    {/* Discount Code */}
+                    <div>
+                      <label className="text-sm text-[#9496C0] mb-2 block font-medium">هل لديك كود خصم؟</label>
+                      <input
+                        type="text" name="discountCode" value={localForm.discountCode} onChange={handleChange}
+                        placeholder="أدخل كود الخصم (اختياري)"
+                        className={inputClass} style={inputStyle}
+                        dir="ltr"
+                      />
+                      {localForm.discountCode && localForm.discountCode.toUpperCase() !== "FRIST20" && (
+                        <p className="text-sm text-red-400 mt-2 flex items-center gap-1.5">
+                          <AlertCircle className="w-4 h-4" />
+                          كود الخصم غير صحيح
+                        </p>
+                      )}
+                      {localForm.discountCode.toUpperCase() === "FRIST20" && (
+                        <div className="mt-2 p-3 rounded-xl bg-[#4ADE80]/10 border border-[#4ADE80]/20 flex items-center gap-2">
+                          <CheckCircle2 className="w-5 h-5 text-[#4ADE80]" />
+                          <p className="text-sm text-[#4ADE80] font-bold">
+                            تم خصم 1000 جنيه من قيمة الدبلومة!
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     {/* Policy checkbox */}
