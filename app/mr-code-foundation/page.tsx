@@ -227,7 +227,7 @@ export default function MrCodeLandingPage() {
             >
               <button
                 onClick={() => {
-                  document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
+                  document.getElementById('booking-form-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }}
                 className="h-14 px-10 rounded-xl font-bold text-lg text-white shadow-lg shadow-[#2D5BFF]/30 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-[#2D5BFF]/40"
                 style={{ background: "linear-gradient(135deg, #2D5BFF 0%, #1A3CBD 100%)" }}
@@ -333,6 +333,7 @@ export default function MrCodeLandingPage() {
 
           {/* Booking Form (White Card) */}
           <motion.div 
+            id="booking-form-card"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
