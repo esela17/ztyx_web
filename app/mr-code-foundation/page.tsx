@@ -261,7 +261,7 @@ export default function MrCodeLandingPage() {
              <div className="absolute top-10 -left-4 md:-left-10 w-32 h-64 bg-[#1A1C2E] border-4 border-[#2A2D4A] rounded-3xl shadow-2xl z-30 transform -rotate-6 hidden sm:block overflow-hidden">
                <div className="w-full h-full bg-gradient-to-b from-[#2D5BFF]/20 to-[#0D0E1A] p-2 flex flex-col items-center">
                  <div className="w-10 h-1 bg-[#2A2D4A] rounded-full mb-4"></div>
-                 <img src="/images/mr_code/LOGO.png" alt="Logo" className="w-20 object-contain mt-8 drop-shadow-lg" />
+                 <div className="font-mono text-xs text-[#2D5BFF] font-bold mt-10">`{`<Code/>`}`</div>
                  <div className="w-3/4 h-2 bg-white/10 rounded-full mt-4"></div>
                  <div className="w-1/2 h-2 bg-white/10 rounded-full mt-2"></div>
                </div>
@@ -269,12 +269,10 @@ export default function MrCodeLandingPage() {
 
              {/* Tablet Mockup placeholder */}
              <div className="absolute bottom-4 -right-4 md:-right-10 w-48 h-32 bg-[#1A1C2E] border-4 border-[#2A2D4A] rounded-xl shadow-2xl z-10 transform rotate-6 hidden sm:block overflow-hidden">
-               <div className="w-full h-full bg-gradient-to-br from-[#2D5BFF]/10 to-[#0D0E1A] flex flex-col">
-                 <div className="w-full h-2 bg-black/40 flex items-center justify-center">
-                   <div className="w-1 h-1 rounded-full bg-white/20"></div>
-                 </div>
-                 <div className="flex-1 w-full relative">
-                   <img src="/images/mr_code/COVER.png" alt="Cover" className="w-full h-full object-cover opacity-80" />
+               <div className="w-full h-full bg-gradient-to-br from-[#2D5BFF]/10 to-[#0D0E1A] p-3">
+                 <div className="w-full h-2 bg-white/10 rounded-full mb-2"></div>
+                 <div className="w-full h-16 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center">
+                    <Monitor className="w-6 h-6 text-[#9496C0]" />
                  </div>
                </div>
              </div>
@@ -292,7 +290,10 @@ export default function MrCodeLandingPage() {
             className="lg:col-span-4 bg-[#0D0E1A] border border-[#2D5BFF]/20 rounded-3xl p-6 relative overflow-hidden"
             style={{ boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}
           >
-            <div className="absolute top-0 right-0 w-full h-32 bg-gradient-to-b from-[#2D5BFF]/10 to-transparent"></div>
+            <div className="absolute top-0 right-0 w-full h-32">
+              <img src="/images/mr_code/COVER.png" alt="Cover" className="w-full h-full object-cover opacity-30 mix-blend-lighten" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0E1A] to-transparent" />
+            </div>
             <div className="relative z-10 flex flex-col items-center text-center">
               <div className="w-24 h-24 rounded-full border-2 border-[#2D5BFF] overflow-hidden mb-4 bg-[#111228]">
                 <img src="/images/mr_code/PROFILE.png" alt="Mr Code" className="w-full h-full object-cover object-top" />
