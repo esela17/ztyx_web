@@ -304,7 +304,7 @@ export default function MrCodeLandingPage() {
               <div className="w-full h-px bg-white/10 mb-4"></div>
               
               <p className="text-gray-300 text-sm leading-relaxed mb-6">
-                مدرب برمجة وذكاء اصطناعي معتمد. يسعى لتبسيط المفاهيم المعقدة وتأسيس جيل جديد من المبرمجين القادرين على المنافسة في سوق العمل.
+                مهندس برمجيات، خبير في الذكاء الاصطناعي، ورائد أعمال. مؤسس منصة CURE للرعاية الصحية، ومستشار تقني. حاصل على المركز الأول عالمياً في مسابقة (TSIAS) للعلوم والتكنولوجيا.
               </p>
 
               <div className="w-full flex flex-col gap-3">
@@ -484,6 +484,59 @@ export default function MrCodeLandingPage() {
 
         </section>
 
+        {/* ── DETAILED ABOUT INSTRUCTOR ── */}
+        <section className="bg-[#0D0E1A] border border-[#2D5BFF]/20 rounded-3xl p-8 md:p-12 relative overflow-hidden" style={{ boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#2D5BFF]/5 rounded-full blur-[80px] -z-10" />
+          
+          <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
+            <div className="w-3 h-12 bg-[#2D5BFF] rounded-full" />
+            <div>
+              <h2 className="text-3xl font-black text-white">عن المهندس إسلام حمادة</h2>
+              <p className="text-[#9496C0] mt-1">خبير الذكاء الاصطناعي ورائد الأعمال</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Experience */}
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-[#2D5BFF]/10 border border-[#2D5BFF]/20 flex items-center justify-center mb-6">
+                <Monitor className="w-6 h-6 text-[#2D5BFF]" />
+              </div>
+              <h3 className="text-xl font-bold text-white">خبرة الصناعة والقيادة</h3>
+              <ul className="space-y-3 text-[#9496C0] text-sm leading-relaxed">
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> مؤسس ورئيس تنفيذي لـ CURE Healthcare المنصة الطبية الرائدة.</li>
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> رئيس العمليات والموارد البشرية في Daem Network.</li>
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> تطوير تطبيقات متقدمة مثل منصة Emdad لتوزيع الأدوية.</li>
+              </ul>
+            </div>
+
+            {/* Training */}
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-[#2D5BFF]/10 border border-[#2D5BFF]/20 flex items-center justify-center mb-6">
+                <BookOpen className="w-4 h-4 text-[#2D5BFF]" />
+              </div>
+              <h3 className="text-xl font-bold text-white">التدريب والتوجيه التقني</h3>
+              <ul className="space-y-3 text-[#9496C0] text-sm leading-relaxed">
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> مدرب ذكاء اصطناعي وهندسة أوامر (Prompt Engineering) للمؤسسات والمدارس الدولية.</li>
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> معيد وباحث متخصص في علوم الحاسب والخوارزميات (أكاديمية طيبة).</li>
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> تدريب آلاف الطلاب على البرمجة، البحث العلمي، وريادة الأعمال.</li>
+              </ul>
+            </div>
+
+            {/* Awards */}
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-[#2D5BFF]/10 border border-[#2D5BFF]/20 flex items-center justify-center mb-6">
+                <Globe className="w-4 h-4 text-[#2D5BFF]" />
+              </div>
+              <h3 className="text-xl font-bold text-white">إنجازات وجوائز عالمية</h3>
+              <ul className="space-y-3 text-[#9496C0] text-sm leading-relaxed">
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> المركز الأول عالمياً في معرض (TSIAS) للعلوم والتكنولوجيا (مشروع ESELA).</li>
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> الميدالية الذهبية لجائزة المخترع الصغير من وزارة الثقافة المصرية.</li>
+                <li className="flex gap-2 items-start"><CheckCircle2 className="w-4 h-4 text-[#2D5BFF] shrink-0 mt-1" /> المركز الأول على مستوى الجمهورية في مسابقات البحث العلمي بوزارة التربية والتعليم.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
       </div>
 
       <CustomFooter />
