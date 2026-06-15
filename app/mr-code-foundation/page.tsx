@@ -395,11 +395,8 @@ export default function MrCodeLandingPage() {
                           style={inputStyle}
                         >
                           <option value="">اختر الصف الدراسي...</option>
-                          <option value="الابتدائي">المرحلة الابتدائية</option>
-                          <option value="الإعدادي">المرحلة الإعدادية</option>
-                          <option value="الثانوي">المرحلة الثانوية</option>
-                          <option value="الجامعة">المرحلة الجامعية</option>
-                          <option value="خريج">خريج</option>
+                          <option value="أولى ثانوي">أولى ثانوي</option>
+                          <option value="تانية ثانوي">تانية ثانوي</option>
                         </select>
                         <ChevronRight className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 -rotate-90 pointer-events-none" />
                       </div>
