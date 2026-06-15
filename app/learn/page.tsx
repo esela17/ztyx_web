@@ -210,6 +210,53 @@ export default function LearnPage() {
         </div>
       </section>
 
+      {/* Mr. Code Foundation Course */}
+      <section className="py-12 px-6 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8 flex items-center gap-4">
+            <div className="w-2 h-8 bg-[#2D5BFF] rounded-full" />
+            <h2 className="text-3xl font-bold text-white">كورس التأسيس | Mr. Code</h2>
+          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+          >
+            <GlassCard className="p-8 md:p-12 border-[#2D5BFF]/30 bg-gradient-to-r from-[#2D5BFF]/10 to-transparent flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#2D5BFF]/10 rounded-full blur-[80px] -z-10" />
+              
+              {/* Left Side: Content */}
+              <div className="space-y-6 flex-1 relative z-10 text-right">
+                <Badge className="bg-[#2D5BFF] text-white border-transparent w-max px-4 py-1.5 text-sm">
+                  جديد 🚀
+                </Badge>
+                <h2 className="text-3xl md:text-5xl font-black text-[#F0F1FF] leading-tight">
+                  كورس التأسيس في البرمجة
+                </h2>
+                <p className="text-[#9496C0] text-lg max-w-xl">
+                  تأسيس شامل ومكثف مع المهندس إسلام حمادة (Mr. Code). خطوتك الأولى لاحتراف البرمجة وبناء أساس قوي للمستقبل.
+                </p>
+                <Link
+                  href="/mr-code-foundation"
+                  className="inline-flex items-center justify-center h-14 px-8 rounded-xl font-bold text-lg bg-[#2D5BFF] text-white hover:bg-[#2D5BFF]/90 transition-all shadow-lg shadow-[#2D5BFF]/25 hover:shadow-[#2D5BFF]/40 hover:-translate-y-1 gap-2"
+                >
+                  احجز كورس التأسيس الآن 💻
+                </Link>
+              </div>
+
+              {/* Right Side: Image/Logo */}
+              <div className="relative z-10 shrink-0 hidden md:block">
+                <img 
+                  src="/images/mr_code/LOGO.png" 
+                  alt="Mr Code Logo" 
+                  className="w-48 object-contain rounded-2xl drop-shadow-[0_0_30px_rgba(45,91,255,0.3)]"
+                />
+              </div>
+            </GlassCard>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Featured AI Course */}
       <section className="py-12 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">

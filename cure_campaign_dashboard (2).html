@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CURE – الخطة النهائية #آخر_مرة</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #1D9E75; --teal-light: #E1F5EE;
+  --purple: #7F77DD; --purple-light: #EEEDFE;
+  --blue: #378ADD; --blue-light: #E6F1FB;
+  --amber: #BA7517; --amber-light: #FAEEDA; --amber-mid: #EF9F27;
+  --red: #E24B4A; --red-light: #FCEBEB;
+  --pink: #D4537E; --pink-light: #FBEAF0;
+  --green: #2E7D52; --green-light: #E1F5EE;
+  --gray: #888780; --gray-light: #F1EFE8;
+  --bg: #F7F6F2; --card: #FFFFFF; --border: #E2E0D8;
+  --text: #1a1a18; --text-muted: #6B6A66;
+  --radius: 12px; --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  overflow-y: scroll;
+}
+
+/* HEADER */
+.header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #1D9E75, #378ADD);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: .5px;
+}
+.logo-text { font-size: 17px; font-weight: 700; }
+.logo-sub { font-size: 11px; color: var(--text-muted); }
+.header-stats { display: flex; gap: 18px; flex-wrap: wrap; }
+.hstat { text-align: center; background: var(--bg); padding: 6px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); min-width: 75px;}
+.hstat-val { font-size: 18px; font-weight: 700; }
+.hstat-lbl { font-size: 10px; color: var(--text-muted); font-weight: 500; }
+.hstat-val.done { color: var(--teal); }
+.hstat-val.inprog { color: var(--blue); }
+.hstat-val.pending { color: var(--gray); }
+
+/* TOP KPI BAR */
+.kpi-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 15px 28px 0 28px;
+}
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kpi-info h4 { font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+.kpi-info p { font-size: 20px; font-weight: 700; }
+.kpi-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* ACTIONS BAR */
+.actions-bar {
+  display: flex;
+  gap: 10px;
+  padding: 10px 28px 0 28px;
+  flex-wrap: wrap;
+}
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--card);
+  color: var(--text);
+  transition: all 0.2s;
+}
+.btn-action:hover {
+  background: var(--gray-light);
+  border-color: var(--text-muted);
+}
+.btn-action.primary {
+  background: var(--teal);
+  color: #fff;
+  border-color: var(--teal);
+}
+.btn-action.primary:hover {
+  background: #15805d;
+}
+
+/* TABS */
+.tabs-bar {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  display: flex;
+  position: sticky;
+  top: 75px;
+  z-index: 200;
+  gap: 5px;
+}
+.tab-btn {
+  padding: 12px 20px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+/* FILTERS */
+.filters-bar {
+  padding: 12px 28px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filters-bar label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+select, .search-input, .date-input {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  min-height: 32px;
+}
+select:focus, .search-input:focus, .date-input:focus { border-color: var(--teal); background: #fff;}
+.search-input { min-width: 190px; }
+.date-input { min-width: 128px; }
+.btn-reset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-family: inherit;
+  font-size: 12px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-reset:hover { background: var(--gray-light); color: var(--text); }
+
+/* MAIN */
+.main { padding: 22px 28px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* SECTIONS */
+.section { margin-bottom: 26px; }
+.section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+.section-pill { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.section-count { background: rgba(0,0,0,.08); border-radius: 10px; padding: 1px 7px; font-size: 11px; font-weight: 500; }
+.sec-pw { flex: 1; height: 6px; background: var(--border); border-radius: 3px; max-width: 180px; overflow: hidden;}
+.sec-pb { height: 100%; border-radius: 3px; transition: width .4s; }
+.sec-pct { font-size: 12px; color: var(--text-muted); min-width: 30px; font-weight: 600; }
+
+/* TABLE */
+.table-wrap { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+table { width: 100%; border-collapse: collapse; min-width: 800px; }
+thead th { padding: 12px 14px; font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--gray-light); border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #FAFAF7; }
+tbody td { padding: 11px 14px; vertical-align: middle; }
+.td-task { font-size: 12.5px; font-weight: 600; line-height: 1.45; color: var(--text); }
+.td-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+/* ACTIONS COLUMN */
+.actions-cell {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.preview-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--blue);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+.preview-btn:hover { background: var(--blue-light); border-color: rgba(55,138,221,0.3); }
+
+.edit-task-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+}
+.edit-task-btn:hover { background: var(--gray-light); border-color: var(--text-muted); }
+
+/* MODALS */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-box {
+  background: var(--card);
+  border-radius: var(--radius);
+  max-width: 560px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  position: relative;
+}
+.modal-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px;}
+.modal-box pre {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-size: 12.5px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  color: var(--text);
+  background: var(--bg);
+  padding: 15px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  margin-top: 10px;
+}
+.modal-close {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  background: var(--gray-light);
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+.modal-close:hover { background: #E5E2D9; }
+
+/* FORM ELEMENTS FOR EDIT MODAL */
+.form-group { margin-bottom: 14px; display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-control {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 12.5px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+}
+.form-control:focus { border-color: var(--teal); background: #fff; }
+.btn-submit {
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-submit:hover { background: #15805d; }
+.btn-danger {
+  background: var(--red-light);
+  color: #A32D2D;
+  border: 1px solid rgba(226, 75, 74, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-danger:hover { background: var(--red); color: white; }
+
+/* CHIP */
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 12px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.chip-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* STATUS */
+.status-btn { display: inline-flex; align-items: center; gap: 5px; border: none; border-radius: 7px; padding: 5px 10px; font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.status-btn:hover { opacity: .88; transform: translateY(-0.5px); }
+.s-pending { background: var(--gray-light); color: #5F5E5A; }
+.s-inprog { background: var(--blue-light); color: #185FA5; }
+.s-review { background: var(--amber-light); color: #633806; }
+.s-done { background: var(--teal-light); color: #085041; }
+.s-blocked { background: var(--red-light); color: #A32D2D; }
+
+/* DATES */
+.dates { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-weight: 500; }
+.date-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 4px; min-width: 60px; overflow: hidden;}
+.date-bar-fill { height: 100%; border-radius: 2px; }
+
+/* NOTES */
+.notes-input { border: 1px solid transparent; border-radius: 5px; padding: 4px 6px; font-family: inherit; font-size: 11px; color: var(--text); background: transparent; width: 145px; transition: border-color .15s, background .15s; resize: none; }
+.notes-input:focus { border-color: var(--teal); background: #fff; outline: none; }
+.notes-input::placeholder { color: #ccc; }
+
+/* PRIO */
+.prio { font-size: 11px; font-weight: 600;}
+.prio-high { color: var(--red); }
+.prio-medium { color: var(--amber); }
+.prio-low { color: var(--teal); }
+
+/* FOOTER */
+.footer-bar { margin-top: 28px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+.footer-bar h3 { font-size: 13px; font-weight: 600; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+.person-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.person-name { min-width: 90px; font-size: 12px; font-weight: 600; }
+.pbar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 4px; min-width: 90px; overflow: hidden; }
+.pbar-fill { height: 100%; border-radius: 4px; }
+.pbar-pct { font-size: 11px; color: var(--text-muted); min-width: 30px; font-weight: 600; text-align: left; }
+.footer-left, .footer-right { flex: 1; min-width: 240px; }
+
+/* GANTT */
+.gantt-outer { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+.gantt-inner { min-width: 960px; }
+.g-hdr { display: flex; background: var(--gray-light); border-bottom: 1px solid var(--border); }
+.g-lbl-hdr { flex: 0 0 240px; padding: 10px 12px; font-size: 11px; font-weight: 600; color: var(--text-muted); border-left: 1px solid var(--border); }
+.g-days-hdr { flex: 1; display: flex; }
+.g-day-h { flex: 1; text-align: center; padding: 6px 0; font-size: 10px; color: var(--text-muted); border-left: 1px solid var(--border); line-height: 1.4; font-weight: 500; }
+.g-day-h.g-today { color: var(--red); font-weight: 700; background: rgba(226,75,74,0.04); }
+.g-day-h.g-wknd { background: rgba(0,0,0,.025); }
+.g-sec-hdr { display: flex; border-bottom: 1px solid var(--border); background: #F5F4F0; }
+.g-sec-hdr-cell { flex: 1; padding: 8px 12px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 7px; }
+.g-sdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.g-row { display: flex; border-bottom: 1px solid var(--border); min-height: 42px; align-items: stretch; }
+.g-row:last-child { border-bottom: none; }
+.g-row:hover .g-name-cell, .g-row:hover .g-bar-cell { background: #FAFAF7; }
+.g-name-cell { flex: 0 0 240px; padding: 6px 12px; border-left: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; background: var(--card); }
+.g-name-cell .gn { font-size: 11.5px; font-weight: 600; line-height: 1.4; color: var(--text); }
+.g-name-cell .gw { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.g-bar-cell { flex: 1; position: relative; background: var(--card); }
+.g-today-ln { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--red); z-index: 5; pointer-events: none; }
+.gbar { position: absolute; top: 50%; transform: translateY(-50%); height: 22px; border-radius: 5px; display: flex; align-items: center; padding: 0 8px; font-size: 10px; font-weight: 600; white-space: nowrap; overflow: hidden; cursor: pointer; z-index: 4; color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+.gbar:hover { filter: brightness(.88); }
+.g-legend { display: flex; flex-wrap: wrap; gap: 15px; padding: 12px 14px; border-top: 1px solid var(--border); background: var(--gray-light); }
+.g-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); font-weight: 500; }
+.g-legend-dot { width: 9px; height: 9px; border-radius: 2px; }
+
+/* TOASTS */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 99999;
+}
+.toast {
+  background: #333;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideIn 0.3s forwards, fadeOut 0.3s 2.7s forwards;
+}
+.toast.success { background: #1a7f37; }
+.toast.danger { background: #cf222e; }
+
+@keyframes slideIn { to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeOut { to { transform: translateY(-10px); opacity: 0; } }
+
+.hidden-modal { display: none !important; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- TOAST NOTIFICATION CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay hidden-modal" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕ إغلاق المعاينة</button>
+    <h3 id="modal-title" style="margin-top: 10px;"></h3>
+    <pre id="modal-body"></pre>
+  </div>
+</div>
+
+<!-- TASK EDITOR MODAL -->
+<div class="modal-overlay hidden-modal" id="task-modal" onclick="closeTaskModal(event)">
+  <div class="modal-box" style="max-width: 500px;">
+    <button class="modal-close" onclick="closeTaskModal()">✕ إغلاق</button>
+    <h3 id="task-modal-title" style="margin-top: 10px;">إضافة مهمة جديدة</h3>
+    <form id="task-form" onsubmit="saveTaskForm(event)">
+      <input type="hidden" id="edit-task-id">
+      
+      <div class="form-group">
+        <label>اسم النشاط</label>
+        <input type="text" id="t-name" required class="form-control" placeholder="مثال: كتابة سيناريو الإعلان">
+      </div>
+      
+      <div class="form-group">
+        <label>الوصف التفصيلي</label>
+        <input type="text" id="t-desc" required class="form-control" placeholder="وصف موجز للمهمة والمخرجات">
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>المحور</label>
+          <select id="t-section" class="form-control" required>
+            <option value="بوستات">بوستات الحملة</option>
+            <option value="voice">Voice Over</option>
+            <option value="hero">الفيديو الرئيسي</option>
+            <option value="تصوير">التصوير والمونتاج</option>
+            <option value="شراكات">الشراكات الطبية</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>المسؤول</label>
+          <select id="t-who" class="form-control" required>
+            <option value="ضي">ضي</option>
+            <option value="يوسف">يوسف</option>
+            <option value="عزة">عزة</option>
+            <option value="ميسرة/رانيا">ميسرة/رانيا</option>
+            <option value="إيمان">إيمان</option>
+            <option value="هاجر">هاجر</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>الأولوية</label>
+          <select id="t-prio" class="form-control" required>
+            <option value="high">عالية 🔴</option>
+            <option value="medium">متوسطة 🟡</option>
+            <option value="low">منخفضة 🟢</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>الحالة</label>
+          <select id="t-status" class="form-control" required>
+            <option value="pending">لم يبدأ</option>
+            <option value="inprog">جاري</option>
+            <option value="review">مراجعة</option>
+            <option value="done">مكتمل</option>
+            <option value="blocked">محظور</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>تاريخ البدء</label>
+          <input type="date" id="t-start" min="2026-07-04" max="2026-07-11" required class="form-control">
+        </div>
+        <div class="form-group">
+          <label>تاريخ الانتهاء</label>
+          <input type="date" id="t-end" min="2026-07-04" max="2026-07-11" class="form-control">
+          <span style="font-size:10px;color:var(--text-muted)">اتركه فارغاً للمهام المستمرة</span>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>مربوط بمحتوى معاينة (اختياري)</label>
+        <select id="t-preview" class="form-control">
+          <option value="">بدون معاينة</option>
+          <option value="three_videos_script">سكريبت الفيديوهات الثلاثة (ضي)</option>
+          <option value="p01">بوست 1 — آخر مرة اتصلت فيها</option>
+          <option value="p02">بوست 2 — كنت مشغول</option>
+          <option value="p03">بوست 3 — هي كانت كويسة إمبارح</option>
+          <option value="p04">بوست 4 — مكالمة واحدة</option>
+          <option value="p05">بوست 5 — مش لازم تستنى</option>
+          <option value="p06">بوست 6 — فيه حد مستنيك</option>
+          <option value="p07">بوست 7 — لو رجع الزمن</option>
+          <option value="p08">بوست 8 — البيت مش هيستناك</option>
+          <option value="p09">بوست 9 — أنا كويسة</option>
+          <option value="p10">بوست 10 — آخر مرة (الأقوى)</option>
+          <option value="v01">Voice Over — آخر مرة</option>
+          <option value="v02">Voice Over — أنا كويسة</option>
+          <option value="hero">الفيديو الرئيسي — آخر مرة</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>ملاحظات إضافية</label>
+        <textarea id="t-notes" rows="2" class="form-control" style="resize: vertical;" placeholder="أضف أي تفاصيل أو روابط مستندات خارجية هنا..."></textarea>
+      </div>
+      
+      <div id="delete-confirmation-area" class="hidden" style="margin-bottom: 12px; padding: 10px; border-radius: var(--radius-sm); background: var(--red-light); border: 1px dashed var(--red); font-size:11px; text-align: center;">
+         ⚠️ هل أنت متأكد من رغبتك بحذف هذه المهمة؟ الإجراء لا يمكن التراجع عنه.
+         <div style="margin-top: 8px; display:flex; gap:10px; justify-content:center;">
+           <button type="button" class="status-btn s-blocked" onclick="confirmDeleteCurrentTask()">نعم، احذف نهائياً</button>
+           <button type="button" class="status-btn s-pending" onclick="cancelDeleteRequest()">تراجع</button>
+         </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; gap:10px;">
+        <button type="button" class="btn-danger hidden" id="btn-delete-task" onclick="requestDeleteTask()">🗑️ حذف المهمة</button>
+        <button type="submit" class="btn-submit" style="flex: 1;">حفظ وتحديث البيانات</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-mark">CR</div>
+    <div>
+      <div class="logo-text">CURE — حملة #آخر_مرة</div>
+      <div class="logo-sub">الخطة النهائية للمحتوى والشراكات (أسبوع مكثف) · يوليو 2026</div>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="hstat"><div class="hstat-val done" id="count-done">0</div><div class="hstat-lbl">مكتمل</div></div>
+    <div class="hstat"><div class="hstat-val inprog" id="count-inprog">0</div><div class="hstat-lbl">جاري العمل</div></div>
+    <div class="hstat"><div class="hstat-val pending" id="count-pend">0</div><div class="hstat-lbl">لم يبدأ</div></div>
+    <div class="hstat"><div class="hstat-val" style="color:var(--red)" id="count-block">0</div><div class="hstat-lbl">محظور</div></div>
+  </div>
+</div>
+
+<!-- TOP KPI BAR -->
+<div class="kpi-container">
+  <div class="kpi-card">
+    <div class="kpi-info">
+      <h4>التقدم الكلي للحملة</h4>
+      <p id="kpi-progress">0%</p>
+    </div>
+    <div class="kpi-icon" style="background:#E1F5EE; color:#1D9E75;">📊</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-info">
+      <h4>إجمالي المهام المجدولة</h4>
+      <p id="kpi-total-tasks">0</p>
+    </div>
+    <div class="kpi-icon" style="background:#E6F1FB; color:#378ADD;">📋</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-info">
+      <h4>المهام المحظورة / المتأخرة</h4>
+      <p id="kpi-risk-tasks">0</p>
+    </div>
+    <div class="kpi-icon" style="background:#FCEBEB; color:#E24B4A;">⚠️</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-info">
+      <h4>قائد المهام (الأعلى عملاً)</h4>
+      <p id="kpi-top-performer">—</p>
+    </div>
+    <div class="kpi-icon" style="background:#EEEDFE; color:#7F77DD;">👑</div>
+  </div>
+</div>
+
+<!-- INTERACTIVE CONTROLS BAR -->
+<div class="actions-bar">
+  <button class="btn-action primary" onclick="openNewTaskModal()">
+    <span>➕</span> إضافة نشاط/مهمة جديدة
+  </button>
+  <button class="btn-action" onclick="exportData()">
+    <span>📥</span> تصدير الخطة الاحتياطية (JSON)
+  </button>
+  <button class="btn-action" onclick="triggerImport()">
+    <span>📤</span> استيراد خطة من ملف
+  </button>
+  <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importData(event)">
+  <button class="btn-action" style="color:var(--red);" onclick="resetToSystemDefaults()">
+    <span>🔄</span> تصفير واستعادة خطة المصنع
+  </button>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('list',this)">📋 قائمة المهام التفاعلية</button>
+  <button class="tab-btn" onclick="switchTab('gantt',this)">📊 جانت تشارت الزمني</button>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <input class="search-input" id="search" placeholder="🔍  ابحث عن نشاط..." oninput="applyFilters()">
+  
+  <label>المحور:</label>
+  <select id="f-section" onchange="applyFilters()">
+    <option value="">الكل</option>
+    <option value="بوستات">بوستات الحملة</option>
+    <option value="voice">Voice Over</option>
+    <option value="hero">الفيديو الرئيسي</option>
+    <option value="تصوير">التصوير والمونتاج</option>
+    <option value="شراكات">الشراكات الطبية</option>
+  </select>
+  
+  <label>المسؤول:</label>
+  <select id="f-who" onchange="applyFilters()">
+    <option value="">الكل</option>
+    <option value="ضي">ضي</option>
+    <option value="يوسف">يوسف</option>
+    <option value="عزة">عزة</option>
+    <option value="ميسرة">ميسرة/رانيا</option>
+    <option value="إيمان">إيمان</option>
+    <option value="هاجر">هاجر</option>
+  </select>
+  
+  <label>الحالة:</label>
+  <select id="f-status" onchange="applyFilters()">
+    <option value="">الكل</option>
+    <option value="pending">لم يبدأ</option>
+    <option value="inprog">جاري</option>
+    <option value="review">مراجعة</option>
+    <option value="done">مكتمل</option>
+    <option value="blocked">محظور</option>
+  </select>
+  
+  <label>الأولوية:</label>
+  <select id="f-prio" onchange="applyFilters()">
+    <option value="">الكل</option>
+    <option value="high">عالية 🔴</option>
+    <option value="medium">متوسطة 🟡</option>
+    <option value="low">منخفضة 🟢</option>
+  </select>
+  
+  <label>من:</label>
+  <input class="date-input" type="date" id="f-date-from" onchange="applyFilters()" min="2026-07-04" max="2026-07-11">
+  
+  <label>إلى:</label>
+  <input class="date-input" type="date" id="f-date-to" onchange="applyFilters()" min="2026-07-04" max="2026-07-11">
+  
+  <button class="btn-reset" onclick="resetFilters()">↺ إعادة تعيين</button>
+</div>
+
+<!-- PANEL CONTENT -->
+<div class="main">
+  <div class="tab-panel active" id="panel-list"></div>
+  <div class="tab-panel" id="panel-gantt"></div>
+</div>
+
+<script>
+const GANTT_START=new Date(2026,6,4);
+const GANTT_END=new Date(2026,6,12);
+const TOTAL_DAYS=Math.round((GANTT_END-GANTT_START)/86400000);
+
+const PC={
+  'ضي':         {bg:'#EEEDFE',text:'#3C3489',dot:'#7F77DD'},
+  'يوسف':       {bg:'#E6F1FB',text:'#0C447C',dot:'#378ADD'},
+  'عزة':        {bg:'#E1F5EE',text:'#085041',dot:'#1D9E75'},
+  'ميسرة/رانيا': {bg:'#FAEEDA',text:'#633806',dot:'#EF9F27'},
+  'إيمان':       {bg:'#FBEAF0',text:'#72243E',dot:'#D4537E'},
+  'هاجر':        {bg:'#FCEBEB',text:'#A32D2D',dot:'#E24B4A'},
+};
+
+// ======== CONTENT PREVIEWS WITH ADDED SCRIPTS ========
+const PREVIEWS = {
+  three_videos_script: {
+    title: 'محتوى الفيديوهات الثلاثة — إعداد ضي',
+    body: `🎬 الفيديو الأول: "آخر مرة" (مدة 60 ثانية)
+---------------------------------------------
+[توجيه بصري]: تتابع سريع لأجهزة هواتف ذكية تضيء في الظلام مع مكالمات فائتة مسجلة باسم "الأم". الغرف تبدو هادئة مع صوت رنين متكرر وخافت.
+[صوت المعلق]: "مش دايمًا بنفتكر اللحظة اللي بدأت تبقى (آخر مرة)...
+'هكلمها بعدين' ... 'لسه بدري' ... 'مشغول دلوقتي' ...
+بس الحقيقة القاسية… مفيش حاجة في الدنيا اسمها وقت مضمون.
+فيه بس لحظة بتعدي… ومش هترجع."
+[توجيه بصري]: ينتهي المشهد بـ Fade to Black يليه شعار CURE مع جملة: "اطمن عليهم دلوقتي."
+
+🎬 الفيديو الثاني: "أنا كويسة" (مدة 45-60 ثانية)
+---------------------------------------------
+[توجيه بصري]: لقطات قريبة (Close-ups) تركز على تعابير وجه سيدة مسنة ترتب سريرًا فارغًا وتنظر للنافذة بابتسامة خفيفة تخفي خلفها ملامح التعب والإجهاد.
+[صوت المعلق]: "جملة 'أنا كويسة'… بنصدقها بسرعة وبنعديها.
+بس أوقات كتير، مش كل حاجة بتتقال بيكون معناها إن الأمور تمام.
+فيه تعب خفي مش بيبان على الوشوش، وفيه ناس بتحب تكابر وتتغلب على ألمها بالصمت.
+اسأل تاني… واطمن أكتر. قرب المسافة بينكم."
+[توجيه بصري]: يظهر شعار CURE للرعاية الصحية.
+
+🎬 الفيديو الثالث: الفيديو الرئيسي Hero (مدة 60 ثانية)
+---------------------------------------------
+[توجيه بصري]: تتابع درامي رائع يجمع بين اللقطات الدافئة والباردة: مائدة طعام عائلية ممتلئة بالصخب، ثم تتحول تدريجياً لغرفة معيشة هادئة جداً، يد تجعد أطراف لحاف قديم، ثم شاشة هاتف يظهر عليها رسالة "تم العرض - Seen" دون رد.
+[صوت المعلق]: "المشكلة الكبيرة إننا دايماً بنتوهم إن لسه عندنا وقت كفاية…
+آخر مرة شوفناهم فيها… مكنش باين عليها خالص إنها هتكون (آخر مرة).
+كانت مجرد مكالمة عادية، ضحكة عادية، وزيارة سريعة جداً.
+الزمن مش بيرجع… والبيت مش هيستناك للأبد.
+اطمن على صحة أحبابك، قبل ما تبقى اللحظة مجرد ذكرى."
+[الختام]: تظهر معلومات الاتصال وحجز الخدمات الطبية عبر CURE.`
+  },
+  p01: {title:'بوست 1 — آخر مرة اتصلت فيها', body:`🪝 Hook:\nآخر مرة كلمت فيها والدتك… كانت إمتى؟\n\n📝 النص:\nمش دايمًا بنفتكر اللحظة اللي بدأت تبقى "آخر مرة".\n\n"هكلمها بعدين"\n"لسه بدري"\n"مشغول دلوقتي"\n\nبس الحقيقة… مفيش حاجة اسمها وقت مضمون.\n\nفيه بس لحظة بتعدي ومش بترجع.\n\n📲 CTA:\nاطمن عليهم الآن.`},
+  p02: {title:'بوست 2 — كنت مشغول', body:`🪝 Hook:\n"كنت مشغول"\nأكتر جملة بنندم عليها.\n\n📝 النص:\nالشغل بيخلص…\nبس الإحساس بالتقصير ما بيخلصش.\n\nفيه ناس بنحبهم…\nبس بنأجلهم.\n\n📲 CTA:\nاطمن عليهم قبل ما يبقى متأخر.`},
+  p03: {title:'بوست 3 — هي كانت كويسة إمبارح', body:`🪝 Hook:\n"كانت كويسة إمبارح"\n\n📝 النص:\nجملة بسيطة…\nبس ساعات بعدها كل حاجة بتتغير.\n\nالتعب مش بيستأذن.\nولا بيدي إنذار.\n\n📲 CTA:\nمتفترضش إنها دايمًا كويسة.`},
+  p04: {title:'بوست 4 — مكالمة واحدة', body:`🪝 Hook:\nمكالمة واحدة ممكن تغيّر كل حاجة.\n\n📝 النص:\nفيه مكالمات بنفتكرها للأبد.\nومكالمات بنندم إننا ما عملناهاش.\n\nاختار تكون فين النهاردة.\n\n📲 CTA:\nاطمن عليهم دلوقتي.`},
+  p05: {title:'بوست 5 — مش لازم تستنى', body:`🪝 Hook:\nمش لازم تستنى حاجة تحصل.\n\n📝 النص:\nالاهتمام الحقيقي بيبدأ قبل الأزمة.\nمش بعدها.\n\n📲 CTA:\nابدأ من دلوقتي.`},
+  p06: {title:'بوست 6 — فيه حد مستنيك', body:`🪝 Hook:\nفيه حد مستنيك… ومش بيقول.\n\n📝 النص:\nمش كل الناس بتطلب المساعدة.\nبس كل الناس محتاجة اهتمام.\n\n📲 CTA:\nاتصل بيهم دلوقتي.`},
+  p07: {title:'بوست 7 — لو رجع الزمن', body:`🪝 Hook:\nلو رجع الزمن… هتعمل إيه؟\n\n📝 النص:\nكلنا عندنا نفس الإجابة…\n"كنت هكلمهم أكتر"\n\nبس الزمن مش بيرجع.\n\n📲 CTA:\nاعملها النهاردة.`},
+  p08: {title:'بوست 8 — البيت مش هيستناك', body:`🪝 Hook:\nالبيت مش هيستناك.\n\n📝 النص:\nالوقت بيعدي حتى وإحنا مش واخدين بالنا.\n\nوفيه ناس جواه مستنيانا.\n\n📲 CTA:\nاطمن عليهم اليوم.`},
+  p09: {title:'بوست 9 — أنا كويسة', body:`🪝 Hook:\n"أنا كويسة"\n\n📝 النص:\nجملة بنصدقها بسرعة…\nبس مش دايمًا معناها الحقيقة.\n\nاسأل تاني… واطمن أكتر.\n\n📲 CTA:\nCURE يساعدك تكون قريب حتى لو بعيد.`},
+  p10: {title:'بوست 10 — آخر مرة (الأقوى)', body:`🪝 Hook:\nمش هتعرف إنها آخر مرة وقتها.\n\n📝 النص:\nآخر مكالمة…\nآخر ضحكة…\nآخر زيارة…\n\nكلهم كانوا عاديين جدًا وقتها.\n\nلحد ما بقوا "آخر مرة".\n\n📲 CTA:\nما تأجلش الاطمئنان.`},
+  v01: {title:'Voice Over — آخر مرة (60 ثانية)', body:`🎧 Script:\n\nكلنا بنقول:\n"هكلمها بعدين"\n"لسه بدري"\n"مشغول دلوقتي"\n\nبس الحقيقة…\nمفيش حاجة اسمها وقت مضمون.\n\nفيه لحظة بتعدي…\nومش بترجع.\n\nآخر مكالمة…\nآخر زيارة…\nآخر ضحكة…\n\nفي وقتها… كانوا عاديين جدًا.\nبس دلوقتي… بقوا "آخر مرة".\n\nما تأجلش الاطمئنان.\n\n🎥 Visual Direction:\n• مكالمات لم تُرد\n• بيت هادئ\n• شخص ينظر للهاتف\n• لقطات بطيئة جدًا\n• fade to black`},
+  v02: {title:'Voice Over — أنا كويسة (45-60 ثانية)', body:`🎧 Script:\n\n"أنا كويسة"\n\nجملة بسيطة…\nبنسمعها ونتطمن.\n\nبس أحيانًا…\nمش كل حاجة بتتقال… معناها إنها تمام.\n\nفيه تعب مش بيبان.\n\nوفيه ناس مش بتطلب مساعدة…\nبس محتاجاها.\n\nاسأل تاني…\nوما تكتفيش بكلمة واحدة.\n\nاطمن عليهم… حتى لو أنت بعيد.\n\n🎥 Visual Direction:\n• وجه أم / سيدة كبيرة\n• ابتسامة خفيفة + تعب داخلي\n• صمت طويل\n• close-up shots\n• نهاية مظلمة + شعار CURE`},
+  hero: {title:'الفيديو الرئيسي — آخر مرة (60 ثانية)', body:`🎧 Voice Over:\n\nكلنا بنفتكر إن عندنا وقت كفاية…\n\n"بكرة أكلمهم"\n"بعد الشغل أعدي عليهم"\n"لما أفضى"\n\nبس البكرة ساعات ما بتيجيش…\n\nآخر مرة شوفناهم…\nما كانتش شكلها إنها آخر مرة.\n\nكانت يوم عادي جدًا.\n\nضحكة عادية…\nمكالمة عادية…\nزيارة سريعة…\n\nلحد ما بقوا ذكرى.\n\nما تأجلش اللحظة اللي ممكن تبقى أهم لحظة.\n\nاطمن عليهم… قبل ما تبقى "آخر مرة".\n\n🎬 Shot List:\n• مكالمة لم تُرد\n• شخص في العمل\n• أم في البيت\n• باب بيت يُغلق\n• رسالة "Seen"\n• صمت\n• صورة عائلية قديمة\n• شاشة سوداء\n• CURE logo + Tagline\n\n🎵 Sound Design:\n• Piano بطيء جدًا\n• Silence gaps\n• Heartbeat subtle\n• Fade out نهائي`}
+};
+
+// INITIAL / FALLBACK DATABASE FOR CAMPAIGN
+const DEFAULT_SECTIONS=[
+  {
+    key:'بوستات', title:'أولاً: 10 بوستات الحملة #آخر_مرة', color:'#7F77DD', light:'#EEEDFE',
+    tasks:[
+      {id:'p01',name:'بوست 1 — آخر مرة اتصلت فيها',      desc:'Hook عاطفي عن تأجيل مكالمة الأم',                  who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'high',  status:'pending',notes:'',preview:'p01'},
+      {id:'p02',name:'بوست 2 — كنت مشغول',                desc:'ندم على التقصير بسبب الانشغال',                  who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'high',  status:'pending',notes:'',preview:'p02'},
+      {id:'p03',name:'بوست 3 — هي كانت كويسة إمبارح',     desc:'التغيير المفاجئ في الحالة الصحية',              who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'high',  status:'pending',notes:'',preview:'p03'},
+      {id:'p04',name:'بوست 4 — مكالمة واحدة',             desc:'قوة الاتصال الواحد وأثره',                       who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'medium',status:'pending',notes:'',preview:'p04'},
+      {id:'p05',name:'بوست 5 — مش لازم تستنى',            desc:'الاهتمام يبدأ قبل الأزمة لا بعدها',             who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'medium',status:'pending',notes:'',preview:'p05'},
+      {id:'p06',name:'بوست 6 — فيه حد مستنيك',            desc:'ناس بتحتاج من غير ما تطلب',                      who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'medium',status:'pending',notes:'',preview:'p06'},
+      {id:'p07',name:'بوست 7 — لو رجع الزمن',             desc:'ندم على عدم التواصل الكافي',                     who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'medium',status:'pending',notes:'',preview:'p07'},
+      {id:'p08',name:'بوست 8 — البيت مش هيستناك',         desc:'الوقت يمضي وناس تنتظر',                        who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'medium',status:'pending',notes:'',preview:'p08'},
+      {id:'p09',name:'بوست 9 — أنا كويسة',                desc:'جملة تُقال لكنها لا تعني دائمًا الحقيقة',        who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'high',  status:'pending',notes:'',preview:'p09'},
+      {id:'p10',name:'بوست 10 — آخر مرة (الأقوى)',        desc:'الختام الأشد تأثيراً في الحملة',                who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'high',  status:'pending',notes:'',preview:'p10'},
+      {id:'pd1',name:'تصميم 10 بوستات',                    desc:'تصاميم جاهزة للنشر بهوية CURE',                 who:'يوسف',start:'6/7',end:'8/7',dur:3,prio:'high',  status:'pending',notes:'يبدأ بعد انتهاء كتابة المحتوى',preview:null},
+    ]
+  },
+  {
+    key:'voice', title:'ثانياً: Voice Over فيديوهات', color:'#1D9E75', light:'#E1F5EE',
+    tasks:[
+      {id:'v00',name:'كتابة كونتنت الثلاث فيديوهات',      desc:'سكريبت كامل وتوجيه بصري مخصص (آخر مرة ، أنا كويسة ، Hero Video)', who:'ضي', start:'4/7',end:'5/7',dur:2,prio:'high',  status:'pending',notes:'تم صياغة الاسكريبت الأولي',preview:'three_videos_script'},
+      {id:'v01',name:'فيديو 1 — "آخر مرة" (60 ثانية)',     desc:'سكريبت كامل + توجيه بصري للمونتاج',             who:'عزة', start:'6/7',end:'7/7',dur:2,prio:'high',  status:'pending',notes:'يبدأ بعد انتهاء الكونتنت',preview:'v01'},
+      {id:'v02',name:'فيديو 2 — "أنا كويسة" (60 ثانية)',   desc:'سكريبت + لقطات close-up وجه وتعب داخلي',       who:'عزة', start:'6/7',end:'7/7',dur:2,prio:'high',  status:'pending',notes:'يبدأ بعد انتهاء الكونتنت',preview:'v02'},
+      {id:'vm1',name:'مونتاج فيديو 1 — آخر مرة',           desc:'fade to black + لقطات المكالمات',               who:'ميسرة/رانيا',start:'8/7',end:'10/7',dur:3,prio:'high',  status:'pending',notes:'يبدأ بعد الفويس أوفر',preview:null},
+      {id:'vm2',name:'مونتاج فيديو 2 — أنا كويسة',         desc:'close-up shots + شعار CURE في النهاية',         who:'ميسرة/رانيا',start:'8/7',end:'10/7',dur:3,prio:'high',  status:'pending',notes:'يبدأ بعد الفويس أوفر',preview:null},
+    ]
+  },
+  {
+    key:'hero', title:'ثالثاً: الفيديو الرئيسي Hero (60 ثانية)', color:'#E24B4A', light:'#FCEBEB',
+    tasks:[
+      {id:'hr1',name:'كتابة محاور الفيديو الرئيسي',        desc:'تفصيل Shot List + Voice Over كامل',             who:'ضي',  start:'4/7',end:'5/7',dur:2,prio:'high',  status:'pending',notes:'',preview:'hero'},
+      {id:'hr2',name:'تسجيل Voice Over الرئيسي',           desc:'صوت احترافي بإحساس عاطفي عميق',                who:'عزة', start:'6/7',end:'7/7',dur:2,prio:'high',  status:'pending',notes:'يبدأ بعد الكونتنت',preview:null},
+    ]
+  },
+  {
+    key:'تصوير', title:'رابعاً: التصوير والمونتاج', color:'#EF9F27', light:'#FAEEDA',
+    tasks:[
+      {id:'sh1',name:'تصوير مشاهد Hero Video',             desc:'مكالمة لم تُرد · بيت · أم · باب · رسالة Seen', who:'إيمان',start:'6/7',end:'7/7',dur:2,prio:'high',  status:'pending',notes:'',preview:null},
+      {id:'sh2',name:'مونتاج الفيديو الرئيسي (Hero)',      desc:'Piano بطيء + Silence gaps + Heartbeat + Fade',  who:'ميسرة/رانيا',start:'8/7',end:'10/7',dur:3,prio:'high',  status:'pending',notes:'يبدأ بعد الفويس والتصوير',preview:null},
+    ]
+  },
+  {
+    key:'شراكات', title:'خامساً: الشراكات الطبية (هاجر)', color:'#378ADD', light:'#E6F1FB',
+    tasks:[
+      {id:'s01',name:'قائمة 10 مراكز أشعة',                desc:'قاعدة بيانات مراكز الأشعة المستهدفة',          who:'هاجر',start:'4/7',end:'4/7',dur:1,prio:'high',  status:'pending',notes:''},
+      {id:'s02',name:'قائمة 10 معامل تحاليل',              desc:'قاعدة بيانات معامل التحاليل',                  who:'هاجر',start:'4/7',end:'4/7',dur:1,prio:'high',  status:'pending',notes:''},
+      {id:'s03',name:'قائمة 10 مكاتب تمريض منزلي',        desc:'شبكة مقدمي خدمة التمريض المنزلي',              who:'هاجر',start:'4/7',end:'4/7',dur:1,prio:'high',  status:'pending',notes:''},
+      {id:'s04',name:'إعداد عروض الشراكة (Proposal)',      desc:'ملفات تفاوض وعروض شراكة جاهزة',               who:'هاجر',start:'5/7',end:'5/7',dur:1,prio:'high',  status:'pending',notes:''},
+      {id:'s05',name:'التواصل مع أول 3 جهات/فئة',         desc:'Pilot test مع 9 جهات (3 × 3 فئات)',            who:'هاجر',start:'6/7',end:'7/7',dur:2,prio:'high',  status:'pending',notes:''},
+      {id:'s06',name:'متابعة ردود الشركاء',                desc:'إدارة العلاقات ومتابعة الردود (مستمر)',         who:'هاجر',start:'8/7',end:'10/7',dur:3,prio:'medium',status:'pending',notes:''},
+      {id:'s07',name:'إغلاق أول 5 شراكات',                desc:'إتمام عقود أول 5 شراكات والبدء الفعلي',        who:'هاجر',start:'8/7',end:'10/7',dur:3,prio:'high',  status:'pending',notes:''},
+    ]
+  },
+];
+
+let SECTIONS = [];
+
+const SL={
+  pending:{label:'لم يبدأ',cls:'s-pending',icon:'○'},
+  inprog: {label:'جاري',   cls:'s-inprog', icon:'◑'},
+  review: {label:'مراجعة', cls:'s-review', icon:'◈'},
+  done:   {label:'مكتمل ✓',cls:'s-done',   icon:'●'},
+  blocked:{label:'محظور',  cls:'s-blocked',icon:'✕'},
+};
+const PL={high:{label:'عالية',cls:'prio-high'},medium:{label:'متوسطة',cls:'prio-medium'},low:{label:'منخفضة',cls:'prio-low'}};
+const SO=['pending','inprog','review','done','blocked'];
+let currentTab='list';
+
+// HELPERS FOR INTERNAL DATE FORMAT (D/M) TO DATE INPUT VALUE (YYYY-MM-DD)
+function internalToDateInput(str) {
+  if (!str || str === 'مفتوح') return '';
+  const [d, m] = str.split('/').map(Number);
+  return `2026-${m.toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
+}
+function dateInputToInternal(val) {
+  if (!val) return 'مفتوح';
+  const parts = val.split('-');
+  const d = parseInt(parts[2], 10);
+  const m = parseInt(parts[1], 10);
+  return `${d}/${m}`;
+}
+
+function parseDate(str){
+  if(!str||str==='مفتوح')return null;
+  const[d,m]=str.split('/').map(Number);
+  return new Date(2026,m-1,d);
+}
+function toIso(d){return d?d.toISOString().slice(0,10):'';}
+function fromIso(s){if(!s)return null;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+
+// SHOW LIVE SYSTEM TOASTS
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${type === 'success' ? '✓' : '⚠️'}</span> ${message}`;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// STORAGE ACTIONS
+function loadState(){
+  try{
+    const sv=localStorage.getItem('cure_campaign_sections_v4');
+    if(sv){
+      SECTIONS = JSON.parse(sv);
+    } else {
+      SECTIONS = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+    }
+  }catch(e){
+    SECTIONS = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+  }
+}
+
+function saveState(){
+  try{
+    localStorage.setItem('cure_campaign_sections_v4',JSON.stringify(SECTIONS));
+  }catch(e){}
+}
+
+// RESTORE DEFAULT SYSTEM CONFIGURATION
+function resetToSystemDefaults() {
+  if (confirm("هل تريد بالتأكيد إعادة ضبط النظام وحذف كافة المهام المضافة والتعديلات؟")) {
+    localStorage.removeItem('cure_campaign_sections_v4');
+    loadState();
+    renderAll();
+    applyFilters();
+    showToast("تمت استعادة إعدادات الخطة المصنعية بنجاح", "success");
+  }
+}
+
+// EXPORT TO LOCAL FILE
+function exportData() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(SECTIONS, null, 2));
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", `CURE_Campaign_Backup_${new Date().toISOString().slice(0,10)}.json`);
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+  showToast("تم تصدير ملف النسخة الاحتياطية بنجاح", "success");
+}
+
+function triggerImport() {
+  document.getElementById('import-file-input').click();
+}
+
+// IMPORT FROM LOCAL FILE
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (Array.isArray(imported) && imported.length > 0 && imported[0].tasks) {
+        SECTIONS = imported;
+        saveState();
+        renderAll();
+        applyFilters();
+        showToast("تم استيراد خطة العمل بنجاح وتحديث لوحة التحكم", "success");
+      } else {
+        showToast("خطأ: بنية الملف غير صالحة", "danger");
+      }
+    } catch (err) {
+      showToast("عفواً، فشل قراءة الملف المستورد", "danger");
+    }
+  };
+  reader.readAsText(file);
+}
+
+// TASK INTERACTION & ACTIONS
+function cycleStatus(id){
+  SECTIONS.forEach(sec=>sec.tasks.forEach(t=>{if(t.id===id){const i=SO.indexOf(t.status);t.status=SO[(i+1)%SO.length];}}));
+  saveState();renderAll();applyFilters();
+  showToast("تم تحديث حالة المهمة بنجاح");
+}
+function updateNotes(id,val){
+  SECTIONS.forEach(sec=>sec.tasks.forEach(t=>{if(t.id===id)t.notes=val;}));
+  saveState();
+}
+
+function switchTab(name,btn){
+  currentTab=name;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  applyFilters();
+}
+
+function openPreview(id){
+  const p=PREVIEWS[id];if(!p)return;
+  document.getElementById('modal-title').textContent=p.title;
+  document.getElementById('modal-body').textContent=p.body;
+  document.getElementById('modal-overlay').classList.remove('hidden-modal');
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal-overlay')||e.type==='click'&&e.currentTarget.classList.contains('modal-close')){
+    document.getElementById('modal-overlay').classList.add('hidden-modal');
+  }
+}
+
+// TASK CRUD MODAL ACTIONS
+function openNewTaskModal() {
+  document.getElementById('task-modal-title').textContent = "إضافة نشاط / مهمة جديدة للحملة";
+  document.getElementById('edit-task-id').value = "";
+  document.getElementById('task-form').reset();
+  document.getElementById('btn-delete-task').classList.add('hidden');
+  document.getElementById('delete-confirmation-area').classList.add('hidden');
+  document.getElementById('task-modal').classList.remove('hidden-modal');
+}
+
+function openTaskEditor(id) {
+  let foundTask = null;
+  let foundSecKey = "";
+  SECTIONS.forEach(sec => {
+    sec.tasks.forEach(t => {
+      if(t.id === id) { foundTask = t; foundSecKey = sec.key; }
+    });
+  });
+
+  if (!foundTask) return;
+
+  document.getElementById('task-modal-title').textContent = `تعديل المهمة: ${foundTask.name}`;
+  document.getElementById('edit-task-id').value = foundTask.id;
+  document.getElementById('t-name').value = foundTask.name;
+  document.getElementById('t-desc').value = foundTask.desc;
+  document.getElementById('t-section').value = foundSecKey;
+  document.getElementById('t-who').value = foundTask.who;
+  document.getElementById('t-prio').value = foundTask.prio;
+  document.getElementById('t-status').value = foundTask.status;
+  document.getElementById('t-start').value = internalToDateInput(foundTask.start);
+  document.getElementById('t-end').value = internalToDateInput(foundTask.end);
+  document.getElementById('t-preview').value = foundTask.preview || "";
+  document.getElementById('t-notes').value = foundTask.notes || "";
+
+  document.getElementById('btn-delete-task').classList.remove('hidden');
+  document.getElementById('delete-confirmation-area').classList.add('hidden');
+  document.getElementById('task-modal').classList.remove('hidden-modal');
+}
+
+function closeTaskModal(e) {
+  if(!e || e.target === document.getElementById('task-modal') || e.type==='click' && e.currentTarget.classList.contains('modal-close')){
+    document.getElementById('task-modal').classList.add('hidden-modal');
+  }
+}
+
+function requestDeleteTask() {
+  document.getElementById('delete-confirmation-area').classList.remove('hidden');
+}
+
+function cancelDeleteRequest() {
+  document.getElementById('delete-confirmation-area').classList.add('hidden');
+}
+
+function confirmDeleteCurrentTask() {
+  const id = document.getElementById('edit-task-id').value;
+  if (!id) return;
+
+  SECTIONS.forEach(sec => {
+    sec.tasks = sec.tasks.filter(t => t.id !== id);
+  });
+
+  saveState();
+  renderAll();
+  applyFilters();
+  document.getElementById('task-modal').classList.add('hidden-modal');
+  showToast("تم حذف المهمة المحددة نهائياً", "danger");
+}
+
+function saveTaskForm(e) {
+  e.preventDefault();
+  const id = document.getElementById('edit-task-id').value;
+  const name = document.getElementById('t-name').value;
+  const desc = document.getElementById('t-desc').value;
+  const secKey = document.getElementById('t-section').value;
+  const who = document.getElementById('t-who').value;
+  const prio = document.getElementById('t-prio').value;
+  const status = document.getElementById('t-status').value;
+  const rawStart = document.getElementById('t-start').value;
+  const rawEnd = document.getElementById('t-end').value;
+  const preview = document.getElementById('t-preview').value || null;
+  const notes = document.getElementById('t-notes').value;
+
+  const start = dateInputToInternal(rawStart);
+  const end = dateInputToInternal(rawEnd);
+
+  let dur = null;
+  if(rawStart && rawEnd) {
+    dur = Math.max(1, Math.round((new Date(rawEnd) - new Date(rawStart)) / 86400000) + 1);
+  }
+
+  if (id) {
+    // EDITING EXISTING TASK
+    // Remove from old section first
+    SECTIONS.forEach(sec => {
+      sec.tasks = sec.tasks.filter(t => t.id !== id);
+    });
+    // Add to selected section
+    const targetSec = SECTIONS.find(s => s.key === secKey);
+    if(targetSec) {
+      targetSec.tasks.push({ id, name, desc, who, start, end, dur, prio, status, notes, preview });
+    }
+    showToast("تم تحديث وحفظ بيانات النشاط بنجاح", "success");
+  } else {
+    // CREATING NEW TASK
+    const newId = 'tk_' + Date.now();
+    const targetSec = SECTIONS.find(s => s.key === secKey);
+    if(targetSec) {
+      targetSec.tasks.push({ id: newId, name, desc, who, start, end, dur, prio, status, notes, preview });
+    }
+    showToast("تمت إضافة النشاط الجديد بنجاح", "success");
+  }
+
+  saveState();
+  renderAll();
+  applyFilters();
+  document.getElementById('task-modal').classList.add('hidden-modal');
+}
+
+function chipHTML(who){
+  const c=PC[who]||{bg:'#F1EFE8',text:'#444',dot:'#888'};
+  return `<span class="chip" style="background:${c.bg};color:${c.text}"><span class="chip-dot" style="background:${c.dot}"></span>${who}</span>`;
+}
+function dateProg(t){
+  if(!t.dur)return 100;
+  const s=parseDate(t.start);if(!s)return 0;
+  return Math.min(100,Math.round(Math.max(0,(new Date()-s)/86400000)/t.dur*100));
+}
+
+/* ===== RENDER LIST ===== */
+function renderList(){
+  let h='';
+  SECTIONS.forEach(sec=>{
+    const tot=sec.tasks.length,dn=sec.tasks.filter(t=>t.status==='done').length,pct=tot?Math.round(dn/tot*100):0;
+    h+=`<div class="section" data-key="${sec.key}">
+      <div class="section-head">
+        <div class="section-pill" style="background:${sec.light};color:${sec.color}">${sec.title}<span class="section-count">${dn}/${tot}</span></div>
+        <div class="sec-pw"><div class="sec-pb" style="width:${pct}%;background:${sec.color}"></div></div>
+        <span class="sec-pct">${pct}%</span>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr>
+          <th style="width:230px">النشاط والتفاصيل</th>
+          <th style="width:100px">المسؤول</th>
+          <th style="width:75px">أولوية</th>
+          <th style="width:70px">البداية</th>
+          <th style="width:85px">النهاية والجدول</th>
+          <th style="width:115px">حالة المهمة</th>
+          <th style="width:85px; text-align:center;">إجراءات</th>
+          <th>ملاحظات الفريق</th>
+        </tr></thead>
+        <tbody>`;
+    sec.tasks.forEach(t=>{
+      const st=SL[t.status],pr=PL[t.prio],prog=dateProg(t);
+      const bc=t.status==='done'?'#1D9E75':t.status==='blocked'?'#E24B4A':t.status==='inprog'?'#378ADD':'#D3D1C7';
+      const si=toIso(parseDate(t.start)),ei=t.end&&t.end!=='مفتوح'?toIso(parseDate(t.end)):'';
+      
+      const previewBtn=t.preview?`<button class="preview-btn" onclick="openPreview('${t.preview}')" title="معاينة النص"><span style="margin-top:-2px;">👁️</span></button>`:'';
+      const editBtn=`<button class="edit-task-btn" onclick="openTaskEditor('${t.id}')" title="تعديل المهمة"><span style="margin-top:-2px;">✏️</span></button>`;
+      
+      h+=`<tr data-id="${t.id}" data-section="${sec.key}" data-who="${t.who}" data-status="${t.status}" data-prio="${t.prio}" data-name="${t.name}" data-start="${si}" data-end="${ei}">
+        <td><div class="td-task">${t.name}</div><div class="td-desc">${t.desc}</div></td>
+        <td>${chipHTML(t.who)}</td>
+        <td><span class="prio ${pr.cls}">${pr.label}</span></td>
+        <td><div class="dates">${t.start}</div></td>
+        <td><div class="dates">${t.end}${t.dur?`<div class="date-bar"><div class="date-bar-fill" style="width:${prog}%;background:${bc}"></div></div>`:'<div style="font-size:10px;color:#aaa">مستمر</div>'}</div></td>
+        <td><button class="status-btn ${st.cls}" onclick="cycleStatus('${t.id}')">${st.icon} ${st.label}</button></td>
+        <td>
+          <div class="actions-cell">
+            ${previewBtn}
+            ${editBtn}
+          </div>
+        </td>
+        <td><textarea class="notes-input" rows="1" placeholder="اكتب ملاحظة هنا..." onchange="updateNotes('${t.id}',this.value)">${t.notes}</textarea></td>
+      </tr>`;
+    });
+    h+=`</tbody></table></div></div>`;
+  });
+
+  // footer
+  h+=`<div class="footer-bar"><div class="footer-left"><h3>تقدم وإنتاجية أعضاء الفريق</h3>`;
+  ['ضي','يوسف','عزة','ميسرة/رانيا','إيمان','هاجر'].forEach(p=>{
+    let all=0,dn=0;
+    SECTIONS.forEach(sec=>sec.tasks.forEach(t=>{if(t.who===p){all++;if(t.status==='done')dn++;}}));
+    if(!all)return;
+    const c=PC[p]||{dot:'#888'};
+    h+=`<div class="person-row"><span class="person-name">${p}</span><div class="pbar-wrap"><div class="pbar-fill" style="width:${Math.round(dn/all*100)}%;background:${c.dot}"></div></div><span class="pbar-pct">${dn}/${all} مكتمل</span></div>`;
+  });
+  h+=`</div><div class="footer-right"><h3>ملخص إجمالي المهام</h3>`;
+  SO.forEach(s=>{
+    let cnt=0;SECTIONS.forEach(sec=>sec.tasks.forEach(t=>{if(t.status===s)cnt++;}));
+    const st=SL[s];
+    h+=`<div class="person-row"><span class="person-name"><button class="status-btn ${st.cls}" style="cursor:default;pointer-events:none">${st.icon} ${st.label}</button></span><span style="font-size:13px;font-weight:600;margin-right:15px;">${cnt} مهمة</span></div>`;
+  });
+  h+=`</div></div>`;
+  document.getElementById('panel-list').innerHTML=h;
+}
+
+/* ===== RENDER GANTT ===== */
+function renderGantt(){
+  const days=[];
+  for(let i=0;i<TOTAL_DAYS;i++){const d=new Date(GANTT_START);d.setDate(d.getDate()+i);days.push(d);}
+  
+  // Custom mock today to keep the red indicator centered in July 2026
+  let ganttToday = new Date();
+  if(ganttToday.getFullYear() !== 2026 || ganttToday.getMonth() !== 6) {
+    ganttToday = new Date(2026, 6, 4); // Locks representation to 4th July
+  }
+  const todayOff=Math.round((ganttToday-GANTT_START)/86400000);
+  const todayPct=(todayOff/TOTAL_DAYS)*100;
+  const NCOL=240;
+  const dayNames=['أح','إث','ثل','أر','خم','جم','سب'];
+
+  let daysHdr=days.map((d,i)=>{
+    const isT=i===todayOff,isW=d.getDay()===5||d.getDay()===6;
+    return `<div class="g-day-h${isT?' g-today':''}${isW?' g-wknd':''}">${d.getDate()}/${d.getMonth()+1}<br>${dayNames[d.getDay()]}</div>`;
+  }).join('');
+
+  let rows=`<div class="g-hdr">
+    <div class="g-lbl-hdr" style="flex:0 0 ${NCOL}px">النشاط / المسؤول</div>
+    <div class="g-days-hdr">${daysHdr}</div>
+  </div>`;
+
+  SECTIONS.forEach(sec=>{
+    rows+=`<div class="g-sec-hdr" data-seckey="${sec.key}">
+      <div class="g-sec-hdr-cell"><span class="g-sdot" style="background:${sec.color}"></span>${sec.title}</div>
+    </div>`;
+    sec.tasks.forEach(t=>{
+      const sDate=parseDate(t.start)||GANTT_START;
+      const eDate=t.end&&t.end!=='مفتوح'?parseDate(t.end):new Date(2026,6,10);
+      const durD=Math.max(1,Math.round((eDate-sDate)/86400000)+1);
+      const offD=Math.round((sDate-GANTT_START)/86400000);
+      const lp=Math.max(0,(offD/TOTAL_DAYS)*100);
+      const wp=Math.min(100-lp,(durD/TOTAL_DAYS)*100);
+      const st=SL[t.status];
+      const op=t.status==='done'?'1':'0.8';
+      const si=toIso(sDate),ei=t.end&&t.end!=='مفتوح'?toIso(parseDate(t.end)):'';
+
+      let wkShade='',grid='';
+      days.forEach((_,i)=>{
+        if(days[i].getDay()===5||days[i].getDay()===6)
+          wkShade+=`<div style="position:absolute;top:0;bottom:0;left:${(i/TOTAL_DAYS*100).toFixed(2)}%;width:${(1/TOTAL_DAYS*100).toFixed(2)}%;background:rgba(0,0,0,.022);pointer-events:none;z-index:1"></div>`;
+        grid+=`<div style="position:absolute;top:0;bottom:0;left:${(i/TOTAL_DAYS*100).toFixed(2)}%;width:1px;background:var(--border);opacity:.5;z-index:1"></div>`;
+      });
+
+      rows+=`<div class="g-row" data-id="${t.id}" data-section="${sec.key}" data-who="${t.who}" data-status="${t.status}" data-prio="${t.prio}" data-name="${t.name}" data-start="${si}" data-end="${ei}">
+        <div class="g-name-cell" style="flex:0 0 ${NCOL}px">
+          <div class="gn">${t.name}</div>
+          <div class="gw">${t.who} · ${t.start}→${t.end}</div>
+        </div>
+        <div class="g-bar-cell">
+          ${wkShade}${grid}
+          <div class="g-today-ln" style="left:${todayPct.toFixed(2)}%"></div>
+          <div class="gbar" style="left:${lp.toFixed(2)}%;width:${Math.max(wp,.8).toFixed(2)}%;background:${sec.color};opacity:${op}" onclick="openTaskEditor('${t.id}')" title="${t.name} — ${st.label} — اضغط للتعديل">
+            ${st.icon} ${t.dur?t.dur+'ي':'∞'}
+          </div>
+        </div>
+      </div>`;
+    });
+  });
+
+  const leg=SECTIONS.map(s=>`<div class="g-legend-item"><div class="g-legend-dot" style="background:${s.color}"></div>${s.key}</div>`).join('')+
+    `<div class="g-legend-item"><div style="width:2px;height:10px;background:var(--red);border-radius:0;flex-shrink:0"></div>خط المتابعة المجدول (${ganttToday.getDate()}/${ganttToday.getMonth()+1})</div>`;
+
+  document.getElementById('panel-gantt').innerHTML=`
+    <div class="gantt-outer">
+      <div class="gantt-inner">${rows}</div>
+      <div class="g-legend">${leg}</div>
+    </div>`;
+}
+
+/* ===== FILTERS ===== */
+function getF(){
+  return{
+    q:document.getElementById('search').value.toLowerCase(),
+    sec:document.getElementById('f-section').value,
+    who:document.getElementById('f-who').value,
+    st:document.getElementById('f-status').value,
+    pr:document.getElementById('f-prio').value,
+    df:fromIso(document.getElementById('f-date-from').value),
+    dt:fromIso(document.getElementById('f-date-to').value),
+  };
+}
+function rowMatch(row,f){
+  if(f.q&&!row.dataset.name.toLowerCase().includes(f.q))return false;
+  if(f.sec&&!row.dataset.section.includes(f.sec))return false;
+  if(f.who&&!row.dataset.who.includes(f.who))return false;
+  if(f.st&&row.dataset.status!==f.st)return false;
+  if(f.pr&&row.dataset.prio!==f.pr)return false;
+  if(f.df||f.dt){
+    const rs=row.dataset.start?new Date(row.dataset.start):null;
+    const re=row.dataset.end?new Date(row.dataset.end):null;
+    if(f.df&&re&&re<f.df)return false;
+    if(f.dt&&rs&&rs>f.dt)return false;
+  }
+  return true;
+}
+function applyFilters(){
+  const f=getF();
+  if(currentTab==='list'){
+    document.querySelectorAll('#panel-list .section').forEach(sec=>{
+      if(f.sec&&!sec.dataset.key.includes(f.sec)){sec.classList.add('hidden');return;}
+      sec.classList.remove('hidden');
+      let vis=false;
+      sec.querySelectorAll('tbody tr').forEach(row=>{const m=rowMatch(row,f);row.classList.toggle('hidden',!m);if(m)vis=true;});
+      sec.classList.toggle('hidden',!vis);
+    });
+  }
+  if(currentTab==='gantt'){
+    document.querySelectorAll('#panel-gantt .g-sec-hdr').forEach(sh=>{
+      sh.classList.toggle('hidden',!!(f.sec&&!sh.dataset.seckey.includes(f.sec)));
+    });
+    document.querySelectorAll('#panel-gantt .g-row').forEach(row=>{
+      if(!row.dataset.id)return;
+      row.classList.toggle('hidden',!rowMatch(row,f));
+    });
+  }
+}
+function resetFilters(){
+  ['search','f-section','f-who','f-status','f-prio'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('f-date-from').value='';
+  document.getElementById('f-date-to').value='';
+  applyFilters();
+  showToast("تم مسح الفلاتر وإعادة عرض كافة المهام");
+}
+
+function updateStats(){
+  let d=0,ip=0,p=0,b=0,tot=0;
+  let teamLoad = {};
+  
+  SECTIONS.forEach(sec=>sec.tasks.forEach(t=>{
+    tot++;
+    if(t.status==='done')d++;else if(t.status==='inprog')ip++;else if(t.status==='pending')p++;else if(t.status==='blocked')b++;
+    teamLoad[t.who] = (teamLoad[t.who] || 0) + 1;
+  }));
+  
+  document.getElementById('count-done').textContent=d;
+  document.getElementById('count-inprog').textContent=ip;
+  document.getElementById('count-pend').textContent=p;
+  document.getElementById('count-block').textContent=b;
+  
+  // Calculation of KPIs
+  const pct = tot ? Math.round((d / tot) * 100) : 0;
+  document.getElementById('kpi-progress').textContent = `${pct}%`;
+  document.getElementById('kpi-total-tasks').textContent = tot;
+  document.getElementById('kpi-risk-tasks').textContent = b;
+  
+  // Find top performer / loaded person
+  let topUser = "لا يوجد";
+  let maxCount = 0;
+  for (let u in teamLoad) {
+    if(teamLoad[u] > maxCount) { maxCount = teamLoad[u]; topUser = u; }
+  }
+  document.getElementById('kpi-top-performer').textContent = `${topUser} (${maxCount} مهام)`;
+}
+
+function renderAll(){
+  renderList();
+  renderGantt();
+  updateStats();
+}
+
+window.onload = function() {
+  loadState();
+  renderAll();
+  applyFilters();
+}
+</script>
+</body>
+</html>
