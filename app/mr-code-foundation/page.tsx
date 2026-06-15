@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import { useForm } from '@formspree/react';
 import {
   CheckCircle2, ChevronRight, Loader2,
   AlertCircle, Copy, Globe, LogIn, Monitor, Smartphone, BookOpen
@@ -104,24 +103,38 @@ export default function MrCodeLandingPage() {
   });
   const [copied, setCopied] = useState<string | null>(null);
 
-  const [fsState, fsSubmit] = useForm("xeewqebn");
-
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (fsState.succeeded) {
+  const submitToWeb3Forms = async (data: any) => {
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "bf318539-eb41-4db5-9e0d-88ca472707df",
+          subject: "حجز كورس التأسيس البرمجي - Mr. Code",
+          from_name: "تسجيل كورس Mr. Code",
+          ...data,
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setIsSubmitting(false);
+        setStep("success");
+      } else {
+        setIsSubmitting(false);
+        setValidationError("حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.");
+      }
+    } catch (error) {
       setIsSubmitting(false);
-      setStep("success");
+      setValidationError("حدث خطأ في الاتصال بالخادم.");
     }
-  }, [fsState.succeeded]);
-
-  useEffect(() => {
-    if (fsState.errors) {
-      setIsSubmitting(false);
-    }
-  }, [fsState.errors]);
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -153,26 +166,17 @@ export default function MrCodeLandingPage() {
     setIsSubmitting(true);
     setValidationError("");
 
-    try {
-      await fsSubmit({
-        name: localForm.name,
-        phone: localForm.phone,
-        school: localForm.school,
-        grade: localForm.grade || "—",
-        referral: localForm.referral || "—",
-        subject: "حجز كورس التأسيس البرمجي - Mr. Code",
-        message: [
-          "📌 طلب حجز كورس التأسيس (Mr. Code)",
-          `الاسم: ${localForm.name}`,
-          `الهاتف: ${localForm.phone}`,
-          `المدرسة: ${localForm.school}`,
-          localForm.grade ? `الصف: ${localForm.grade}` : null,
-          localForm.referral ? `المرجع: ${localForm.referral}` : null,
-        ].filter(Boolean).join("\n"),
-      });
-    } catch (err) {
-      setIsSubmitting(false);
-    }
+    submitToWeb3Forms({
+      name: localForm.name,
+      email: localForm.phone + "@no-email.com",
+      message: [
+        "📌 طلب حجز كورس التأسيس (Mr. Code)",
+        `الاسم: ${localForm.name}`,
+        `الهاتف: ${localForm.phone}`,
+        `المدرسة: ${localForm.school}`,
+        localForm.grade ? `الصف: ${localForm.grade}` : null,
+      ].filter(Boolean).join("\n"),
+    });
   };
 
   if (!mounted) return null;
@@ -410,24 +414,16 @@ export default function MrCodeLandingPage() {
                     </div>
                   )}
 
-                  {/* Formspree server errors */}
-                  {fsState.errors && (
-                    <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-3 mt-4">
-                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                      حدث خطأ أثناء الإرسال، يرجى المحاولة مجدداً.
-                    </div>
-                  )}
-
                   <div className="pt-6">
                     <button
                       type="submit"
-                      disabled={isSubmitting || fsState.submitting}
+                      disabled={isSubmitting}
                       className="w-full h-16 rounded-2xl font-black text-xl text-white flex items-center justify-center gap-3 transition-all duration-300 hover:-translate-y-1 shadow-xl hover:shadow-2xl disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                       style={{
                         background: "linear-gradient(135deg, #2D5BFF 0%, #1A3CBD 100%)",
                       }}
                     >
-                      {isSubmitting || fsState.submitting ? (
+                      {isSubmitting ? (
                         <>
                           <Loader2 className="w-6 h-6 animate-spin" />
                           جارٍ المعالجة...
@@ -456,37 +452,17 @@ export default function MrCodeLandingPage() {
                 </motion.div>
                 <h2 className="text-3xl font-black text-gray-900 mb-3">تم تسجيل طلبك بنجاح! 🎉</h2>
                 <p className="text-gray-600 text-lg mb-8 max-w-md mx-auto">
-                  لقد استلمنا بياناتك. يرجى إتمام الدفع عبر إحدى الطرق التالية وتأكيد الحجز معنا عبر الواتساب.
+                  سيتواصل معك فريقنا خلال ساعات لتأكيد الحجز والرد على أي استفسارات.
                 </p>
 
                 <div className="space-y-4 max-w-md mx-auto text-right">
-                   <div className="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50">
-                      <button onClick={() => copyToClipboard("01068327720", "instapay")} className="text-[#2D5BFF] flex items-center gap-2 text-sm font-bold">
-                        {copied === "instapay" ? "تم النسخ" : <><Copy className="w-4 h-4"/> نسخ</>}
-                      </button>
-                      <div>
-                        <p className="text-gray-500 text-xs mb-1">انستا بي (InstaPay)</p>
-                        <p className="font-mono text-gray-900 font-bold" dir="ltr">01068327720</p>
-                      </div>
-                   </div>
-
-                   <div className="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50">
-                      <button onClick={() => copyToClipboard("01016303706", "vodafone")} className="text-[#2D5BFF] flex items-center gap-2 text-sm font-bold">
-                        {copied === "vodafone" ? "تم النسخ" : <><Copy className="w-4 h-4"/> نسخ</>}
-                      </button>
-                      <div>
-                        <p className="text-gray-500 text-xs mb-1">فودافون كاش</p>
-                        <p className="font-mono text-gray-900 font-bold" dir="ltr">01016303706</p>
-                      </div>
-                   </div>
-
                    <a
-                      href="https://wa.me/201207416336?text=السلام عليكم، أرسل صورة الدفع لتأكيد حجز كورس التأسيس مع Mr. Code"
+                      href="https://wa.me/201207416336?text=السلام عليكم، لقد سجلت بياناتي في كورس التأسيس مع Mr. Code وأريد تأكيد الحجز."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-3 rounded-xl font-bold text-lg bg-[#25D366] text-white hover:bg-[#1da851] transition-all h-14 mt-6 shadow-lg shadow-[#25D366]/30"
                     >
-                      أرسل إيصال الدفع عبر واتساب
+                      تواصل معنا عبر الواتساب
                    </a>
                 </div>
               </div>
