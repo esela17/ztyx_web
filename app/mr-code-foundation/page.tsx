@@ -42,12 +42,8 @@ function CustomHeader() {
       </div>
       
       <div className="flex items-center gap-4">
-        <button className="text-[#9496C0] hover:text-white transition-colors">
-          <Globe className="w-5 h-5" />
-        </button>
-        <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white px-4 py-2 rounded-lg text-sm transition-all">
-          <LogIn className="w-4 h-4" />
-          <span>تسجيل الدخول</span>
+        <button className="flex items-center gap-2 bg-[#2D5BFF]/10 border border-[#2D5BFF]/20 text-[#2D5BFF] font-bold px-4 py-2 rounded-lg text-sm transition-all hover:bg-[#2D5BFF]/20">
+          <span>المهندس إسلام حمادة</span>
         </button>
       </div>
     </header>
@@ -210,7 +206,6 @@ export default function MrCodeLandingPage() {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-6xl font-black text-white leading-tight"
             >
-              صفحة حجز <br className="hidden lg:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#2D5BFF] to-[#8FA9FF]">
                 كورس التأسيس البرمجي
               </span>
@@ -223,6 +218,24 @@ export default function MrCodeLandingPage() {
             >
               انطلق في رحلتك نحو الاحتراف من الصفر. تعلم كيف يفكر المبرمجون، وابنِ أساساً قوياً يجعلك قادراً على دراسة أي لغة برمجة بثقة تامة.
             </motion.p>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="flex flex-col items-center lg:items-start gap-3 mt-8"
+            >
+              <button
+                onClick={() => {
+                  document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="h-14 px-10 rounded-xl font-bold text-lg text-white shadow-lg shadow-[#2D5BFF]/30 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-[#2D5BFF]/40"
+                style={{ background: "linear-gradient(135deg, #2D5BFF 0%, #1A3CBD 100%)" }}
+              >
+                احجز الآن
+              </button>
+              <p className="text-[#9496C0] text-sm font-medium">هل البرمجة مناسبة لك فعلا ؟</p>
+            </motion.div>
             
             <motion.div 
                initial={{ opacity: 0, y: 20 }}
