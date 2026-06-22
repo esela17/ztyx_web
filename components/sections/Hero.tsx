@@ -38,7 +38,7 @@ export default function Hero() {
     gsap.to(".parallax-orb", {
       y: -50,
       scrollTrigger: {
-        trigger: "body",
+        trigger: typeof window !== "undefined" ? document.body : undefined,
         start: "top top",
         end: "bottom top",
         scrub: 0.5

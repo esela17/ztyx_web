@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react';
 import { cn } from "@/lib/utils";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useMotionTemplate } from "framer-motion";
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -24,6 +24,8 @@ export const GlassCard = ({ children, className, variant = 'default', ...props }
     mouseY.set(clientY - top);
   }
 
+  const background = useMotionTemplate`radial-gradient(600px circle at ${springX}px ${springY}px, rgba(91, 94, 255, 0.15), transparent 40%)`;
+
   return (
     <div
       ref={cardRef}
@@ -38,7 +40,7 @@ export const GlassCard = ({ children, className, variant = 'default', ...props }
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
         style={{
-          background: `radial-gradient(600px circle at ${springX}px ${springY}px, rgba(91, 94, 255, 0.15), transparent 40%)`,
+          background: background,
         }}
       />
       <div className="relative z-20">
