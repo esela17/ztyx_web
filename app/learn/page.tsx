@@ -293,6 +293,45 @@ export default function LearnPage() {
         </div>
       </section>
 
+      {/* Roadmap Widget */}
+      <section className="py-12 px-6 relative z-10">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8 flex items-center gap-4">
+            <div className="w-2 h-8 bg-[#00ff88] rounded-full" />
+            <h2 className="text-3xl font-bold text-white">خارطة الطريق</h2>
+          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+          >
+            <GlassCard className="p-8 md:p-12 border-[#00ff88]/30 bg-gradient-to-r from-[#00ff88]/10 to-transparent flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden text-right">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#00ff88]/10 rounded-full blur-[80px] -z-10" />
+              <div className="space-y-6 flex-1 relative z-10">
+                <Badge className="bg-[#00ff88] text-black border-transparent w-max px-4 py-1.5 text-sm font-bold">
+                  دليلك الشامل 🗺️
+                </Badge>
+                <h2 className="text-3xl md:text-5xl font-black text-[#F0F1FF] leading-tight">
+                  مسارك المهني من الصفر لـ أول دولار
+                </h2>
+                <p className="text-[#9496C0] text-lg max-w-xl">
+                  خارطة طريق متكاملة تأخذ بيدك خطوة بخطوة من البداية وحتى تحقيق أول دخل من مهاراتك. اكتشف الخطوات، الأدوات، والنصائح الذهبية.
+                </p>
+                <a
+                  href="/roadmap.html"
+                  className="inline-flex items-center justify-center h-14 px-8 rounded-xl font-bold text-lg bg-[#00ff88] text-black hover:bg-[#00ff88]/90 transition-all shadow-lg shadow-[#00ff88]/25 hover:shadow-[#00ff88]/40 hover:-translate-y-1 gap-2"
+                >
+                  استكشف مسارك الآن 🚀
+                </a>
+              </div>
+              <div className="relative z-10 shrink-0 hidden md:flex items-center justify-center text-[100px] md:text-[140px] opacity-90 drop-shadow-[0_0_30px_rgba(0,255,136,0.3)]">
+                🎯
+              </div>
+            </GlassCard>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Categories Grid */}
       <section className="py-20 px-6 relative z-10 bg-white/[0.02] border-t border-white/5 mt-12">
         <div className="max-w-7xl mx-auto">
