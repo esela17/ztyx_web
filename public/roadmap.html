@@ -1199,15 +1199,7 @@ document.addEventListener('mousemove', (e)=> {
     if(glow) {
 
       // Use transform for better performance than top/left
-      glow.style.transform=`translate(calc($ {
-            e.clientX
-          }
-
-          px - 50%), calc($ {
-            e.clientY
-          }
-
-          px - 50%))`;
+      glow.style.transform=`translate(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%))`;
     }
   });
 
@@ -1217,11 +1209,7 @@ window.addEventListener('scroll', ()=> {
       const scrollY=window.scrollY;
 
       // Shift hue based on scroll position (mod 360 to keep it in range)
-      glow.style.filter=`hue-rotate($ {
-          scrollY % 360
-        }
-
-        deg)`;
+      glow.style.filter=`hue-rotate(${scrollY % 360}deg)`;
     }
   });
 
