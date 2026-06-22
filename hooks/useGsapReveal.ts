@@ -15,9 +15,6 @@ export function useGsapReveal() {
   useGSAP(() => {
     if (!containerRef.current) return;
 
-    // Refresh ScrollTrigger to ensure positions are correct after navigation
-    ScrollTrigger.refresh();
-
     const elements = containerRef.current.querySelectorAll(".gsap-reveal");
     
     elements.forEach((el, index) => {
@@ -42,15 +39,6 @@ export function useGsapReveal() {
         }
       );
     });
-
-    // Cleanup triggers for this scope on unmount
-    return () => {
-      ScrollTrigger.getAll().forEach(t => {
-        if (t.vars.trigger === containerRef.current || containerRef.current?.contains(t.vars.trigger as Node)) {
-          t.kill();
-        }
-      });
-    };
   }, { scope: containerRef, dependencies: [pathname] });
 
   return containerRef;
