@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/db';
 
+export const dynamic = 'force-static';
+
 interface SitemapEntry {
   url: string;
   lastModified: Date;
