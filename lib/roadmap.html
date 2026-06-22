@@ -1,39 +1,47 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ZTYX - من الصفر إلى أول دولار</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"><style> :root {
-  /* ZTYX Brand Palette */
-  --ztyx-primary: #6D73FF;
-  --ztyx-light: #9B9FFF;
-  --ztyx-dark: #4A50E0;
+< !DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ZTYX - من الصفر إلى أول دولار</title>< !-- Fonts --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">< !-- Icons --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"><style>
 
-  /* Space/Galaxy Theme Colors */
-  --bg-space: #020205;
-  /* Deepest black/blue */
-  --bg-surface: rgba(10, 12, 25, 0.6);
-  --bg-surface-hover: rgba(15, 18, 35, 0.8);
+/* ============================================================
+       نظام الألوان والمتغيرات (Sci-Fi & Cyberpunk)
+       ============================================================ */
+:root {
+  /* ZTYX Brand & Neon Colors */
+  --neon-cyan: #00f3ff;
+  --neon-purple: #bc13fe;
+  --neon-emerald: #00ff88;
+  --neon-amber: #ffaa00;
 
-  /* Borders & Glass */
-  --border-subtle: rgba(109, 115, 255, 0.15);
-  --border-strong: rgba(109, 115, 255, 0.4);
-  --glass-blur: 24px;
+  --bg-base: #020204;
+  --bg-glass: rgba(8, 8, 12, 0.65);
 
-  /* Text Colors */
-  --text-main: #ffffff;
-  --text-muted: #a4adc5;
-  --text-dim: #616a8a;
+  /* Borders */
+  --border-subtle: rgba(0, 243, 255, 0.15);
+  --border-strong: rgba(0, 243, 255, 0.4);
 
   /* Typography */
-  --font-ar: 'Cairo', sans-serif;
-  --font-en: 'Space Grotesk', sans-serif;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #475569;
 
-  /* Effects */
-  --glow-primary: 0 0 30px rgba(109, 115, 255, 0.4);
-  --glow-light: 0 0 20px rgba(155, 159, 255, 0.4);
-  --shadow-premium: 0 20px 40px -10px rgba(0, 0, 0, 0.8), 0 0 20px inset rgba(109, 115, 255, 0.05);
+  /* Gradients */
+  --gradient-brand: linear-gradient(135deg, #fff 0%, var(--neon-cyan) 50%, var(--neon-purple) 100%);
 
-  /* Transitions */
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  /* Glows */
+  --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.3);
+  --glow-purple: 0 0 20px rgba(188, 19, 254, 0.3);
+  --glow-emerald: 0 0 20px rgba(0, 255, 136, 0.3);
+  --glow-amber: 0 0 20px rgba(255, 170, 0, 0.3);
+  --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.9);
+
+  /* Fonts */
+  --font-arabic: 'Cairo', sans-serif;
+  --font-mono: 'Space Grotesk', sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ============================================================
+       Global Reset & Cinematic Environment
+       ============================================================ */
 *,
 *::before,
 *::after {
@@ -44,153 +52,148 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 16px;
 }
 
 body {
-  background-color: var(--bg-space);
-  color: var(--text-main);
-  font-family: var(--font-ar);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-arabic);
   line-height: 1.6;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
   position: relative;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* Vignette Overlay for Cinematic Depth */
+/* Cinematic Vignette */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
-  box-shadow: inset 0 0 250px rgba(0, 0, 0, 0.95);
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.95);
   pointer-events: none;
   z-index: 998;
 }
 
-/* Nebula/Galaxy Glows */
-.galaxy-bg {
+/* Tech Grid */
+.bg-grid {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
+  background-size: 50px 50px;
+  background-image:
+    linear-gradient(to right, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
 }
 
-.nebula {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.5;
-  animation: drift 20s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-.nebula-1 {
-  width: 60vw;
-  height: 60vw;
-  background: radial-gradient(circle, var(--ztyx-dark), transparent 70%);
-  top: -20%;
-  right: -20%;
-}
-
-.nebula-2 {
-  width: 50vw;
-  height: 50vw;
-  background: radial-gradient(circle, var(--ztyx-primary), transparent 70%);
-  bottom: -10%;
-  left: -10%;
-  animation-delay: -5s;
+/* Floating Particles */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, var(--neon-cyan), transparent),
+    radial-gradient(2px 2px at 80px 100px, #fff, transparent),
+    radial-gradient(2px 2px at 150px 180px, var(--neon-purple), transparent),
+    radial-gradient(2px 2px at 200px 50px, var(--neon-cyan), transparent),
+    radial-gradient(3px 3px at 250px 140px, #fff, transparent);
+  background-repeat: repeat;
+  background-size: 300px 300px;
   opacity: 0.3;
+  animation: floatUp 40s linear infinite;
 }
 
-.nebula-3 {
-  width: 40vw;
-  height: 40vw;
-  background: radial-gradient(circle, var(--ztyx-light), transparent 70%);
-  top: 40%;
-  left: 30%;
-  animation-delay: -10s;
-  opacity: 0.2;
-}
-
-@keyframes drift {
+@keyframes floatUp {
   0% {
-    transform: translate(0, 0) scale(1);
+    transform: translateY(0);
   }
 
   100% {
-    transform: translate(5%, 5%) scale(1.1);
+    transform: translateY(-300px);
   }
 }
 
-/* Starfield Container */
-#starfield {
+/* Interactive Mouse/Scroll Glow */
+.interactive-glow {
   position: fixed;
-  inset: 0;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 243, 255, 0.12) 0%, transparent 60%);
+  border-radius: 50%;
+  pointer-events: none;
   z-index: 0;
-  pointer-events: none;
-}
-
-.star {
-  position: absolute;
-  background: #fff;
-  border-radius: 50%;
-  animation: twinkle infinite ease-in-out;
-}
-
-@keyframes twinkle {
-
-  0%,
-  100% {
-    opacity: 0.2;
-    transform: scale(0.8);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-    box-shadow: 0 0 8px #fff;
-  }
-}
-
-/* Interactive Mouse Glow */
-.mouse-glow {
-  position: fixed;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(109, 115, 255, 0.15) 0%, transparent 60%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 1;
   transform: translate(-50%, -50%);
-  transition: filter 0.3s;
-  mix-blend-mode: screen;
+  transition: filter 0.5s ease-out;
+  /* Hue rotation transition */
+  will-change: transform, filter;
 }
 
+/* HUD Corners (Future Tech Vibe) */
+.hud-corner {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--neon-cyan);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 999;
+  filter: drop-shadow(0 0 5px var(--neon-cyan));
+}
+
+.hud-tl {
+  top: 20px;
+  left: 20px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.hud-tr {
+  top: 20px;
+  right: 20px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.hud-bl {
+  bottom: 20px;
+  left: 20px;
+  border-right: none;
+  border-top: none;
+}
+
+.hud-br {
+  bottom: 20px;
+  right: 20px;
+  border-left: none;
+  border-top: none;
+}
+
+/* ============================================================
+       Typography
+       ============================================================ */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--text-main);
+  color: var(--text-primary);
   line-height: 1.2;
-  letter-spacing: -0.02em;
 }
 
 .en-text {
-  font-family: var(--font-en);
-  letter-spacing: -0.01em;
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, var(--ztyx-light) 50%, var(--ztyx-primary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 15px rgba(109, 115, 255, 0.3));
-}
-
+/* ============================================================
+       Layout Containers
+       ============================================================ */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -200,12 +203,15 @@ h6 {
   flex: 1;
 }
 
+/* ============================================================
+       Header & Hero Section
+       ============================================================ */
 header {
-  padding-top: 80px;
+  padding-top: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 70vh;
+  min-height: 65vh;
   justify-content: center;
   text-align: center;
 }
@@ -214,97 +220,104 @@ header {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 40px;
+  gap: 8px;
+  margin-bottom: 32px;
   text-align: center;
 }
 
 .badge-top {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 28px;
-  background: rgba(109, 115, 255, 0.08);
+  gap: 10px;
+  padding: 8px 24px;
+  background: rgba(0, 243, 255, 0.05);
   border: 1px solid var(--border-strong);
   border-radius: 50px;
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--ztyx-light);
-  box-shadow: var(--glow-primary);
-  backdrop-filter: blur(var(--glass-blur));
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+  backdrop-filter: blur(10px);
   letter-spacing: 1px;
 }
 
 .badge-top .dot {
   width: 8px;
   height: 8px;
-  background: var(--ztyx-light);
+  background: var(--neon-cyan);
   border-radius: 50%;
-  box-shadow: 0 0 12px var(--ztyx-light);
-  animation: pulse-dot 2s infinite;
+  box-shadow: 0 0 10px var(--neon-cyan);
+  animation: blink 2s infinite;
 }
 
-@keyframes pulse-dot {
+@keyframes blink {
 
   0%,
   100% {
     opacity: 1;
-    transform: scale(1);
   }
 
   50% {
-    opacity: 0.5;
-    transform: scale(0.8);
+    opacity: 0.4;
   }
 }
 
 .badge-bottom {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .hero-title {
-  font-size: clamp(48px, 8vw, 96px);
+  font-size: clamp(40px, 8vw, 84px);
   font-weight: 900;
   margin-bottom: 24px;
   max-width: 900px;
-  text-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
-  line-height: 1.1;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.hero-title .gradient-text {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.3));
 }
 
 .hero-desc {
   font-size: clamp(16px, 2vw, 20px);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   max-width: 700px;
-  margin: 0 auto 56px;
+  margin: 0 auto 48px;
   font-weight: 500;
   line-height: 1.8;
-  text-shadow: 0 4px 15px #000;
+  text-shadow: 0 2px 10px #000;
 }
 
+/* ============================================================
+       Navigation (Neon Pill)
+       ============================================================ */
 .nav-wrapper {
   position: sticky;
   top: 24px;
   z-index: 100;
   display: flex;
   justify-content: center;
-  margin-bottom: 80px;
+  margin-bottom: 64px;
   pointer-events: none;
 }
 
 nav {
-  background: var(--bg-surface);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
   border-radius: 50px;
-  padding: 8px;
+  padding: 6px;
   display: inline-flex;
   gap: 4px;
-  box-shadow: var(--shadow-premium);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 243, 255, 0.05);
   pointer-events: auto;
   max-width: calc(100vw - 48px);
   overflow-x: auto;
@@ -318,42 +331,44 @@ nav::-webkit-scrollbar {
 .tab-btn {
   background: transparent;
   border: 1px solid transparent;
-  color: var(--text-muted);
-  padding: 12px 24px;
+  color: var(--text-secondary);
+  padding: 10px 20px;
   border-radius: 50px;
   font-size: 14px;
   font-weight: 700;
-  font-family: var(--font-ar);
+  font-family: var(--font-arabic);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s var(--ease-smooth);
+  transition: all 0.3s var(--ease-out);
   white-space: nowrap;
 }
 
 .tab-btn:hover {
-  color: var(--text-main);
+  color: var(--text-primary);
   background: rgba(255, 255, 255, 0.05);
 }
 
 .tab-btn.active {
-  color: #fff;
-  background: var(--ztyx-primary);
-  box-shadow: var(--glow-primary);
-  border-color: var(--ztyx-light);
-  font-weight: 800;
+  color: var(--bg-base);
+  background: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+  border-color: var(--neon-cyan);
 }
 
+/* ============================================================
+       Main Layout & Panes
+       ============================================================ */
 main {
-  padding-bottom: 120px;
+  padding-bottom: 100px;
 }
 
 .pane {
   display: none;
   opacity: 0;
-  transform: translateY(30px);
-  animation: paneEnter 0.6s var(--ease-spring) forwards;
+  transform: translateY(20px);
+  animation: paneEnter 0.5s var(--ease-out) forwards;
 }
 
 .pane.active {
@@ -368,62 +383,64 @@ main {
 }
 
 .section-header {
-  margin-bottom: 48px;
+  margin-bottom: 40px;
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
 .section-header h2 {
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 900;
-  color: var(--text-main);
-  text-shadow: 0 0 20px rgba(109, 115, 255, 0.3);
+  color: var(--text-primary);
+  text-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
 }
 
 .section-indicator {
   width: 6px;
-  height: 36px;
-  background: var(--ztyx-primary);
+  height: 32px;
+  background: var(--neon-cyan);
   border-radius: 4px;
-  box-shadow: var(--glow-primary);
+  box-shadow: var(--glow-cyan);
 }
 
+/* ============================================================
+       Cards Grid (Overview)
+       ============================================================ */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
-  margin-bottom: 80px;
+  margin-bottom: 64px;
 }
 
 .saas-card {
-  background: var(--bg-surface);
+  background: var(--bg-glass);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  padding: 36px 28px;
+  border-radius: 16px;
+  padding: 32px 24px;
   position: relative;
   overflow: hidden;
-  transition: all 0.4s var(--ease-smooth);
+  transition: all 0.4s var(--ease-out);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-premium);
 }
 
 .saas-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top right, rgba(109, 115, 255, 0.1) 0%, transparent 70%);
+  background: linear-gradient(180deg, rgba(0, 243, 255, 0.05) 0%, transparent 100%);
   opacity: 0;
   transition: opacity 0.4s;
 }
 
 .saas-card:hover {
-  border-color: var(--border-strong);
-  transform: translateY(-8px);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), var(--glow-primary);
+  border-color: var(--neon-cyan);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-heavy), var(--glow-cyan);
 }
 
 .saas-card:hover::before {
@@ -431,34 +448,56 @@ main {
 }
 
 .card-icon-wrapper {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 28px;
   margin-bottom: 24px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid var(--border-strong);
-  color: var(--ztyx-light);
-  box-shadow: inset 0 0 20px rgba(109, 115, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid;
   position: relative;
   z-index: 1;
 }
 
+.c-level-1 .card-icon-wrapper {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  box-shadow: inset 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+.c-level-2 .card-icon-wrapper {
+  color: var(--neon-emerald);
+  border-color: var(--neon-emerald);
+  box-shadow: inset 0 0 15px rgba(0, 255, 136, 0.2);
+}
+
+.c-level-3 .card-icon-wrapper {
+  color: var(--neon-purple);
+  border-color: var(--neon-purple);
+  box-shadow: inset 0 0 15px rgba(188, 19, 254, 0.2);
+}
+
+.c-level-4 .card-icon-wrapper {
+  color: var(--neon-amber);
+  border-color: var(--neon-amber);
+  box-shadow: inset 0 0 15px rgba(255, 170, 0, 0.2);
+}
+
 .saas-card h3 {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   z-index: 1;
 }
 
 .saas-card p {
-  font-size: 15px;
-  color: var(--text-muted);
+  font-size: 14px;
+  color: var(--text-secondary);
   z-index: 1;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .saas-card .tag {
@@ -467,19 +506,21 @@ main {
   left: 24px;
   font-size: 11px;
   font-weight: 800;
-  padding: 6px 14px;
+  padding: 4px 12px;
   border-radius: 50px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--border-subtle);
-  color: var(--ztyx-light);
+  color: var(--text-secondary);
   z-index: 1;
-  letter-spacing: 1px;
 }
 
+/* ============================================================
+       Principles Layout
+       ============================================================ */
 .two-col-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 64px;
+  gap: 48px;
 }
 
 @media (max-width: 992px) {
@@ -491,18 +532,17 @@ main {
 .principles-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 16px;
 }
 
 .principle-item {
   display: flex;
-  gap: 20px;
-  padding: 24px;
-  background: var(--bg-surface);
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-glass);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-radius: 16px;
   backdrop-filter: blur(10px);
-  transition: border-color 0.3s;
 }
 
 .principle-item:hover {
@@ -510,34 +550,36 @@ main {
 }
 
 .principle-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: rgba(109, 115, 255, 0.1);
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(0, 243, 255, 0.05);
   border: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ztyx-light);
+  color: var(--neon-cyan);
   flex-shrink: 0;
-  font-size: 28px;
+  font-size: 24px;
 }
 
 .principle-content h4 {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .principle-content p {
-  font-size: 15px;
-  color: var(--text-muted);
-  line-height: 1.6;
+  font-size: 14px;
+  color: var(--text-secondary);
 }
 
+/* ============================================================
+       Roadmap (Overview Timeline)
+       ============================================================ */
 .timeline {
   position: relative;
-  padding-right: 32px;
+  padding-right: 24px;
 }
 
 .timeline::before {
@@ -547,64 +589,81 @@ main {
   bottom: 0;
   right: 4px;
   width: 2px;
-  background: linear-gradient(to bottom, var(--ztyx-light), var(--ztyx-dark), transparent);
-  box-shadow: var(--glow-primary);
+  background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple), transparent);
+  box-shadow: 0 0 10px var(--neon-cyan);
 }
 
 .timeline-item {
   position: relative;
-  padding-bottom: 40px;
+  padding-bottom: 32px;
 }
 
 .timeline-item::before {
   content: '';
   position: absolute;
   top: 6px;
-  right: -33px;
-  width: 14px;
-  height: 14px;
+  right: -25px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: var(--bg-space);
-  border: 3px solid var(--ztyx-light);
-  box-shadow: var(--glow-light);
+  background: var(--bg-base);
+  border: 2px solid var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.timeline-item:nth-child(2)::before {
+  border-color: var(--neon-emerald);
+  box-shadow: var(--glow-emerald);
+}
+
+.timeline-item:nth-child(3)::before {
+  border-color: var(--neon-purple);
+  box-shadow: var(--glow-purple);
+}
+
+.timeline-item:nth-child(4)::before {
+  border-color: var(--neon-amber);
+  box-shadow: var(--glow-amber);
 }
 
 .timeline-period {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
-  color: var(--ztyx-light);
-  margin-bottom: 6px;
-  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
 }
 
 .timeline-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
-  margin-bottom: 10px;
-  color: var(--text-main);
+  margin-bottom: 8px;
+  color: var(--text-primary);
 }
 
 .timeline-desc {
-  font-size: 15px;
-  color: var(--text-muted);
-  line-height: 1.7;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
+/* ============================================================
+       Level Hero Banner
+       ============================================================ */
 .level-banner {
-  background: linear-gradient(135deg, var(--bg-surface), rgba(74, 80, 224, 0.15));
-  backdrop-filter: blur(20px);
+  background: var(--bg-glass);
+  backdrop-filter: blur(15px);
   border: 1px solid var(--border-strong);
   border-radius: 24px;
-  padding: 56px;
+  padding: 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 32px;
-  margin-bottom: 64px;
+  margin-bottom: 56px;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-premium);
+  box-shadow: var(--shadow-heavy), inset 0 0 30px rgba(0, 243, 255, 0.05);
 }
 
 .level-banner::before {
@@ -612,127 +671,133 @@ main {
   position: absolute;
   top: 0;
   right: 0;
-  width: 8px;
+  width: 6px;
   height: 100%;
-  background: var(--ztyx-primary);
-  box-shadow: var(--glow-primary);
+  background: var(--neon-cyan);
+  box-shadow: var(--glow-cyan);
 }
 
 .level-info {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
   position: relative;
   z-index: 1;
 }
 
 .level-number {
-  font-family: var(--font-en);
-  font-size: 84px;
+  font-family: var(--font-mono);
+  font-size: 72px;
   font-weight: 900;
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.9);
-  filter: drop-shadow(0 0 20px var(--ztyx-primary));
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0 0 15px var(--neon-cyan));
 }
 
 .level-meta h2 {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 900;
-  margin-bottom: 10px;
-  text-shadow: 0 0 20px rgba(109, 115, 255, 0.5);
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
 }
 
 .level-meta p {
-  font-size: 18px;
-  color: var(--text-muted);
+  font-size: 16px;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
 .level-project {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 243, 255, 0.05);
   border: 1px solid var(--border-strong);
-  padding: 24px 40px;
-  border-radius: 20px;
+  padding: 20px 32px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   position: relative;
   z-index: 1;
-  box-shadow: inset 0 0 30px rgba(109, 115, 255, 0.1);
+  box-shadow: var(--glow-cyan);
 }
 
 .level-project i {
-  font-size: 40px;
-  color: var(--ztyx-light);
-  filter: drop-shadow(0 0 10px var(--ztyx-light));
+  font-size: 32px;
+  color: var(--neon-cyan);
+  filter: drop-shadow(0 0 8px var(--neon-cyan));
 }
 
 .level-project-text h4 {
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--ztyx-light);
-  margin-bottom: 6px;
+  letter-spacing: 1.5px;
+  color: var(--neon-cyan);
+  margin-bottom: 4px;
 }
 
 .level-project-text p {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
   color: #fff;
 }
 
+/* ============================================================
+       Neon Roadmap Sessions (The Accordions)
+       ============================================================ */
 .roadmap-container {
   position: relative;
-  padding-right: 56px;
-  margin-top: 48px;
+  padding-right: 40px;
+  margin-top: 40px;
 }
 
+/* الخط العمودي */
 .roadmap-line {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 24px;
+  right: 18px;
   width: 4px;
-  background: linear-gradient(to bottom, var(--ztyx-light), var(--ztyx-dark), var(--ztyx-primary));
-  box-shadow: var(--glow-primary);
+  background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple), var(--neon-emerald));
+  box-shadow: 0 0 15px var(--neon-cyan);
   border-radius: 4px;
   z-index: 1;
 }
 
 .roadmap-step {
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   z-index: 2;
 }
 
+/* النقطة */
 .roadmap-node {
   position: absolute;
-  right: -36px;
-  top: 28px;
-  width: 20px;
-  height: 20px;
-  background: var(--bg-space);
-  border: 4px solid var(--ztyx-light);
+  right: -28px;
+  top: 24px;
+  width: 16px;
+  height: 16px;
+  background: var(--bg-base);
+  border: 3px solid var(--neon-cyan);
   border-radius: 50%;
-  box-shadow: var(--glow-light);
+  box-shadow: 0 0 15px var(--neon-cyan);
   z-index: 3;
   transition: all 0.3s;
 }
 
 .roadmap-step:hover .roadmap-node {
-  background: var(--ztyx-light);
+  background: var(--neon-cyan);
   transform: scale(1.3);
 }
 
+/* السهم */
 .roadmap-arrow {
   position: absolute;
-  right: -16px;
-  top: 37px;
-  width: 32px;
+  right: -12px;
+  top: 31px;
+  width: 24px;
   height: 2px;
-  background: var(--ztyx-primary);
-  box-shadow: var(--glow-primary);
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
   z-index: 2;
 }
 
@@ -740,36 +805,40 @@ main {
   content: '';
   position: absolute;
   left: -2px;
-  top: -5px;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  border-right: 10px solid var(--ztyx-primary);
-  filter: drop-shadow(0 0 5px var(--ztyx-primary));
+  top: -4px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 8px solid var(--neon-cyan);
+  filter: drop-shadow(0 0 5px var(--neon-cyan));
 }
 
+/* البطاقة */
 .session-item {
-  background: var(--bg-surface);
+  background: var(--bg-glass);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+  border-radius: 16px;
   overflow: hidden;
-  transition: all 0.4s var(--ease-smooth);
+  transition: all 0.3s var(--ease-out);
   backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-premium);
-  margin-right: 32px;
+  box-shadow: var(--shadow-heavy);
+  margin-right: 24px;
+  /* مسافة للسهم */
 }
 
 .session-item:hover {
   border-color: var(--border-strong);
+  box-shadow: var(--shadow-heavy), inset 0 0 20px rgba(0, 243, 255, 0.05);
 }
 
 .session-item.expanded {
-  border-color: var(--ztyx-light);
-  box-shadow: var(--shadow-premium), var(--glow-primary);
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-heavy), var(--glow-cyan);
 }
 
+/* تفعيل إضاءة النقطة والسهم عند فتح الجلسة */
 .roadmap-step:has(.session-item.expanded) .roadmap-node {
-  background: var(--ztyx-light);
-  box-shadow: 0 0 30px var(--ztyx-light);
+  background: var(--neon-cyan);
+  box-shadow: 0 0 25px var(--neon-cyan);
 }
 
 .session-header-btn {
@@ -777,10 +846,10 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 32px;
+  padding: 20px 24px;
   background: transparent;
   border: none;
-  color: var(--text-main);
+  color: var(--text-primary);
   cursor: pointer;
   text-align: right;
 }
@@ -788,31 +857,31 @@ main {
 .session-title-group {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .session-num {
-  font-family: var(--font-en);
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12px;
   font-weight: 800;
-  color: var(--ztyx-light);
-  background: rgba(109, 115, 255, 0.1);
-  border: 1px solid rgba(109, 115, 255, 0.3);
-  padding: 8px 16px;
-  border-radius: 8px;
-  letter-spacing: 1.5px;
+  color: var(--neon-cyan);
+  background: rgba(0, 243, 255, 0.1);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  letter-spacing: 1px;
 }
 
 .session-name {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
 .session-icon {
-  transition: transform 0.4s var(--ease-spring);
-  color: var(--ztyx-light);
-  font-size: 24px;
+  transition: transform 0.3s var(--ease-out);
+  color: var(--neon-cyan);
+  font-size: 20px;
 }
 
 .session-item.expanded .session-icon {
@@ -823,7 +892,7 @@ main {
 .session-content {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.4s var(--ease-smooth);
+  transition: grid-template-rows 0.4s var(--ease-out);
 }
 
 .session-item.expanded .session-content {
@@ -832,47 +901,50 @@ main {
 
 .session-content-inner {
   overflow: hidden;
-  padding: 0 32px;
+  padding: 0 24px;
 }
 
 .session-content-inner ul {
   list-style: none;
-  padding-bottom: 32px;
+  padding-bottom: 24px;
   padding-top: 8px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
 }
 
 .session-content-inner li {
-  font-size: 15px;
-  color: var(--text-muted);
+  font-size: 14px;
+  color: var(--text-secondary);
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 16px;
-  border-radius: 12px;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 12px;
+  border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .session-content-inner li::before {
-  content: '✦';
-  font-size: 14px;
-  color: var(--ztyx-light);
+  content: '⚡';
+  font-size: 12px;
+  color: var(--neon-cyan);
   margin-top: 2px;
-  filter: drop-shadow(0 0 5px var(--ztyx-light));
+  filter: drop-shadow(0 0 5px var(--neon-cyan));
 }
 
+/* ============================================================
+       Quiz & Certificate Sections
+       ============================================================ */
 .focused-pane {
-  max-width: 800px;
+  max-width: 700px;
   margin: 0 auto;
-  background: rgba(5, 5, 15, 0.85);
-  backdrop-filter: blur(30px);
+  background: rgba(10, 10, 18, 0.8);
+  backdrop-filter: blur(25px);
   border: 1px solid var(--border-strong);
-  border-radius: 32px;
-  padding: 64px 48px;
-  box-shadow: var(--shadow-premium), var(--glow-primary);
+  border-radius: 24px;
+  padding: 56px 40px;
+  box-shadow: var(--shadow-heavy), var(--glow-cyan);
   position: relative;
   overflow: hidden;
 }
@@ -883,62 +955,62 @@ main {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--ztyx-dark), var(--ztyx-light), var(--ztyx-primary));
-  box-shadow: var(--glow-primary);
+  height: 3px;
+  background: var(--gradient-brand);
+  box-shadow: var(--glow-cyan);
 }
 
+/* أزرار مضيئة */
 .btn {
-  padding: 16px 36px;
+  padding: 14px 28px;
   border-radius: 50px;
-  font-family: var(--font-ar);
+  font-family: var(--font-arabic);
   font-size: 16px;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .btn-primary {
-  background: var(--text-main);
-  color: var(--bg-space);
+  background: var(--neon-cyan);
+  color: var(--bg-base);
   border: none;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 35px var(--ztyx-light), inset 0 0 10px rgba(0, 0, 0, 0.2);
-  background: var(--ztyx-light);
-  color: #fff;
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
 }
 
 .btn-secondary {
   background: transparent;
   color: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary:hover {
-  border-color: var(--ztyx-light);
-  box-shadow: 0 0 20px rgba(155, 159, 255, 0.3);
-  color: var(--ztyx-light);
+  border-color: #fff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
+/* Cert */
 .cert-icon {
-  font-size: 80px;
-  color: var(--ztyx-light);
-  filter: drop-shadow(0 0 25px var(--ztyx-light));
+  font-size: 64px;
+  color: var(--neon-cyan);
+  filter: drop-shadow(0 0 20px var(--neon-cyan));
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .cert-title {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 900;
   text-align: center;
   margin-bottom: 16px;
@@ -946,19 +1018,19 @@ main {
 
 .cert-checklist {
   list-style: none;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-subtle);
-  border-radius: 24px;
-  padding: 40px;
+  border-radius: 16px;
+  padding: 32px;
 }
 
 .cert-checklist li {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 16px 0;
+  gap: 16px;
+  padding: 12px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -967,52 +1039,55 @@ main {
 }
 
 .cert-checklist i {
-  color: var(--ztyx-light);
-  font-size: 28px;
-  filter: drop-shadow(0 0 10px var(--ztyx-light));
+  color: var(--neon-emerald);
+  font-size: 24px;
+  filter: drop-shadow(0 0 5px var(--neon-emerald));
 }
 
-/* Quiz Elements */
+/* Quiz */
 .quiz-options {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .quiz-option-btn {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  padding: 24px 32px;
+  border-radius: 12px;
+  padding: 20px 24px;
   text-align: right;
-  color: var(--text-main);
-  font-family: var(--font-ar);
-  font-size: 18px;
+  color: var(--text-primary);
+  font-family: var(--font-arabic);
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .quiz-option-btn:hover {
-  border-color: var(--ztyx-light);
-  background: rgba(109, 115, 255, 0.1);
-  transform: translateX(-10px);
+  border-color: var(--neon-cyan);
+  background: rgba(0, 243, 255, 0.05);
+  transform: translateX(-8px);
 }
 
 .quiz-option-btn.selected {
-  border-color: var(--ztyx-light);
-  background: rgba(109, 115, 255, 0.2);
-  box-shadow: inset 0 0 30px rgba(109, 115, 255, 0.2);
-  color: #fff;
+  border-color: var(--neon-cyan);
+  background: rgba(0, 243, 255, 0.15);
+  box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1);
+  color: var(--neon-cyan);
 }
 
+/* ============================================================
+       Footer
+       ============================================================ */
 footer {
   border-top: 1px solid var(--border-subtle);
-  padding: 48px 24px;
-  margin-top: 80px;
+  padding: 32px 24px;
+  margin-top: 64px;
   text-align: center;
-  background: var(--bg-surface);
-  backdrop-filter: blur(20px);
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
   position: relative;
   z-index: 10;
 }
@@ -1021,42 +1096,36 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
 }
 
 .footer-text {
-  font-size: 15px;
-  color: var(--text-muted);
+  font-size: 14px;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
 .footer-link {
-  font-family: var(--font-en);
-  font-size: 18px;
-  font-weight: 900;
-  color: var(--ztyx-light);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--neon-cyan);
   text-decoration: none;
   transition: all 0.3s;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
 }
 
 .footer-link:hover {
   color: #fff;
-  text-shadow: var(--glow-light);
+  text-shadow: 0 0 15px var(--neon-cyan);
 }
 
+/* ============================================================
+       Media Queries
+       ============================================================ */
 @media (max-width: 768px) {
-  header {
-    min-height: 50vh;
-    padding-top: 40px;
-  }
-
   .hero-title {
-    font-size: 44px;
-  }
-
-  .hero-desc {
-    font-size: 16px;
+    font-size: 40px;
   }
 
   .level-banner {
@@ -1064,15 +1133,11 @@ footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 24px;
-    border-radius: 16px;
   }
 
   .level-project {
     width: 100%;
     min-width: auto;
-    padding: 16px;
-    flex-direction: column;
-    text-align: center;
   }
 
   .nav-wrapper {
@@ -1080,19 +1145,16 @@ footer {
   }
 
   nav {
-    padding: 6px;
-    border-radius: 16px;
+    padding: 4px;
   }
 
   .tab-btn {
-    padding: 10px 16px;
+    padding: 8px 16px;
     font-size: 13px;
-    border-radius: 12px;
   }
 
   .focused-pane {
     padding: 32px 20px;
-    border-radius: 16px;
   }
 
   .roadmap-container {
@@ -1105,61 +1167,43 @@ footer {
 
   .roadmap-node {
     right: -19px;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     top: 26px;
   }
 
   .roadmap-arrow {
-    right: -6px;
-    width: 18px;
+    right: -7px;
+    width: 16px;
   }
 
   .session-item {
     margin-right: 16px;
   }
 
-  .session-header-btn {
-    padding: 16px;
+  .hud-corner {
+    display: none;
   }
 
-  .session-title-group {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .two-col-layout {
-    gap: 32px;
-  }
+  /* Hide HUD on mobile to prevent clutter */
 }
 
-</style></head><body><!-- Background Galaxy & Effects --><div class="galaxy-bg"><div class="nebula nebula-1"></div><div class="nebula nebula-2"></div><div class="nebula nebula-3"></div></div><div id="starfield"></div><div class="mouse-glow" id="mouseGlow"></div><!-- Main Container --><div class="container"><!-- Header / Hero --><header><div class="brand-badge"><div class="badge-top"><div class="dot"></div>شركة زتكس للتكنولوجيا والمعلومات ش.ذ.م.م </div><div class="badge-bottom">هيئة الاستثمار - جمهورية مصر العربية</div></div><h1 class="hero-title">رحلتك من الصفر<br><span class="gradient-text">إلى أول دولار</span></h1><p class="hero-desc">نظام تعليمي متكامل يدمج بين تكنولوجيا المستقبل وأدوات التعلم العملية، يأخذك من الأساسيات حتى إطلاق مشروعك وبدء الربح الحقيقي بقرارات مبنية على البيانات. </p></header><!-- Navigation --><div class="nav-wrapper"><nav><button class="tab-btn active" data-tab="0"><i class="ti ti-map-2"></i>نظرة عامة (Overview)</button><button class="tab-btn" data-tab="1">م١ - الاستكشاف (L1)</button><button class="tab-btn" data-tab="2">م٢ - مبرمج مبتدئ (L2)</button><button class="tab-btn" data-tab="3">م٣ - علوم الحاسب (L3)</button><button class="tab-btn" data-tab="4">م٤ - اكتشاف المسار (L4)</button><button class="tab-btn" data-tab="5"><i class="ti ti-certificate"></i>الشهادة</button><button class="tab-btn" data-tab="6"><i class="ti ti-brain"></i>التقييم</button></nav></div><main><!--=================PANE 0: OVERVIEW=================--><div id="pane-0" class="pane active"><div class="card-grid"><div class="saas-card c-level-1" onclick="switchTab(1)"><span class="tag">المستوى الأول (LEVEL 1)</span><div class="card-icon-wrapper"><i class="ti ti-terminal-2"></i></div><h3>مستكشف الكود (Coding Explorer)</h3><p>8 جلسات تؤسس لعقلية المبرمج وبناء أول برنامج حقيقي لك من الصفر.</p></div><div class="saas-card c-level-2" onclick="switchTab(2)"><span class="tag">المستوى الثاني (LEVEL 2)</span><div class="card-icon-wrapper"><i class="ti ti-braces"></i></div><h3>المبرمج المبتدئ (Junior Programmer)</h3><p>10 جلسات من التطبيق العملي لبناء أنظمة وحل المشكلات المعقدة.</p></div><div class="saas-card c-level-3" onclick="switchTab(3)"><span class="tag">المستوى الثالث (LEVEL 3)</span><div class="card-icon-wrapper"><i class="ti ti-binary-tree"></i></div><h3>علوم الحاسب (CS Foundation)</h3><p>8 جلسات تركز على الخوارزميات، هياكل البيانات، وقواعد البيانات.</p></div><div class="saas-card c-level-4" onclick="switchTab(4)"><span class="tag">المستوى الرابع (LEVEL 4)</span><div class="card-icon-wrapper"><i class="ti ti-compass"></i></div><h3>اكتشاف المسار (Career Discovery)</h3><p>استكشاف 8 مسارات مهنية تقنية لاختيار التخصص المناسب لبدء الربح.</p></div></div><div class="two-col-layout"><div><div class="section-header"><div class="section-indicator"></div><h2>مبادئ التصميم التعليمي</h2></div><div class="principles-grid"><div class="principle-item"><div class="principle-icon"><i class="ti ti-stairs-up"></i></div><div class="principle-content"><h4>تدرج مبني على الفهم</h4><p>بناء متين من الأساسيات إلى التخصص بدون قفزات عشوائية تشتت الانتباه.</p></div></div><div class="principle-item"><div class="principle-icon"><i class="ti ti-code"></i></div><div class="principle-content"><h4>التطبيق المعماري (Project-Based)</h4><p>يُختتم كل مستوى بمشروع تطبيقي يضاف إلى ملف أعمالك (Portfolio).</p></div></div><div class="principle-item"><div class="principle-icon"><i class="ti ti-chart-dots"></i></div><div class="principle-content"><h4>قرارات مبنية على البيانات</h4><p>توجيه مهني واختيار للتخصص في نهاية البرنامج بناءً على أدائك وميولك الفعلي.</p></div></div></div></div><div><div class="section-header"><div class="section-indicator" style="background: var(--ztyx-light); box-shadow: var(--glow-light);"></div><h2>الخريطة الزمنية (Roadmap)</h2></div><div class="timeline"><div class="timeline-item"><div class="timeline-period">الأسابيع ١–٨ (WEEKS 1-8)</div><div class="timeline-title">مستكشف الكود (Level 1)</div><div class="timeline-desc">مقدمة في لغة Python، المتغيرات، والشروط. بناء حاسبة ذكية تفاعلية.</div></div><div class="timeline-item"><div class="timeline-period">الأسابيع ٩–١٨ (WEEKS 9-18)</div><div class="timeline-title">المبرمج المبتدئ (Level 2)</div><div class="timeline-desc">الدوال، الحلقات، القوائم والملفات، مع أساسيات Git لنظام إدارة الطلاب.</div></div><div class="timeline-item"><div class="timeline-period">الأسابيع ١٩–٢٦ (WEEKS 19-26)</div><div class="timeline-title">علوم الحاسب (Level 3)</div><div class="timeline-desc">خوارزميات البحث والفرز، Big-O، وقواعد بيانات SQLite.</div></div><div class="timeline-item"><div class="timeline-period">الأسابيع ٢٧–٣٦ (WEEKS 27-36)</div><div class="timeline-title">اكتشاف المسار (Level 4)</div><div class="timeline-desc">جولة استكشافية في 8 مسارات مهنية مختلفة للبدء في تحقيق الأرباح.</div></div></div></div></div></div><!--=================PANE 1=================--><div id="pane-1" class="pane"><div class="level-banner"><div class="level-info"><div class="level-number">01</div><div class="level-meta"><h2>مستكشف الكود <span class="en-text">(Coding Explorer)</span></h2><p>الأسابيع ١–٨ · ١٦ ساعة تدريبية · الأساسيات والتفكير المنطقي</p></div></div><div class="level-project"><i class="ti ti-calculator"></i><div class="level-project-text"><h4>المشروع التطبيقي (Project)</h4><p class="en-text">Smart CLI Calculator</p></div></div></div><div class="section-header"><div class="section-indicator"></div><h2>خارطة الجلسات (Sessions Roadmap)</h2></div><div class="roadmap-container" id="grid-lvl-1"></div></div><!--=================PANE 2=================--><div id="pane-2" class="pane"><div class="level-banner"><div class="level-info"><div class="level-number">02</div><div class="level-meta"><h2>المبرمج المبتدئ <span class="en-text">(Junior Programmer)</span></h2><p>الأسابيع ٩–١٨ · ٢٠ ساعة تدريبية · هياكل التحكم والتطبيقات</p></div></div><div class="level-project"><i class="ti ti-users"></i><div class="level-project-text"><h4>المشروع التطبيقي (Project)</h4><p class="en-text">Student Management System</p></div></div></div><div class="section-header"><div class="section-indicator"></div><h2>خارطة الجلسات (Sessions Roadmap)</h2></div><div class="roadmap-container" id="grid-lvl-2"></div></div><!--=================PANE 3=================--><div id="pane-3" class="pane"><div class="level-banner"><div class="level-info"><div class="level-number">03</div><div class="level-meta"><h2>علوم الحاسب <span class="en-text">(CS Foundation)</span></h2><p>الأسابيع ١٩–٢٦ · ١٦ ساعة تدريبية · الخوارزميات وقواعد البيانات</p></div></div><div class="level-project"><i class="ti ti-database"></i><div class="level-project-text"><h4>المشروع التطبيقي (Project)</h4><p class="en-text">Library SQLite DB</p></div></div></div><div class="section-header"><div class="section-indicator"></div><h2>خارطة الجلسات (Sessions Roadmap)</h2></div><div class="roadmap-container" id="grid-lvl-3"></div></div><!--=================PANE 4=================--><div id="pane-4" class="pane"><div class="level-banner"><div class="level-info"><div class="level-number">04</div><div class="level-meta"><h2>اكتشاف المسار <span class="en-text">(Career Discovery)</span></h2><p>الأسابيع ٢٧–٣٦ · ٢٠ ساعة تدريبية · التوجيه المهني والاختصاص المربح</p></div></div></div><div class="section-header"><div class="section-indicator"></div><h2>المسارات التقنية (Tech Tracks)</h2></div><div class="card-grid" style="margin-bottom: 32px;"><div class="saas-card"><h3 class="en-text" style="font-size: 20px; color: var(--ztyx-light);">Web Development</h3><p>تطوير واجهات المستخدم (HTML, CSS, JS).</p></div><div class="saas-card"><h3 class="en-text" style="font-size: 20px; color: var(--ztyx-light);">Full Stack Dev</h3><p>بناء الأنظمة المتكاملة (React, Node.js).</p></div><div class="saas-card"><h3 class="en-text" style="font-size: 20px; color: var(--ztyx-light);">Mobile App</h3><p>تطبيقات الهواتف الذكية (Flutter).</p></div><div class="saas-card"><h3 class="en-text" style="font-size: 20px; color: var(--ztyx-light);">Cyber Security</h3><p>أمن المعلومات والاختراق الأخلاقي (Ethical Hacking).</p></div><div class="saas-card"><h3 class="en-text" style="font-size: 20px; color: var(--ztyx-light);">AI & Machine Learning</h3><p>مقدمة في نماذج الذكاء الاصطناعي.</p></div><div class="saas-card"><h3 class="en-text" style="font-size: 20px; color: var(--ztyx-light);">Data Science</h3><p>تحليل البيانات واستخراج الرؤى (Analytics).</p></div></div></div><!--=================PANE 5: Certificate=================--><div id="pane-5" class="pane"><div class="focused-pane"><div class="cert-icon"><i class="ti ti-rosette-discount-check-filled"></i></div><h2 class="cert-title">شهادة الاعتماد التقني</h2><p style="text-align: center; color: var(--text-muted); font-size: 18px; margin-bottom: 40px;">يُمنح هذا التقرير كدليل على إتمام المستويات الأربعة لبرنامج التأسيس الشامل بنجاح والاستعداد لسوق العمل.</p><ul class="cert-checklist"><li><i class="ti ti-check"></i>بناء أساس برمجي متين بلغة بايثون (Python).</li><li><i class="ti ti-check"></i>استكمال 4 مشاريع تطبيقية عملية (Portfolio).</li><li><i class="ti ti-check"></i>إتقان مفاهيم علوم الحاسب (Algorithms, Big-O).</li><li><i class="ti ti-check"></i>استكشاف 8 مسارات مهنية مختلفة باتخاذ قرار مبني على البيانات.</li></ul></div></div><!--=================PANE 6: Quiz=================--><div id="pane-6" class="pane"><div class="focused-pane" id="quiz-container"><div style="text-align: center; margin-bottom: 48px;"><h2 style="font-size: 36px; font-weight: 900; text-shadow: 0 0 20px rgba(255,255,255,0.3); margin-bottom: 16px;">تحديد المستوى والمسار (Assessment)</h2><p style="color: var(--text-muted); font-size: 18px;">أجب لنقوم بتحليل بياناتك واقتراح أفضل خارطة طريق تقنية لبدء أرباحك.</p></div><div style="display: flex; gap: 12px; margin-bottom: 48px;" id="q-bar"></div><div id="q-body"></div><div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 48px;" id="q-nav-area"><button class="btn btn-secondary" id="q-restart-btn" style="display: none;" onclick="initQuiz()"><i class="ti ti-refresh"></i>إعادة التقييم</button><button class="btn btn-primary" id="q-next-btn" style="display: none;" onclick="nextQuestion()">التالي (Next) <i class="ti ti-arrow-left"></i></button></div></div></div></main></div><!--=================Footer=================--><footer><div class="footer-content"><div class="footer-text">جميع الحقوق محفوظة لصالح شركة زتكس للتكنولوجيا والمعلومات ش.ذ.م.م © 2026</div><a href="https://www.cureztyx.xyz" target="_blank" rel="noopener noreferrer" class="footer-link">CUREZTYX.XYZ</a></div></footer><script>function createStars() {
-  const starfield=document.getElementById('starfield');
-  const count=150;
-  let html='';
-
-  for (let i=0; i < count; i++) {
-    const x=Math.random() * 100;
-    const y=Math.random() * 100;
-    const size=Math.random() * 2+1;
-    const delay=Math.random() * 5;
-    const duration=Math.random() * 3+2;
-    html+=`<div class="star" style="left: ${x}%; top: ${y}%; width: ${size}px; height: ${size}px; animation-delay: ${delay}s; animation-duration: ${duration}s;"></div>`;
-  }
-
-  starfield.innerHTML=html;
-}
-
+</style></head><body>< !-- Cinematic & Interactive Background Elements --><div class="bg-grid"></div><div class="particles"></div><div class="interactive-glow" id="mouseGlow"></div><div class="hud-corner hud-tl"></div><div class="hud-corner hud-tr"></div><div class="hud-corner hud-bl"></div><div class="hud-corner hud-br"></div>< !-- Main Container --><div class="container">< !-- Header / Hero --><header><div class="brand-badge"><div class="badge-top"><div class="dot"></div>شركة زتكس للتكنولوجيا والمعلومات ش.ذ.م.م </div><div class="badge-bottom">هيئة الاستثمار - جمهورية مصر العربية</div></div><h1 class="hero-title">رحلتك من الصفر<br><span class="gradient-text">إلى أول دولار</span></h1><p class="hero-desc">نظام تعليمي متكامل يدمج بين تكنولوجيا المستقبل وأدوات التعلم العملية، يأخذك من الأساسيات حتى إطلاق مشروعك وبدء الربح الحقيقي بقرارات مبنية على البيانات. </p></header>< !-- Navigation (Neon Pill) --><div class="nav-wrapper"><nav><button class="tab-btn active" data-tab="0"><i class="ti ti-map-2"></i>نظرة عامة (Overview)</button><button class="tab-btn" data-tab="1">م١ - الاستكشاف (L1)</button><button class="tab-btn" data-tab="2">م٢ - مبرمج مبتدئ (L2)</button><button class="tab-btn" data-tab="3">م٣ - علوم الحاسب (L3)</button><button class="tab-btn" data-tab="4">م٤ - اكتشاف المسار (L4)</button><button class="tab-btn" data-tab="5"><i class="ti ti-certificate"></i>الشهادة</button><button class="tab-btn" data-tab="6"><i class="ti ti-brain"></i>التقييم</button></nav></div><main>< !--=================PANE 0: OVERVIEW=================--><div id="pane-0" class="pane active">< !-- Cards Grid --><div class="card-grid"><div class="saas-card c-level-1" onclick="switchTab(1)"><span class="tag">المستوى الأول (LEVEL 1)</span><div class="card-icon-wrapper"><i class="ti ti-terminal-2"></i></div><h3>مستكشف الكود (Coding Explorer)</h3><p>8 جلسات تؤسس لعقلية المبرمج وبناء أول برنامج حقيقي لك من الصفر.</p></div><div class="saas-card c-level-2" onclick="switchTab(2)"><span class="tag">المستوى الثاني (LEVEL 2)</span><div class="card-icon-wrapper"><i class="ti ti-braces"></i></div><h3>المبرمج المبتدئ (Junior Programmer)</h3><p>10 جلسات من التطبيق العملي لبناء أنظمة وحل المشكلات المعقدة.</p></div><div class="saas-card c-level-3" onclick="switchTab(3)"><span class="tag">المستوى الثالث (LEVEL 3)</span><div class="card-icon-wrapper"><i class="ti ti-binary-tree"></i></div><h3>علوم الحاسب (CS Foundation)</h3><p>8 جلسات تركز على الخوارزميات، هياكل البيانات، وقواعد البيانات.</p></div><div class="saas-card c-level-4" onclick="switchTab(4)"><span class="tag">المستوى الرابع (LEVEL 4)</span><div class="card-icon-wrapper"><i class="ti ti-compass"></i></div><h3>اكتشاف المسار (Career Discovery)</h3><p>استكشاف 8 مسارات مهنية تقنية لاختيار التخصص المناسب لبدء الربح.</p></div></div>< !-- Principles & Roadmap --><div class="two-col-layout"><div><div class="section-header"><div class="section-indicator"></div><h2>مبادئ التصميم التعليمي</h2></div><div class="principles-grid"><div class="principle-item"><div class="principle-icon"><i class="ti ti-stairs-up"></i></div><div class="principle-content"><h4>تدرج مبني على الفهم</h4><p>بناء متين من الأساسيات إلى التخصص بدون قفزات عشوائية تشتت الانتباه.</p></div></div><div class="principle-item"><div class="principle-icon"><i class="ti ti-code"></i></div><div class="principle-content"><h4>التطبيق المعماري (Project-Based)</h4><p>يُختتم كل مستوى بمشروع تطبيقي يضاف إلى ملف أعمالك (Portfolio).</p></div></div><div class="principle-item"><div class="principle-icon"><i class="ti ti-chart-dots"></i></div><div class="principle-content"><h4>قرارات مبنية على البيانات</h4><p>توجيه مهني واختيار للتخصص في نهاية البرنامج بناءً على أدائك وميولك الفعلي.</p></div></div></div></div><div><div class="section-header"><div class="section-indicator" style="background: var(--neon-purple); box-shadow: var(--glow-purple);"></div><h2>الخريطة الزمنية (Roadmap)</h2></div><div class="timeline"><div class="timeline-item"><div class="timeline-period">الأسابيع ١–٨ (WEEKS 1-8)</div><div class="timeline-title">مستكشف الكود (Level 1)</div><div class="timeline-desc">مقدمة في لغة Python، المتغيرات، والشروط. بناء حاسبة ذكية تفاعلية.</div></div><div class="timeline-item"><div class="timeline-period">الأسابيع ٩–١٨ (WEEKS 9-18)</div><div class="timeline-title">المبرمج المبتدئ (Level 2)</div><div class="timeline-desc">الدوال، الحلقات، القوائم والملفات، مع أساسيات Git لنظام إدارة الطلاب.</div></div><div class="timeline-item"><div class="timeline-period">الأسابيع ١٩–٢٦ (WEEKS 19-26)</div><div class="timeline-title">علوم الحاسب (Level 3)</div><div class="timeline-desc">خوارزميات البحث والفرز، Big-O، وقواعد بيانات SQLite.</div></div><div class="timeline-item"><div class="timeline-period">الأسابيع ٢٧–٣٦ (WEEKS 27-36)</div><div class="timeline-title">اكتشاف المسار (Level 4)</div><div class="timeline-desc">جولة استكشافية في 8 مسارات مهنية مختلفة للبدء في تحقيق الأرباح.</div></div></div></div></div></div>< !--=================PANE 1=================--><div id="pane-1" class="pane"><div class="level-banner"><div class="level-info"><div class="level-number">01</div><div class="level-meta"><h2>مستكشف الكود <span class="en-text">(Coding Explorer)</span></h2><p>الأسابيع ١–٨ · ١٦ ساعة تدريبية · الأساسيات والتفكير المنطقي</p></div></div><div class="level-project"><i class="ti ti-calculator"></i><div class="level-project-text"><h4>المشروع التطبيقي (Project)</h4><p class="en-text">Smart CLI Calculator</p></div></div></div><div class="section-header"><div class="section-indicator"></div><h2>خارطة الجلسات (Sessions Roadmap)</h2></div><div class="roadmap-container" id="grid-lvl-1"></div></div>< !--=================PANE 2=================--><div id="pane-2" class="pane"><div class="level-banner" style="--neon-cyan: var(--neon-emerald);"><div class="level-info"><div class="level-number" style="filter: drop-shadow(0 0 15px var(--neon-emerald));">02</div><div class="level-meta"><h2>المبرمج المبتدئ <span class="en-text">(Junior Programmer)</span></h2><p>الأسابيع ٩–١٨ · ٢٠ ساعة تدريبية · هياكل التحكم والتطبيقات</p></div></div><div class="level-project"><i class="ti ti-users"></i><div class="level-project-text"><h4 style="color: var(--neon-emerald);">المشروع التطبيقي (Project)</h4><p class="en-text">Student Management System</p></div></div></div><div class="section-header"><div class="section-indicator" style="background: var(--neon-emerald); box-shadow: var(--glow-emerald);"></div><h2>خارطة الجلسات (Sessions Roadmap)</h2></div><div class="roadmap-container" id="grid-lvl-2"></div></div>< !--=================PANE 3=================--><div id="pane-3" class="pane"><div class="level-banner" style="--neon-cyan: var(--neon-purple);"><div class="level-info"><div class="level-number" style="filter: drop-shadow(0 0 15px var(--neon-purple));">03</div><div class="level-meta"><h2>علوم الحاسب <span class="en-text">(CS Foundation)</span></h2><p>الأسابيع ١٩–٢٦ · ١٦ ساعة تدريبية · الخوارزميات وقواعد البيانات</p></div></div><div class="level-project"><i class="ti ti-database"></i><div class="level-project-text"><h4 style="color: var(--neon-purple);">المشروع التطبيقي (Project)</h4><p class="en-text">Library SQLite DB</p></div></div></div><div class="section-header"><div class="section-indicator" style="background: var(--neon-purple); box-shadow: var(--glow-purple);"></div><h2>خارطة الجلسات (Sessions Roadmap)</h2></div><div class="roadmap-container" id="grid-lvl-3"></div></div>< !--=================PANE 4=================--><div id="pane-4" class="pane"><div class="level-banner" style="--neon-cyan: var(--neon-amber);"><div class="level-info"><div class="level-number" style="filter: drop-shadow(0 0 15px var(--neon-amber));">04</div><div class="level-meta"><h2>اكتشاف المسار <span class="en-text">(Career Discovery)</span></h2><p>الأسابيع ٢٧–٣٦ · ٢٠ ساعة تدريبية · التوجيه المهني والاختصاص المربح</p></div></div></div><div class="section-header"><div class="section-indicator" style="background: var(--neon-amber); box-shadow: var(--glow-amber);"></div><h2>المسارات التقنية (Tech Tracks)</h2></div><div class="card-grid" style="margin-bottom: 32px;"><div class="saas-card" style="padding: 24px;"><h3 class="en-text" style="font-size: 18px; color: var(--neon-cyan);">Web Development</h3><p style="font-size: 13px;">تطوير واجهات المستخدم (HTML, CSS, JS).</p></div><div class="saas-card" style="padding: 24px;"><h3 class="en-text" style="font-size: 18px; color: var(--neon-cyan);">Full Stack Dev</h3><p style="font-size: 13px;">بناء الأنظمة المتكاملة (React, Node.js).</p></div><div class="saas-card" style="padding: 24px;"><h3 class="en-text" style="font-size: 18px; color: var(--neon-cyan);">Mobile App</h3><p style="font-size: 13px;">تطبيقات الهواتف الذكية (Flutter).</p></div><div class="saas-card" style="padding: 24px;"><h3 class="en-text" style="font-size: 18px; color: var(--neon-cyan);">Cyber Security</h3><p style="font-size: 13px;">أمن المعلومات والاختراق الأخلاقي (Ethical Hacking).</p></div><div class="saas-card" style="padding: 24px;"><h3 class="en-text" style="font-size: 18px; color: var(--neon-cyan);">AI & Machine Learning</h3><p style="font-size: 13px;">مقدمة في نماذج الذكاء الاصطناعي.</p></div><div class="saas-card" style="padding: 24px;"><h3 class="en-text" style="font-size: 18px; color: var(--neon-cyan);">Data Science</h3><p style="font-size: 13px;">تحليل البيانات واستخراج الرؤى (Analytics).</p></div></div></div>< !--=================PANE 5: Certificate=================--><div id="pane-5" class="pane"><div class="focused-pane"><div class="cert-icon"><i class="ti ti-rosette-discount-check-filled"></i></div><h2 class="cert-title">شهادة الاعتماد التقني</h2><p class="cert-desc">يُمنح هذا التقرير كدليل على إتمام المستويات الأربعة لبرنامج التأسيس الشامل بنجاح والاستعداد لسوق العمل.</p><ul class="cert-checklist"><li><i class="ti ti-check"></i>بناء أساس برمجي متين بلغة بايثون (Python).</li><li><i class="ti ti-check"></i>استكمال 4 مشاريع تطبيقية عملية (Portfolio).</li><li><i class="ti ti-check"></i>إتقان مفاهيم علوم الحاسب (Algorithms, Big-O).</li><li><i class="ti ti-check"></i>استكشاف 8 مسارات مهنية مختلفة باتخاذ قرار مبني على البيانات.</li></ul></div></div>< !--=================PANE 6: Quiz=================--><div id="pane-6" class="pane"><div class="focused-pane" id="quiz-container"><div class="quiz-header"><h2 style="text-shadow: 0 0 15px rgba(255,255,255,0.2);">تحديد المستوى والمسار (Assessment)</h2><p style="color: var(--text-secondary); font-size: 14px;">أجب لنقوم بتحليل بياناتك واقتراح أفضل خارطة طريق تقنية لبدء أرباحك.</p></div><div style="display: flex; gap: 8px; margin-bottom: 40px;" id="q-bar"></div><div id="q-body"></div><div class="btn-container" id="q-nav-area"><button class="btn btn-secondary" id="q-restart-btn" style="display: none;" onclick="initQuiz()"><i class="ti ti-refresh"></i>إعادة التقييم</button><button class="btn btn-primary" id="q-next-btn" style="display: none;" onclick="nextQuestion()">التالي (Next) <i class="ti ti-arrow-left"></i></button></div></div></div></main></div>< !--=================Footer=================--><footer><div class="footer-content"><div class="footer-text">جميع الحقوق محفوظة لصالح شركة زتكس للتكنولوجيا والمعلومات ش.ذ.م.م © 2026</div><a href="https://www.cureztyx.xyz" target="_blank" rel="noopener noreferrer" class="footer-link">CUREZTYX.XYZ</a></div></footer><script>
+/* ============================================================
+       Interactive Background Animation (Mouse & Scroll)
+       ============================================================ */
 const glow=document.getElementById('mouseGlow');
 
+// Follow mouse
 document.addEventListener('mousemove', (e)=> {
     if(glow) {
-      glow.style.transform=`translate(calc(${
+
+      // Use transform for better performance than top/left
+      glow.style.transform=`translate(calc($ {
             e.clientX
           }
 
-          px - 50%), calc(${
+          px - 50%), calc($ {
             e.clientY
           }
 
@@ -1167,19 +1211,23 @@ document.addEventListener('mousemove', (e)=> {
     }
   });
 
+// Change hue on scroll to create a dynamic vibe
 window.addEventListener('scroll', ()=> {
     if(glow) {
       const scrollY=window.scrollY;
 
-      // Shift hue based on scroll position to create a dynamic space vibe
-      glow.style.filter=`hue-rotate(${
+      // Shift hue based on scroll position (mod 360 to keep it in range)
+      glow.style.filter=`hue-rotate($ {
           scrollY % 360
         }
 
-        deg) opacity(0.8)`;
+        deg)`;
     }
   });
 
+/* ============================================================
+       Data & Logic (Arabic + English Terms)
+       ============================================================ */
 const levelsData= {
   1: [ {
     s: 'الجلسة ٠١ (Session 01)', t: 'مقدمة البرمجة والتفكير', list: ['البرمجة وأهميتها (Importance of Programming)', 'كيف يفكر المبرمج (Programmer Mindset)', 'مجالات التكنولوجيا (Tech Fields)', 'رحلتك في البرنامج (Your Journey)']
@@ -1315,40 +1363,21 @@ s: 'الجلسة ٢٦ (Session 26)', t: 'يوم المشروع (Project Day)', l
 
 ;
 
+// Render Neon Roadmap Sessions (Accordion that stays open)
 function renderSessions() {
   for (let lvl=1; lvl <=3; lvl++) {
-    const container=document.getElementById(`grid-lvl-${
-        lvl
-      }
-
-      `);
+    const container=document.getElementById(`grid-lvl-${lvl}`);
     if ( !container) continue;
 
-    let htmlContent='<div class="roadmap-line"></div>';
+    let htmlContent='<div class="roadmap-line"></div>'; // الخط الزمني العمودي
 
-    htmlContent+=levelsData[lvl].map(sess=> ` <div class="roadmap-step" > <div class="roadmap-node" ></div> <div class="roadmap-arrow" ></div> <div class="session-item" > <button class="session-header-btn" onclick="toggleSession(this)" > <div class="session-title-group" > <span class="session-num" >${
-        sess.s
-      }
-
-      </span> <span class="session-name" >${
-        sess.t
-      }
-
-      </span> </div> <i class="ti ti-chevron-down session-icon" ></i> </button> <div class="session-content" > <div class="session-content-inner" > <ul> ${
-        sess.list.map(item=> `<li>${
-            item
-          }
-
-          </li>`).join('')
-      }
-
-      </ul> </div> </div> </div> </div> `).join('');
+    htmlContent+=levelsData[lvl].map(sess=> ` <div class="roadmap-step" > <div class="roadmap-node" ></div> <div class="roadmap-arrow" ></div> <div class="session-item" > <button class="session-header-btn" onclick="toggleSession(this)" > <div class="session-title-group" > <span class="session-num" >${sess.s}</span> <span class="session-name" >${sess.t}</span> </div> <i class="ti ti-chevron-down session-icon" ></i> </button> <div class="session-content" > <div class="session-content-inner" > <ul> ${sess.list.map(item=> `<li>${item}</li>`).join('')} </ul> </div> </div> </div> </div> `).join('');
 
     container.innerHTML=htmlContent;
   }
 }
 
-// Toggle Session: Keeps others open (Independent accordions)
+// Toggle Session: Keeps others open as requested!
 window.toggleSession=function(btn) {
   const item=btn.closest('.session-item');
   item.classList.toggle('expanded');
@@ -1387,6 +1416,7 @@ document.querySelectorAll('.tab-btn').forEach(btn=> {
       });
   });
 
+// Quiz Logic (Sci-Fi Assessment)
 const quizData=[ {
   q: 'ما مستوى خبرتك الحالية في البرمجة؟ (Experience Level)', opts: ['لا خبرة سابقة - أبدأ من الصفر', 'دروس مجانية متفرقة ومحاولات بسيطة', 'أفهم الأساسيات واستطيع كتابة برامج', 'لدي مشاريع حقيقية ومنشورة بالفعل'], vals: [0, 1, 2, 3]
 }
@@ -1427,23 +1457,12 @@ function renderQuiz() {
     return;
   }
 
-  bar.innerHTML=quizData.map((_, i)=> `<div style="flex: 1; height: 8px; border-radius: 4px; transition: all 0.3s; background: ${i < qIdx ? 'var(--ztyx-primary)' : i === qIdx ? 'var(--ztyx-light)' : 'rgba(255,255,255,0.1)'}; box-shadow: ${i <= qIdx ? 'var(--glow-primary)' : 'none'}; transform: ${i === qIdx ? 'scaleY(1.3)' : 'scaleY(1)'}" ></div>`).join('');
+  // Neon Progress Bar
+  bar.innerHTML=quizData.map((_, i)=> `<div style="flex: 1; height: 6px; border-radius: 4px; transition: all 0.3s; background: ${i < qIdx ? 'var(--neon-cyan)' : i === qIdx ? 'var(--neon-purple)' : 'rgba(255,255,255,0.1)'}; box-shadow: ${i <= qIdx ? 'var(--glow-cyan)' : 'none'}; transform: ${i === qIdx ? 'scaleY(1.5)' : 'scaleY(1)'}" ></div>`).join('');
 
   const q=quizData[qIdx];
 
-  body.innerHTML=` <div class="quiz-question">${
-    q.q
-  }
-
-  </div><div class="quiz-options">${
-    q.opts.map((opt, i)=> `<button class="quiz-option-btn" onclick="selectOpt(this, ${i})" ><span>${
-        opt
-      }
-
-      </span></button>`).join('')
-  }
-
-  </div>`;
+  body.innerHTML=` <div class="quiz-question">${q.q}</div><div class="quiz-options">${q.opts.map((opt, i)=> `<button class="quiz-option-btn" onclick="selectOpt(this, ${i})" ><span>${opt}</span></button>`).join('')}</div>`;
 
   btnNext.style.display='none';
   btnRestart.style.display='none';
@@ -1469,7 +1488,7 @@ window.nextQuestion=function() {
 ;
 
 function showQuizResult() {
-  document.getElementById('q-bar').innerHTML=quizData.map(()=> `<div style="flex: 1; height: 8px; border-radius: 4px; background: var(--ztyx-primary); box-shadow: var(--glow-primary);" ></div>`).join('');
+  document.getElementById('q-bar').innerHTML=quizData.map(()=> `<div style="flex: 1; height: 6px; border-radius: 4px; background: var(--neon-cyan); box-shadow: var(--glow-cyan);" ></div>`).join('');
 
   const firstAns=qAnswers[0] || 0;
   let level,
@@ -1504,27 +1523,7 @@ function showQuizResult() {
   'تطوير الألعاب (Game Dev)']];
   const topTracks=tracks[qAnswers[1] || 0] || tracks[0];
 
-  document.getElementById('q-body').innerHTML=` <div style="text-align: center; animation: paneEnter 0.6s var(--ease-spring) forwards;"><h3 style="font-size: 36px; font-weight: 900; margin-bottom: 40px; text-shadow: var(--glow-light);">النتيجة وتحليل المسار (System Analysis)</h3><div style="background: rgba(109, 115, 255, 0.1); border: 1px solid var(--border-strong); border-radius: 20px; padding: 32px; margin-bottom: 24px; text-align: right; box-shadow: inset 0 0 20px rgba(109,115,255,0.2);"><div style="font-size: 14px; color: var(--ztyx-light); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; font-weight: 800;">نقطة البداية الموصى بها (Starting Point)</div><div style="font-size: 28px; font-weight: 900; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3);">${
-    level
-  }
-
-  : ${
-    title
-  }
-
-  </div></div><div style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 32px; text-align: right;"><div style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-weight: 800;">أفضل المسارات التقنية لك (Best Tech Tracks)</div><div style="display: flex; flex-direction: column; gap: 16px;"><div style="display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,0.05); padding: 16px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);"><span style="color: var(--ztyx-light); font-weight: 900; font-family: var(--font-en); font-size: 20px;">01.</span><span style="font-size: 20px; font-weight: 800; color:#fff;">${
-    topTracks[0]
-  }
-
-  </span></div><div style="display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,0.05); padding: 16px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);"><span style="color: var(--ztyx-light); font-weight: 900; font-family: var(--font-en); font-size: 20px;">02.</span><span style="font-size: 20px; font-weight: 800; color:#fff;">${
-    topTracks[1]
-  }
-
-  </span></div><div style="display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,0.05); padding: 16px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);"><span style="color: var(--ztyx-light); font-weight: 900; font-family: var(--font-en); font-size: 20px;">03.</span><span style="font-size: 20px; font-weight: 800; color:#fff;">${
-    topTracks[2]
-  }
-
-  </span></div></div></div></div>`;
+  document.getElementById('q-body').innerHTML=` <div style="text-align: center; animation: paneEnter 0.5s ease forwards;"><h3 style="font-size: 28px; font-weight: 900; margin-bottom: 32px; text-shadow: var(--glow-cyan);">النتيجة وتحليل المسار (System Analysis)</h3><div style="background: rgba(0, 243, 255, 0.05); border: 1px solid var(--border-strong); border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: right; box-shadow: var(--glow-cyan);"><div style="font-size: 13px; color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 800;">نقطة البداية الموصى بها (Starting Point)</div><div style="font-size: 22px; font-weight: 800; color: #fff;">${level} : ${title}</div></div><div style="background: rgba(188, 19, 254, 0.05); border: 1px solid rgba(188, 19, 254, 0.4); border-radius: 16px; padding: 24px; text-align: right; box-shadow: var(--glow-purple);"><div style="font-size: 13px; color: var(--neon-purple); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; font-weight: 800;">أفضل المسارات التقنية لك (Best Tech Tracks)</div><div style="display: flex; flex-direction: column; gap: 12px;"><div style="display: flex; align-items: center; gap: 16px; background: rgba(0,0,0,0.4); padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);"><span style="color: var(--neon-purple); font-weight: 900; font-family: var(--font-mono);">01.</span><span style="font-size: 16px; font-weight: 700;">${topTracks[0]}</span></div><div style="display: flex; align-items: center; gap: 16px; background: rgba(0,0,0,0.4); padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);"><span style="color: var(--neon-purple); font-weight: 900; font-family: var(--font-mono);">02.</span><span style="font-size: 16px; font-weight: 700;">${topTracks[1]}</span></div><div style="display: flex; align-items: center; gap: 16px; background: rgba(0,0,0,0.4); padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);"><span style="color: var(--neon-purple); font-weight: 900; font-family: var(--font-mono);">03.</span><span style="font-size: 16px; font-weight: 700;">${topTracks[2]}</span></div></div></div></div>`;
 
   document.getElementById('q-next-btn').style.display='none';
   document.getElementById('q-restart-btn').style.display='inline-flex';
@@ -1532,7 +1531,6 @@ function showQuizResult() {
 
 // Init
 document.addEventListener('DOMContentLoaded', ()=> {
-    createStars();
     renderSessions();
   });
 </script></body></html>
