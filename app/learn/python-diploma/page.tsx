@@ -343,13 +343,13 @@ export default function PythonDiplomaPage() {
                         className={inputClass} style={inputStyle}
                         dir="ltr"
                       />
-                      {localForm.discountCode && localForm.discountCode.toUpperCase() !== "FRIST20" && (
+                      {localForm.discountCode && !["FIRST20", "FRIST20"].includes(localForm.discountCode.trim().toUpperCase()) && (
                         <p className="text-sm text-red-400 mt-2 flex items-center gap-1.5">
                           <AlertCircle className="w-4 h-4" />
                           كود الخصم غير صحيح
                         </p>
                       )}
-                      {localForm.discountCode.toUpperCase() === "FRIST20" && (
+                      {["FIRST20", "FRIST20"].includes(localForm.discountCode.trim().toUpperCase()) && (
                         <div className="mt-2 p-3 rounded-xl bg-[#4ADE80]/10 border border-[#4ADE80]/20 flex items-center gap-2">
                           <CheckCircle2 className="w-5 h-5 text-[#4ADE80]" />
                           <p className="text-sm text-[#4ADE80] font-bold">
