@@ -2,8 +2,6 @@
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
-  output: 'export',
-  
   experimental: {
     optimizePackageImports: ['lucide-react', 'gsap'],
   },
