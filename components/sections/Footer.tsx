@@ -44,7 +44,7 @@ export default function Footer() {
             <h4 className="text-[#F0F1FF] font-bold mb-2">اتصل بنا</h4>
             <div className="flex items-center gap-3 text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">
                <Phone className="w-4 h-4 text-[#5B5EFF]" />
-               <a href="tel:+201207416336" dir="ltr">01207416336</a>
+               <a href="tel:+201152498680" dir="ltr">+20 11 52498680</a>
             </div>
             <div className="flex items-center gap-3 text-[#9496C0] text-sm hover:text-[#5B5EFF] transition-colors">
                <Mail className="w-4 h-4 text-[#5B5EFF]" />

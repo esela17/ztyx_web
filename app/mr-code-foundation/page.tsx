@@ -58,7 +58,7 @@ function CustomFooter() {
           © {new Date().getFullYear()} Mr. Code - جميع الحقوق محفوظة
         </div>
         <div className="flex items-center gap-6">
-          <a href="#" className="text-[#9496C0] hover:text-[#2D5BFF] transition-colors text-sm font-medium">واتساب الدعم: 01207416336</a>
+          <a href="https://wa.me/201152498680" target="_blank" rel="noopener noreferrer" className="text-[#9496C0] hover:text-[#2D5BFF] transition-colors text-sm font-medium" dir="ltr">واتساب الدعم: +20 11 52498680</a>
           <Link href="/" className="text-[#9496C0] hover:text-white transition-colors text-sm">الموقع الرسمي للشركة</Link>
         </div>
       </div>
@@ -454,7 +454,7 @@ export default function MrCodeLandingPage() {
 
                 <div className="space-y-4 max-w-md mx-auto text-right">
                    <a
-                      href="https://wa.me/201207416336?text=السلام عليكم، لقد سجلت بياناتي في كورس التأسيس مع Mr. Code وأريد تأكيد الحجز."
+                      href="https://wa.me/201152498680?text=السلام عليكم، لقد سجلت بياناتي في كورس التأسيس مع Mr. Code وأريد تأكيد الحجز."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-3 rounded-xl font-bold text-lg bg-[#25D366] text-white hover:bg-[#1da851] transition-all h-14 mt-6 shadow-lg shadow-[#25D366]/30"

@@ -566,7 +566,7 @@ export default function PythonDiplomaPage() {
                       style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
                     >
                       <button
-                        onClick={() => copyToClipboard("01207416336", "whatsapp")}
+                        onClick={() => copyToClipboard("01152498680", "whatsapp")}
                         className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-[#4ADE80]"
                         style={{ color: copied === "whatsapp" ? "#4ADE80" : "#9496C0" }}
                         type="button"
@@ -577,12 +577,12 @@ export default function PythonDiplomaPage() {
                           <><Copy className="w-5 h-5 text-[#9496C0]" /> نسخ الرقم</>
                         )}
                       </button>
-                      <p className="text-2xl font-black text-white font-mono tracking-widest font-sans" dir="ltr">01207416336</p>
+                      <p className="text-2xl font-black text-white font-mono tracking-widest font-sans" dir="ltr">+20 11 52498680</p>
                     </div>
 
                     {/* WhatsApp button */}
                     <a
-                      href="https://wa.me/201207416336?text=السلام عليكم، أرسل صورة الدفع لتأكيد حجز دبلومة بايثون"
+                      href="https://wa.me/201152498680?text=السلام عليكم، أرسل صورة الدفع لتأكيد حجز دبلومة بايثون"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full flex items-center justify-center gap-3 rounded-xl font-bold text-lg transition-all duration-300 hover:-translate-y-0.5"

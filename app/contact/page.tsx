@@ -150,7 +150,7 @@ export default function ContactPage() {
                 <h2 className="text-3xl font-black text-[#F0F1FF] gsap-reveal">معلومات التواصل</h2>
                 <div className="space-y-6">
                    {[
-                     { icon: <Phone />, label: "اتصل بنا مباشرة", val: "01207416336", sub: "متاحون من 9 صباحاً إلى 6 مساءً" },
+                     { icon: <Phone />, label: "اتصل بنا مباشرة", val: "+20 11 52498680", sub: "متاحون من 9 صباحاً إلى 6 مساءً" },
                      { icon: <Mail />, label: "راسلنا عبر الإيميل", val: "eslam.hamada@cureztyx.com", sub: "نرد خلال أقل من 24 ساعة" },
                      { icon: <MapPin />, label: "مقرنا في مصر", val: "مبني وزارة الاتصالات كرياتيفا، الفيوم", sub: "أهلاً بك في أي وقت" },
                    ].map((item, i) => (
