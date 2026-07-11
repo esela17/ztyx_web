@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة رحلة المبرمج 🚀</title>
+    
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        mono: ['Courier New', 'monospace'],
+                    },
+                    colors: {
+                        primary: '#6366F1', // Indigo
+                        secondary: '#10B981', // Emerald
+                        darkbg: '#0F172A', // Slate 900
+                        panelbg: '#1E293B', // Slate 800
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'bounce-slight': 'bounceSlight 1s infinite alternate',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        bounceSlight: {
+                            '0%': { transform: 'translateY(0)' },
+                            '100%': { transform: 'translateY(-5px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #0F172A; color: white; }
+        
+        .option-btn {
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            border-color: #6366F1;
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+        .option-btn.correct {
+            background-color: #10B981 !important;
+            border-color: #059669 !important;
+            color: white;
+        }
+        .option-btn.wrong {
+            background-color: #EF4444 !important;
+            border-color: #B91C1C !important;
+            color: white;
+        }
+        
+        /* Level Ladder styling */
+        .level-item {
+            transition: all 0.3s;
+        }
+        .level-item.active {
+            background-color: #6366F1;
+            color: white;
+            font-weight: bold;
+            transform: scale(1.05);
+            border-radius: 0.5rem;
+        }
+        .level-item.passed {
+            color: #10B981;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-4xl mb-4">
+        <a href="/mr_code_python.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-bold transition-all no-underline">
+            <i class="ti ti-arrow-right"></i> رجوع لصفحة الأنشطة
+        </a>
+    </div>
+
+    <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-4 gap-6">
+        
+        <!-- Game Area (Left/Main side) -->
+        <div class="md:col-span-3 flex flex-col justify-center">
+            
+            <!-- Start Screen -->
+            <div id="startScreen" class="bg-panelbg rounded-2xl p-8 text-center shadow-2xl border border-slate-700 animate-fade-in">
+                <div class="text-6xl mb-4 animate-bounce-slight">🚀</div>
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-4 text-primary">رحلة المبرمج</h1>
+                <p class="text-slate-400 mb-8 text-lg">أجب عن 7 أسئلة متدرجة الصعوبة لتصل إلى قمة الاحتراف البرمجي. هل أنت مستعد للتحدي؟</p>
+                <button onclick="startGame()" class="bg-primary hover:bg-indigo-500 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg shadow-indigo-500/30 text-xl flex items-center justify-center gap-2 mx-auto w-full md:w-auto">
+                    <i class="ti ti-player-play"></i> ابدأ الرحلة الآن
+                </button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quizScreen" class="hidden bg-panelbg rounded-2xl p-6 md:p-8 shadow-2xl border border-slate-700 animate-fade-in">
+                <!-- Header: Hint and Q Number -->
+                <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+                    <span id="questionCounter" class="text-slate-400 font-bold bg-slate-900 px-4 py-1 rounded-full border border-slate-700">السؤال 1 / 7</span>
+                    <button id="hintBtn" onclick="useHint()" class="flex items-center gap-2 text-warning hover:text-yellow-400 transition-colors text-sm font-bold bg-yellow-500/10 px-4 py-2 rounded-full border border-yellow-500/30">
+                        <i class="ti ti-bulb"></i> تلميح سحري
+                    </button>
+                </div>
+
+                <!-- Question Text -->
+                <h2 id="questionText" class="text-2xl md:text-3xl font-bold mb-8 leading-tight">جاري تحميل السؤال...</h2>
+                
+                <!-- Hint Area -->
+                <div id="hintArea" class="hidden mb-6 bg-blue-900/30 border border-blue-500/30 text-blue-300 p-4 rounded-xl text-sm flex gap-3 items-start">
+                    <i class="ti ti-info-circle text-xl flex-shrink-0"></i>
+                    <span id="hintText">هذا هو التلميح السحري...</span>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="optionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Buttons generated by JS -->
+                </div>
+
+                <!-- Next Button -->
+                <button id="nextBtn" onclick="nextQuestion()" class="hidden mt-8 w-full bg-secondary hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-emerald-500/30 flex justify-center items-center gap-2">
+                    السؤال التالي <i class="ti ti-arrow-left"></i>
+                </button>
+            </div>
+
+            <!-- End Screen -->
+            <div id="endScreen" class="hidden bg-panelbg rounded-2xl p-8 text-center shadow-2xl border border-slate-700 animate-fade-in">
+                <div id="endIcon" class="text-6xl mb-4">🏆</div>
+                <h2 id="endTitle" class="text-3xl font-bold mb-2">أحسنت!</h2>
+                <p id="endDesc" class="text-slate-400 mb-6 text-lg">لقد أكملت الرحلة بنجاح.</p>
+                <div class="text-5xl font-extrabold text-primary mb-8" id="finalScore">1000 XP</div>
+                <button onclick="location.reload()" class="bg-primary hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mx-auto">
+                    <i class="ti ti-refresh"></i> العب مرة أخرى
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Levels Sidebar (Right side) -->
+        <div class="hidden md:block bg-panelbg rounded-2xl p-6 shadow-xl border border-slate-700">
+            <h3 class="text-slate-400 font-bold mb-6 text-center border-b border-slate-700 pb-2">مستويات الخبرة</h3>
+            <div id="levelsLadder" class="flex flex-col-reverse gap-2">
+                <!-- Levels generated by JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- 1. Game Data ---
+        const QUESTIONS = [
+            {
+                q: "لتعريف متغير نصي يحمل اسمك في لغة بايثون، نكتب:",
+                opts: ['name = "Ahmed"', 'string name = "Ahmed"', 'var name = Ahmed', 'name == "Ahmed"'],
+                ans: 0,
+                hint: "في بايثون لا نحتاج لكتابة نوع المتغير (مثل string)، ونستخدم علامة يساوي واحدة للتعريف، والنص يوضع بين علامات تنصيص."
+            },
+            {
+                q: "ما هي النتيجة الصحيحة للعملية الحسابية `3 * 2 ** 2` في بايثون؟",
+                opts: ["36", "12", "24", "18"],
+                ans: 1,
+                hint: "الأولوية دائماً لعملية الأس (**) قبل عملية الضرب (*)."
+            },
+            {
+                q: "ما هي الكلمة المفتاحية المستخدمة لإنشاء (تعريف) دالة Function جديدة في بايثون؟",
+                opts: ["function", "create", "def", "fun"],
+                ans: 2,
+                hint: "الكلمة هي اختصار لكلمة Define (تعريف)."
+            },
+            {
+                q: "أي من هذه الأسماء يُعتبر اسماً **غير صالح** لمتغير في بايثون ويسبب خطأ؟",
+                opts: ["user_name", "age", "_score", "1st_name"],
+                ans: 3,
+                hint: "تذكر القاعدة الذهبية: اسم المتغير لا يمكن أن يبدأ برقم."
+            },
+            {
+                q: "لإضافة عنصر جديد إلى نهاية قائمة (List) موجودة بالفعل، نستخدم الأمر:",
+                opts: ["add()", "insert()", "push()", "append()"],
+                ans: 3,
+                hint: "هذه الدالة تعني باللغة الإنجليزية 'إلحاق' أو إضافة في النهاية."
+            },
+            {
+                q: "ما هو الرمز المستخدم لكتابة تعليق (Comment) يقرأه المبرمج ويتجاهله الكمبيوتر؟",
+                opts: ["//", "#", "<!-- -->", "/* */"],
+                ans: 1,
+                hint: "هذا الرمز يُعرف باسم الشباك (Hash) ويستخدم بكثرة في وسائل التواصل الاجتماعي كـ Hashtag."
+            },
+            {
+                q: "ماذا ستكون النتيجة النهائية للشرط المنطقي `True and False`؟",
+                opts: ["True", "False", "Error", "None"],
+                ans: 1,
+                hint: "معامل `and` يتطلب أن يكون كلا الطرفين صحيحين (True) لكي تكون النتيجة النهائية صحيحة."
+            }
+        ];
+
+        const LEVEL_XP = [100, 250, 500, 1000, 2500, 5000, 10000];
+
+        // --- 2. Game State ---
+        let currentLevel = 0;
+        let hintUsed = false;
+        let gameEnded = false;
+
+        // --- 3. DOM Elements ---
+        const startScreen = document.getElementById('startScreen');
+        const quizScreen = document.getElementById('quizScreen');
+        const endScreen = document.getElementById('endScreen');
+        const questionText = document.getElementById('questionText');
+        const optionsGrid = document.getElementById('optionsGrid');
+        const hintBtn = document.getElementById('hintBtn');
+        const hintArea = document.getElementById('hintArea');
+        const hintText = document.getElementById('hintText');
+        const nextBtn = document.getElementById('nextBtn');
+        const questionCounter = document.getElementById('questionCounter');
+        const levelsLadder = document.getElementById('levelsLadder');
+
+        // --- 4. Functions ---
+        function buildLadder() {
+            levelsLadder.innerHTML = '';
+            LEVEL_XP.forEach((xp, index) => {
+                const div = document.createElement('div');
+                div.className = `level-item py-2 px-4 text-center rounded text-slate-500 font-mono flex justify-between`;
+                div.id = `level-${index}`;
+                div.innerHTML = `<span>السؤال ${index + 1}</span> <span>${xp} XP</span>`;
+                levelsLadder.appendChild(div);
+            });
+        }
+
+        function updateLadder() {
+            for (let i = 0; i < LEVEL_XP.length; i++) {
+                const el = document.getElementById(`level-${i}`);
+                if (!el) continue;
+                
+                el.classList.remove('active', 'passed');
+                if (i < currentLevel) {
+                    el.classList.add('passed');
+                } else if (i === currentLevel) {
+                    el.classList.add('active');
+                }
+            }
+        }
+
+        function startGame() {
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            buildLadder();
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = QUESTIONS[currentLevel];
+            questionText.innerHTML = q.q.replace(/`(.*?)`/g, '<span class="font-mono text-primary bg-slate-900 px-2 rounded">$1</span>');
+            questionCounter.textContent = `السؤال ${currentLevel + 1} / ${QUESTIONS.length}`;
+            
+            // Reset Hint
+            hintUsed = false;
+            hintBtn.disabled = false;
+            hintBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            hintArea.classList.add('hidden');
+            
+            // Render Options
+            optionsGrid.innerHTML = '';
+            q.opts.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn bg-slate-800 border border-slate-600 text-right p-4 rounded-xl font-mono text-lg md:text-xl shadow-sm w-full';
+                btn.dir = 'ltr'; // Ensure code looks right
+                btn.textContent = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsGrid.appendChild(btn);
+            });
+
+            nextBtn.classList.add('hidden');
+            updateLadder();
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            if (gameEnded) return;
+            
+            const q = QUESTIONS[currentLevel];
+            const allBtns = optionsGrid.querySelectorAll('button');
+            
+            // Disable all buttons
+            allBtns.forEach(b => b.disabled = true);
+            hintBtn.disabled = true;
+
+            if (selectedIndex === q.ans) {
+                // Correct!
+                btnElement.classList.add('correct');
+                
+                if (currentLevel === QUESTIONS.length - 1) {
+                    // Won the game
+                    setTimeout(() => showEndScreen(true), 1500);
+                } else {
+                    // Show next button
+                    nextBtn.classList.remove('hidden');
+                    nextBtn.classList.add('animate-fade-in');
+                }
+            } else {
+                // Wrong!
+                btnElement.classList.add('wrong');
+                // Highlight correct
+                allBtns[q.ans].classList.add('correct');
+                
+                setTimeout(() => showEndScreen(false), 2000);
+            }
+        }
+
+        function nextQuestion() {
+            currentLevel++;
+            loadQuestion();
+        }
+
+        function useHint() {
+            if (hintUsed) return;
+            hintUsed = true;
+            hintBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            hintText.textContent = QUESTIONS[currentLevel].hint;
+            hintArea.classList.remove('hidden');
+            hintArea.classList.add('animate-fade-in');
+        }
+
+        function showEndScreen(isWin) {
+            gameEnded = true;
+            quizScreen.classList.add('hidden');
+            endScreen.classList.remove('hidden');
+            
+            const finalXp = isWin ? LEVEL_XP[LEVEL_XP.length - 1] : (currentLevel > 0 ? LEVEL_XP[currentLevel - 1] : 0);
+            
+            document.getElementById('finalScore').textContent = `${finalXp} XP`;
+            
+            if (isWin) {
+                document.getElementById('endIcon').textContent = '🏆';
+                document.getElementById('endTitle').textContent = 'مُبرمج محترف!';
+                document.getElementById('endTitle').className = 'text-3xl md:text-4xl font-bold mb-2 text-secondary';
+                document.getElementById('endDesc').textContent = 'لقد استطعت الإجابة على جميع الأسئلة ببراعة ووصلت إلى أقصى مستوى من الخبرة.';
+            } else {
+                document.getElementById('endIcon').textContent = '💻';
+                document.getElementById('endTitle').textContent = 'توقف الكود بوجود خطأ (Bug)';
+                document.getElementById('endTitle').className = 'text-3xl font-bold mb-2 text-red-500';
+                document.getElementById('endDesc').textContent = `لقد أبليت حسناً ووصلت إلى السؤال ${currentLevel + 1}. لا تستسلم، يمكنك تصحيح الأخطاء والمحاولة مجدداً!`;
+            }
+        }
+
+    </script>
+</body>
+</html>

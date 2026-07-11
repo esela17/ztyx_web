@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الهاكر الأخلاقي 💻</title>
+    
+    <!-- Google Fonts: Cairo for Arabic, Fira Code for Code -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        termbg: '#0a0a0a',
+                        termgreen: '#00ff41', // Matrix green
+                        termdarkgreen: '#008f11',
+                        termred: '#ff003c',
+                    },
+                    animation: {
+                        'blink': 'blink 1s step-end infinite',
+                        'scanline': 'scanline 8s linear infinite',
+                        'glitch': 'glitch 0.2s linear infinite',
+                    },
+                    keyframes: {
+                        blink: {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0 }
+                        },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(100vh)' }
+                        },
+                        glitch: {
+                            '0%': { transform: 'translate(0)' },
+                            '20%': { transform: 'translate(-2px, 1px)' },
+                            '40%': { transform: 'translate(-1px, -1px)' },
+                            '60%': { transform: 'translate(2px, 1px)' },
+                            '80%': { transform: 'translate(1px, -1px)' },
+                            '100%': { transform: 'translate(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #000; 
+            color: #00ff41; 
+            font-family: 'Fira Code', monospace; 
+            overflow: hidden;
+            margin: 0;
+            height: 100vh;
+        }
+
+        /* CRT Screen effect */
+        .crt::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 50;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Scanline */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,255,65,0.2) 50%, rgba(0,0,0,0) 100%);
+            position: absolute;
+            z-index: 40;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .cmd-btn {
+            background: transparent;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cmd-btn:hover:not(:disabled) {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 15px #00ff41;
+        }
+
+        .cmd-btn.error {
+            border-color: #ff003c;
+            color: #ff003c;
+            animation: glitch 0.3s;
+        }
+
+        .cmd-btn.success {
+            background: #00ff41;
+            color: #000;
+        }
+
+        .cmd-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Glitch text effect class */
+        .glitch-text {
+            animation: glitch 0.2s infinite;
+            color: #ff003c;
+        }
+    </style>
+</head>
+<body class="crt flex flex-col items-center justify-center p-4">
+
+    <div class="w-full max-w-3xl mb-3 relative z-20">
+        <a href="/mr_code_python.html" class="inline-flex items-center gap-2 px-3 py-1.5 rounded border border-termgreen text-termgreen hover:bg-termgreen hover:text-black text-xs font-bold transition-all no-underline">
+            <i class="ti ti-arrow-right"></i> رجوع لصفحة الأنشطة
+        </a>
+    </div>
+
+    <!-- Decorative Scanline -->
+    <div class="scanline animate-scanline"></div>
+
+    <main class="w-full max-w-3xl bg-termbg border-2 border-termgreen rounded-lg shadow-[0_0_20px_rgba(0,255,65,0.3)] relative z-10 overflow-hidden flex flex-col h-[85vh]">
+        
+        <!-- Terminal Header -->
+        <div class="bg-termgreen text-termbg px-4 py-2 font-sans font-bold flex justify-between items-center text-sm border-b-2 border-termgreen">
+            <div class="flex items-center gap-2">
+                <i class="ti ti-terminal-2"></i> root@kali:~ /hack_sys
+            </div>
+            <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full border border-termbg"></div>
+                <div class="w-3 h-3 rounded-full border border-termbg"></div>
+                <div class="w-3 h-3 rounded-full bg-termbg"></div>
+            </div>
+        </div>
+
+        <!-- Terminal Body -->
+        <div class="p-6 flex-1 overflow-y-auto font-mono text-sm md:text-base flex flex-col" id="terminalBody">
+            
+            <!-- Screen 1: Boot / Start -->
+            <div id="bootScreen" class="flex-1 flex flex-col justify-center">
+                <div class="text-center mb-8">
+                    <i class="ti ti-shield-lock text-6xl mb-4 opacity-80"></i>
+                    <h1 class="text-3xl md:text-4xl font-bold font-sans mb-2 tracking-widest text-white drop-shadow-[0_0_8px_rgba(0,255,65,0.8)]">SYSTEM FIREWALL</h1>
+                    <p class="text-termgreen opacity-80">الوصول غير مصرح به. النظام محمي بـ 6 بوابات تشفير.</p>
+                </div>
+                
+                <div class="bg-black/50 border border-termgreen/30 p-4 rounded mb-8 text-right" dir="rtl">
+                    <p class="font-sans text-white mb-2 text-lg">> المهمة:</p>
+                    <p class="text-termgreen/80 leading-relaxed font-sans">
+                        أنت الآن تلعب دور "الهاكر الأخلاقي". لاختراق هذا النظام، يجب عليك فك شفرات بايثون (Python) لتجاوز البوابات الأمنية. خطأ واحد قد يؤدي إلى إغلاق النظام!
+                    </p>
+                </div>
+
+                <button onclick="initHack()" class="cmd-btn w-full md:w-auto mx-auto px-8 py-3 font-sans font-bold text-lg rounded flex items-center justify-center gap-2 uppercase tracking-widest">
+                    <i class="ti ti-player-play"></i> ابدأ الاختراق [ENTER]
+                </button>
+            </div>
+
+            <!-- Screen 2: Challenge -->
+            <div id="challengeScreen" class="hidden flex-1 flex flex-col">
+                <!-- Progress Header -->
+                <div class="flex justify-between items-center mb-6 border-b border-termgreen/30 pb-2 text-xs md:text-sm">
+                    <span class="opacity-70">STATUS: <span id="hackStatus" class="animate-blink text-white">BYPASSING...</span></span>
+                    <span class="font-sans">البوابة: <span id="nodeCounter" class="text-white font-bold">1 / 6</span></span>
+                </div>
+
+                <!-- Terminal Output Text -->
+                <div class="mb-8 min-h-[120px]" dir="ltr">
+                    <div id="targetText" class="whitespace-pre-wrap leading-relaxed"></div><span class="animate-blink">_</span>
+                </div>
+
+                <!-- Input / Options -->
+                <div id="optionsGrid" class="mt-auto grid grid-cols-1 sm:grid-cols-2 gap-4" dir="ltr">
+                    <!-- Buttons injected via JS -->
+                </div>
+            </div>
+
+            <!-- Screen 3: End Game -->
+            <div id="endScreen" class="hidden flex-1 flex flex-col justify-center text-center">
+                <div id="endIcon" class="text-6xl mb-6">🔓</div>
+                <h2 id="endTitle" class="text-3xl font-sans font-bold mb-4">ACCESS GRANTED</h2>
+                <p id="endDesc" class="font-sans text-lg mb-8 opacity-80">تم اختراق النظام بنجاح. أنت مبرمج خطير!</p>
+                
+                <div class="font-mono text-xs opacity-50 mb-8 text-left max-w-xs mx-auto">
+                    > downloading payload...<br>
+                    > injecting scripts...<br>
+                    > erasing logs... done.
+                </div>
+
+                <button onclick="location.reload()" class="cmd-btn px-8 py-3 font-sans font-bold text-lg rounded flex items-center justify-center gap-2 mx-auto">
+                    <i class="ti ti-refresh"></i> خروج من النظام
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // --- Game Data (Hacking Challenges) ---
+        // New questions focusing on code reading and outputs
+        const CHALLENGES = [
+            {
+                prompt: ">> INTERCEPTED_CODE_BLOCK_01\nx = 5\nx = x + 2\nprint(x)\n\n>> ANALYZE OUTPUT TO BYPASS NODE:",
+                opts: ["5", "2", "7", "x+2"],
+                ans: 2,
+                errObj: "MATH_ERROR"
+            },
+            {
+                prompt: ">> SYSTEM_CHECK_DATA_TYPE\n>> Detect the data type of the following value to proceed:\n\nvalue = 3.14\ntype(value)\n\n>> AWAITING INPUT:",
+                opts: ["int", "float", "str", "bool"],
+                ans: 1,
+                errObj: "TYPE_MISMATCH_DETECTED"
+            },
+            {
+                prompt: ">> DECRYPTING_STRING_CONCATENATION\n>> The firewall key is the output of this code:\n\nkey = '10' + '10'\nprint(key)\n\n>> ENTER KEY:",
+                opts: ["20", "10+10", "Error", "1010"],
+                ans: 3,
+                errObj: "STRING_LOGIC_FAILURE"
+            },
+            {
+                prompt: ">> BYPASS_LENGTH_CHECK\n>> Provide the exact output to override security protocol:\n\nword = 'Code'\nprint(len(word))\n\n>> SUBMIT LENGTH:",
+                opts: ["4", "5", "Code", "0"],
+                ans: 0,
+                errObj: "INDEX_OUT_OF_BOUNDS"
+            },
+            {
+                prompt: ">> LOGICAL_GATE_OVERRIDE\n>> Evaluate the boolean logic to open the gate:\n\naccess = not False\nprint(access)\n\n>> EVALUATE:",
+                opts: ["True", "False", "not", "Error"],
+                ans: 0,
+                errObj: "BOOLEAN_GATE_LOCKED"
+            },
+            {
+                prompt: ">> EXTRACT_PAYLOAD_FROM_LIST\n>> Retrieve the hidden payload at index [1]:\n\npayload = ['A', 'B', 'C']\nprint(payload[1])\n\n>> EXTRACT:",
+                opts: ["A", "B", "C", "['A', 'B']"],
+                ans: 1,
+                errObj: "LIST_INDEX_ERROR"
+            }
+        ];
+
+        // --- State Variables ---
+        let currentLevel = 0;
+        let isTyping = false;
+        let typeSpeed = 30; // ms per character
+
+        // --- DOM Elements ---
+        const bootScreen = document.getElementById('bootScreen');
+        const challengeScreen = document.getElementById('challengeScreen');
+        const endScreen = document.getElementById('endScreen');
+        const targetText = document.getElementById('targetText');
+        const optionsGrid = document.getElementById('optionsGrid');
+        const nodeCounter = document.getElementById('nodeCounter');
+        const hackStatus = document.getElementById('hackStatus');
+
+        // --- Functions ---
+        function initHack() {
+            bootScreen.classList.add('hidden');
+            challengeScreen.classList.remove('hidden');
+            loadLevel();
+        }
+
+        function typeWriter(text, i, cb) {
+            if (i === 0) {
+                targetText.innerHTML = '';
+                isTyping = true;
+                optionsGrid.style.opacity = '0'; // Hide buttons while typing
+                optionsGrid.style.pointerEvents = 'none';
+            }
+            
+            if (i < text.length) {
+                // Handle newlines
+                if(text.charAt(i) === '\n') {
+                    targetText.innerHTML += '<br>';
+                } else {
+                    targetText.innerHTML += text.charAt(i);
+                }
+                setTimeout(() => typeWriter(text, i + 1, cb), typeSpeed);
+            } else {
+                isTyping = false;
+                optionsGrid.style.opacity = '1'; // Show buttons
+                optionsGrid.style.pointerEvents = 'auto';
+                if(cb) cb();
+            }
+        }
+
+        function loadLevel() {
+            const ch = CHALLENGES[currentLevel];
+            nodeCounter.textContent = `${currentLevel + 1} / ${CHALLENGES.length}`;
+            hackStatus.textContent = "ANALYZING...";
+            hackStatus.className = "text-yellow-400 animate-blink";
+            
+            // Render Options
+            optionsGrid.innerHTML = '';
+            ch.opts.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'cmd-btn p-3 rounded font-mono text-left flex gap-2 items-center';
+                btn.innerHTML = `<span class="opacity-50">></span> execute --opt="${opt}"`;
+                btn.onclick = () => verifyCode(index, btn);
+                optionsGrid.appendChild(btn);
+            });
+
+            // Start Typing effect
+            typeWriter(ch.prompt, 0);
+        }
+
+        function verifyCode(selectedIndex, btnElement) {
+            if (isTyping) return; // Prevent clicking while typing
+            
+            const ch = CHALLENGES[currentLevel];
+            const allBtns = optionsGrid.querySelectorAll('button');
+            
+            allBtns.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('hover:bg-termgreen', 'hover:text-black', 'hover:shadow-[0_0_15px_#00ff41]');
+            });
+
+            if (selectedIndex === ch.ans) {
+                // Success
+                btnElement.classList.add('success');
+                hackStatus.textContent = "BYPASS SUCCESS";
+                hackStatus.className = "text-termgreen";
+                
+                targetText.innerHTML += `<br><br><span class="text-termgreen">> ACCESS GRANTED. PROCEEDING TO NEXT NODE...</span>`;
+                
+                setTimeout(() => {
+                    currentLevel++;
+                    if (currentLevel >= CHALLENGES.length) {
+                        endHack(true);
+                    } else {
+                        loadLevel();
+                    }
+                }, 1500);
+
+            } else {
+                // Failure
+                btnElement.classList.add('error');
+                hackStatus.textContent = "CRITICAL ALERT";
+                hackStatus.className = "glitch-text";
+                
+                // Show correct answer
+                allBtns[ch.ans].classList.add('success');
+                
+                targetText.innerHTML += `<br><br><span class="text-termred glitch-text">> ${ch.errObj}. SYSTEM LOCKDOWN INITIATED...</span>`;
+                
+                setTimeout(() => endHack(false), 2000);
+            }
+        }
+
+        function endHack(isWin) {
+            challengeScreen.classList.add('hidden');
+            endScreen.classList.remove('hidden');
+            
+            const title = document.getElementById('endTitle');
+            const desc = document.getElementById('endDesc');
+            const icon = document.getElementById('endIcon');
+            
+            if (isWin) {
+                document.body.classList.remove('crt'); // Clear interference
+                icon.innerHTML = '<i class="ti ti-lock-open text-termgreen drop-shadow-[0_0_15px_#00ff41]"></i>';
+                title.textContent = "SYSTEM COMPROMISED";
+                title.className = "text-4xl font-sans font-bold mb-4 text-termgreen drop-shadow-[0_0_8px_#00ff41] tracking-widest";
+                desc.textContent = "تهانينا أيها الهاكر! لقد تمكنت من فك جميع الشفرات البرمجية واختراق النظام بنجاح تام.";
+            } else {
+                icon.innerHTML = '<i class="ti ti-lock-square-rounded text-termred drop-shadow-[0_0_15px_#ff003c]"></i>';
+                title.textContent = "ACCESS DENIED";
+                title.className = "text-4xl font-sans font-bold mb-4 text-termred tracking-widest glitch-text";
+                desc.textContent = "خطأ في قراءة الكود! لقد تم كشفك وتم إغلاق النظام وحظر الـ IP الخاص بك.";
+                
+                // Red theme for failure
+                document.querySelector('main').classList.replace('border-termgreen', 'border-termred');
+                document.querySelector('main').classList.replace('shadow-[0_0_20px_rgba(0,255,65,0.3)]', 'shadow-[0_0_20px_rgba(255,0,60,0.4)]');
+            }
+        }
+    </script>
+</body>
+</html>

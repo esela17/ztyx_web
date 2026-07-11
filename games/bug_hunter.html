@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة صائد الأخطاء 🐛</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        idebg: '#1e1e1e', // VS Code dark background
+                        idebar: '#252526', // VS Code side/top bar
+                        ideline: '#858585', // Line numbers color
+                        keyword: '#c586c0', // Python keywords (def, if, etc)
+                        function: '#dcdcaa', // Functions (print, etc)
+                        string: '#ce9178', // Strings
+                        variable: '#9cdcfe', // Variables
+                        number: '#b5cea8', // Numbers
+                        operator: '#d4d4d4', // Operators
+                        bugRed: '#f14c4c', // Error color
+                    },
+                    animation: {
+                        'wiggle': 'wiggle 0.5s ease-in-out infinite',
+                        'squash': 'squash 0.3s forwards',
+                        'slideDown': 'slideDown 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-5deg)' },
+                            '50%': { transform: 'rotate(5deg)' },
+                        },
+                        squash: {
+                            '0%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.2) scaleY(0.8)' },
+                            '100%': { transform: 'scale(0)' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc;
+            font-family: 'Cairo', sans-serif; 
+        }
+
+        /* IDE Code Styling */
+        .code-container {
+            counter-reset: line;
+        }
+        .code-line {
+            display: block;
+            line-height: 1.6;
+        }
+        .code-line::before {
+            counter-increment: line;
+            content: counter(line);
+            display: inline-block;
+            width: 2rem;
+            text-align: left;
+            margin-left: 1rem;
+            color: #858585;
+            font-family: 'JetBrains Mono', monospace;
+            user-select: none;
+            padding-right: 10px;
+            border-right: 1px solid #404040;
+            margin-right: 15px;
+        }
+
+        .option-card {
+            transition: all 0.2s;
+        }
+        .option-card:hover:not(:disabled) {
+            transform: translateY(-2px);
+            border-color: #3b82f6; /* Blue 500 */
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        
+        .timer-bar-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 6px;
+            width: 100%;
+        }
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #10b981);
+            width: 100%;
+            transition: width 1s linear;
+        }
+        .timer-warning {
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+        }
+
+        /* Bug splatter effect */
+        .splatter {
+            position: absolute;
+            background: #ef4444;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: explode 0.5s ease-out forwards;
+        }
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-4xl mb-4">
+        <a href="/mr_code_python.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-bold transition-all no-underline">
+            <i class="ti ti-arrow-right"></i> رجوع لصفحة الأنشطة
+        </a>
+    </div>
+
+    <main class="w-full max-w-4xl relative">
+        
+        <!-- Screen 1: Start Screen -->
+        <div id="startScreen" class="bg-slate-800 border border-slate-700 rounded-2xl p-8 md:p-12 text-center shadow-2xl animate-slideDown relative overflow-hidden">
+            <!-- Decorative Bugs -->
+            <i class="ti ti-bug text-slate-700 text-8xl absolute -top-4 -left-4 opacity-50 transform -rotate-45"></i>
+            <i class="ti ti-bug text-slate-700 text-6xl absolute -bottom-4 -right-4 opacity-50 transform rotate-12"></i>
+
+            <div class="inline-block bg-red-500/20 text-red-400 p-4 rounded-full mb-6">
+                <i class="ti ti-bug text-5xl animate-wiggle inline-block"></i>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-tight">صائد الأخطاء <span class="text-red-500">(Bugs)</span></h1>
+            <p class="text-slate-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
+                في عالم البرمجة، الخطأ الصغير قد يوقف نظاماً كاملاً! مهمتك هي فحص الأكواد البرمجية التالية واكتشاف "الخطأ" (Bug) قبل أن ينتهي الوقت. هل عينك قوية بما يكفي؟
+            </p>
+            
+            <button onclick="startGame()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.5)] hover:shadow-[0_0_25px_rgba(37,99,235,0.7)] text-xl flex items-center justify-center gap-2 mx-auto w-full md:w-auto">
+                <i class="ti ti-scan"></i> ابدأ الفحص
+            </button>
+        </div>
+
+        <!-- Screen 2: Game Screen -->
+        <div id="gameScreen" class="hidden flex-col gap-6">
+            
+            <!-- Top Bar -->
+            <div class="flex justify-between items-center bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg">
+                <div class="flex items-center gap-2 text-slate-300">
+                    <i class="ti ti-bug text-red-500 text-xl"></i> 
+                    <span class="font-bold">المستوى: <span id="levelCounter" class="text-white">1 / 5</span></span>
+                </div>
+                
+                <div class="flex-1 mx-8 max-w-sm">
+                    <div class="timer-bar-container">
+                        <div id="timerBar" class="timer-bar"></div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 text-slate-300">
+                    <i class="ti ti-target text-blue-400 text-xl"></i>
+                    <span class="font-bold">النقاط: <span id="scoreText" class="text-white">0</span></span>
+                </div>
+            </div>
+
+            <!-- IDE Window -->
+            <div class="bg-idebg rounded-xl shadow-2xl border border-slate-700 overflow-hidden font-mono text-sm md:text-base relative" dir="ltr">
+                <!-- IDE Header -->
+                <div class="bg-idebar px-4 py-2 flex items-center gap-2 border-b border-black">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span class="ml-4 text-gray-400 text-xs font-sans">main.py - Visual Studio Code</span>
+                </div>
+                
+                <!-- Code Area -->
+                <div class="p-4 code-container overflow-x-auto min-h-[150px] relative">
+                    <!-- Overlay for bug squashing effect -->
+                    <div id="squashArea" class="absolute inset-0 pointer-events-none z-10 overflow-hidden"></div>
+                    <div id="codeDisplay" class="whitespace-pre">
+                        <!-- Code injected here by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Options Grid -->
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+                <h3 class="text-xl font-bold mb-4 text-center text-slate-200">أين الخطأ في هذا الكود؟</h3>
+                <div id="optionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Options injected here by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: End Screen -->
+        <div id="endScreen" class="hidden bg-slate-800 border border-slate-700 rounded-2xl p-8 md:p-12 text-center shadow-2xl relative overflow-hidden">
+            <div id="endIcon" class="text-7xl mb-6 inline-block">🏆</div>
+            <h2 id="endTitle" class="text-4xl font-extrabold mb-4">اكتمل الفحص!</h2>
+            
+            <div class="bg-slate-900/50 rounded-xl p-6 mb-8 max-w-sm mx-auto border border-slate-700">
+                <p class="text-slate-400 mb-2">الأخطاء التي تم اصطيادها:</p>
+                <div class="text-5xl font-mono text-blue-400 font-bold"><span id="finalScore">0</span> <span class="text-2xl text-slate-500">/ 5</span></div>
+            </div>
+
+            <p id="endDesc" class="text-lg text-slate-300 mb-8 max-w-lg mx-auto"></p>
+            
+            <button onclick="location.reload()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mx-auto">
+                <i class="ti ti-refresh"></i> إلعب مرة أخرى
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        // --- Game Data (Code Snippets & Bugs) ---
+        const BUGS_DATA = [
+            {
+                // Q1: Missing colon
+                code: `<span class="code-line"><span class="keyword">score</span> = <span class="number">85</span></span><span class="code-line"><span class="keyword">if</span> score > <span class="number">50</span></span><span class="code-line">    <span class="function">print</span>(<span class="string">"ناجح"</span>)</span>`,
+                options: [
+                    "استخدام علامة > خاطئة",
+                    "نسيان النقطتين (:) في نهاية جملة if",
+                    "الكلمة print مكتوبة بشكل خاطئ",
+                    "المسافة البادئة خاطئة"
+                ],
+                correctAnswer: 1,
+                explanation: "في بايثون، يجب أن تنتهي الجمل الشرطية (if, elif, else) بنقطتين رأسيتين (:)."
+            },
+            {
+                // Q2: Indentation error
+                code: `<span class="code-line"><span class="keyword">def</span> <span class="function">say_hello</span>():</span><span class="code-line"><span class="function">print</span>(<span class="string">"مرحباً بك"</span>)</span>`,
+                options: [
+                    "نسيان المسافة البادئة (Indentation) قبل print",
+                    "اسم الدالة يجب أن يكون باللغة العربية",
+                    "عدم إغلاق الأقواس بشكل صحيح",
+                    "كلمة def يجب أن تكون حرفاً كبيراً (Def)"
+                ],
+                correctAnswer: 0,
+                explanation: "المسافات البادئة (Indentation) في بايثون ضرورية لتحديد أن الكود تابع للدالة (Function)."
+            },
+            {
+                // Q3: Case sensitivity (Print vs print)
+                code: `<span class="code-line"><span class="variable">name</span> = <span class="string">"أحمد"</span></span><span class="code-line"><span class="function">Print</span>(name)</span>`,
+                options: [
+                    "اسم المتغير name محجوز ولا يمكن استخدامه",
+                    "نسيان علامات التنصيص حول المتغير name في السطر الثاني",
+                    "حرف P كبير، يجب أن تكون الكلمة print بحروف صغيرة",
+                    "لا يوجد خطأ في الكود"
+                ],
+                correctAnswer: 2,
+                explanation: "لغة بايثون حساسة لحالة الأحرف (Case Sensitive). الدالة الصحيحة هي print وليس Print."
+            },
+            {
+                // Q4: Assignment vs Equality (==)
+                code: `<span class="code-line"><span class="variable">age</span> = <span class="number">15</span></span><span class="code-line"><span class="keyword">if</span> age = <span class="number">15</span>:</span><span class="code-line">    <span class="function">print</span>(<span class="string">"أنت في البكالوريا"</span>)</span>`,
+                options: [
+                    "المتغير age لا يجب أن يحتوي على أرقام",
+                    "المسافة البادئة قبل print خاطئة",
+                    "نسيان إغلاق النص في جملة print",
+                    "استخدام = بدلاً من == في جملة المقارنة"
+                ],
+                correctAnswer: 3,
+                explanation: "علامة اليساوي الواحدة (=) تستخدم لتعيين القيمة، بينما علامة (==) تستخدم للمقارنة في الشروط."
+            },
+            {
+                // Q5: Unclosed List/Bracket
+                code: `<span class="code-line"><span class="variable">colors</span> = [<span class="string">"أحمر"</span>, <span class="string">"أزرق"</span>, <span class="string">"أخضر"</span></span><span class="code-line"><span class="function">print</span>(colors)</span>`,
+                options: [
+                    "القوائم (Lists) لا تقبل نصوص باللغة العربية",
+                    "نسيان إغلاق القوس المربع ] للقائمة",
+                    "الفواصل بين العناصر غير صحيحة",
+                    "استدعاء المتغير colors خاطئ"
+                ],
+                correctAnswer: 1,
+                explanation: "أي قوس مفتوح (دائري () أو مربع [] أو مموج {}) يجب أن يتم إغلاقه لتجنب حدوث خطأ SyntaxError."
+            }
+        ];
+
+        // --- State Variables ---
+        let currentLevel = 0;
+        let score = 0;
+        let timeLeft = 15; // 15 seconds per bug
+        let timerInterval;
+        let isAnswering = false;
+
+        // --- DOM Elements ---
+        const screens = {
+            start: document.getElementById('startScreen'),
+            game: document.getElementById('gameScreen'),
+            end: document.getElementById('endScreen')
+        };
+        const els = {
+            level: document.getElementById('levelCounter'),
+            score: document.getElementById('scoreText'),
+            code: document.getElementById('codeDisplay'),
+            options: document.getElementById('optionsGrid'),
+            timerBar: document.getElementById('timerBar'),
+            squashArea: document.getElementById('squashArea')
+        };
+
+        // --- Functions ---
+        
+        function startGame() {
+            screens.start.classList.add('hidden');
+            screens.game.classList.remove('hidden');
+            screens.game.classList.add('flex');
+            currentLevel = 0;
+            score = 0;
+            els.score.textContent = score;
+            loadLevel();
+        }
+
+        function loadLevel() {
+            isAnswering = false;
+            if (currentLevel >= BUGS_DATA.length) {
+                endGame();
+                return;
+            }
+
+            const data = BUGS_DATA[currentLevel];
+            els.level.textContent = `${currentLevel + 1} / ${BUGS_DATA.length}`;
+            
+            // Inject Syntax Highlighted Code
+            els.code.innerHTML = data.code;
+            
+            // Generate Options
+            els.options.innerHTML = '';
+            data.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "option-card bg-slate-700/50 border-2 border-slate-600 text-right p-4 rounded-xl font-bold text-slate-200 shadow-sm w-full flex items-center justify-between group";
+                btn.innerHTML = `
+                    <span>${optText}</span>
+                    <i class="ti ti-bug text-transparent group-hover:text-red-400 transition-colors"></i>
+                `;
+                btn.onclick = (e) => checkAnswer(idx, btn, e);
+                els.options.appendChild(btn);
+            });
+
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 15;
+            els.timerBar.style.width = '100%';
+            els.timerBar.classList.remove('timer-warning');
+
+            // Force reflow to restart CSS transition
+            void els.timerBar.offsetWidth; 
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const percentage = (timeLeft / 15) * 100;
+                els.timerBar.style.width = `${percentage}%`;
+
+                if (timeLeft <= 5) {
+                    els.timerBar.classList.add('timer-warning');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeOut();
+                }
+            }, 1000);
+        }
+
+        function handleTimeOut() {
+            if (isAnswering) return;
+            isAnswering = true;
+            
+            const data = BUGS_DATA[currentLevel];
+            const allBtns = els.options.querySelectorAll('button');
+            
+            allBtns.forEach(b => {
+                b.disabled = true;
+                b.classList.replace('border-slate-600', 'border-slate-700');
+            });
+
+            // Show correct answer
+            allBtns[data.correctAnswer].classList.replace('bg-slate-700/50', 'bg-green-500/20');
+            allBtns[data.correctAnswer].classList.replace('border-slate-700', 'border-green-500');
+            allBtns[data.correctAnswer].classList.add('text-green-400');
+
+            showFeedback(false, "انتهى الوقت! الكود انهار.");
+            
+            setTimeout(() => {
+                currentLevel++;
+                loadLevel();
+            }, 3000);
+        }
+
+        function checkAnswer(selectedIdx, btn, event) {
+            if (isAnswering) return;
+            isAnswering = true;
+            clearInterval(timerInterval);
+            
+            const data = BUGS_DATA[currentLevel];
+            const allBtns = els.options.querySelectorAll('button');
+            const isCorrect = selectedIdx === data.correctAnswer;
+            
+            // Disable buttons
+            allBtns.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('hover:border-blue-500', 'hover:bg-blue-500/10');
+            });
+
+            if (isCorrect) {
+                // Success styling
+                btn.classList.replace('bg-slate-700/50', 'bg-green-500/20');
+                btn.classList.replace('border-slate-600', 'border-green-500');
+                btn.classList.add('text-green-400');
+                btn.querySelector('i').classList.replace('ti-bug', 'ti-bug-off');
+                btn.querySelector('i').classList.replace('text-transparent', 'text-green-500');
+                
+                score++;
+                els.score.textContent = score;
+                
+                // Visual Bug Squashing effect on the code area
+                createSquashEffect();
+                showFeedback(true, data.explanation);
+                
+            } else {
+                // Failure styling
+                btn.classList.replace('bg-slate-700/50', 'bg-red-500/20');
+                btn.classList.replace('border-slate-600', 'border-red-500');
+                btn.classList.add('text-red-400');
+                
+                // Show correct
+                allBtns[data.correctAnswer].classList.replace('bg-slate-700/50', 'bg-green-500/20');
+                allBtns[data.correctAnswer].classList.replace('border-slate-600', 'border-green-500');
+                
+                showFeedback(false, data.explanation);
+            }
+
+            // Proceed to next level
+            setTimeout(() => {
+                currentLevel++;
+                loadLevel();
+            }, 4000); // 4 seconds delay to read explanation
+        }
+
+        function createSquashEffect() {
+            // Create a small splat effect in the code area
+            const splat = document.createElement('div');
+            splat.className = 'splat text-6xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-squash opacity-80';
+            splat.textContent = '💥';
+            els.squashArea.appendChild(splat);
+            
+            // Clean up
+            setTimeout(() => {
+                if(els.squashArea.contains(splat)) els.squashArea.removeChild(splat);
+            }, 1000);
+        }
+
+        function showFeedback(isWin, text) {
+            // Create temporary feedback banner inside options area
+            const banner = document.createElement('div');
+            banner.className = `col-span-1 md:col-span-2 p-4 rounded-xl text-center font-bold mt-2 animate-slideDown ${isWin ? 'bg-green-500/20 text-green-400 border border-green-500/50' : 'bg-red-500/20 text-red-400 border border-red-500/50'}`;
+            banner.innerHTML = `<i class="ti ${isWin ? 'ti-check' : 'ti-x'} text-xl mr-2"></i> ${text}`;
+            els.options.appendChild(banner);
+        }
+
+        function endGame() {
+            screens.game.classList.remove('flex');
+            screens.game.classList.add('hidden');
+            screens.end.classList.remove('hidden');
+            
+            document.getElementById('finalScore').textContent = score;
+            const title = document.getElementById('endTitle');
+            const desc = document.getElementById('endDesc');
+            const icon = document.getElementById('endIcon');
+            
+            if (score === 5) {
+                icon.innerHTML = '🛡️';
+                title.textContent = "مبرمج محترف!";
+                title.className = "text-4xl font-extrabold mb-4 text-green-400";
+                desc.textContent = "لقد قمت باصطياد جميع الأخطاء البرمجية (Bugs) ببراعة. الكود الآن نظيف ويعمل بكفاءة 100%.";
+            } else if (score >= 3) {
+                icon.innerHTML = '👍';
+                title.textContent = "عمل جيد!";
+                title.className = "text-4xl font-extrabold mb-4 text-blue-400";
+                desc.textContent = "لقد تمكنت من اكتشاف معظم الأخطاء، لكن لا يزال هناك بعض الثغرات. استمر في التدرب!";
+            } else {
+                icon.innerHTML = '🔥';
+                title.textContent = "انهيار النظام!";
+                title.className = "text-4xl font-extrabold mb-4 text-red-500";
+                desc.textContent = "الكثير من الأخطاء تسللت إلى الكود وتسببت في تعطيل النظام. راجع المفاهيم البرمجية وحاول مجدداً.";
+            }
+        }
+    </script>
+</body>
+</html>

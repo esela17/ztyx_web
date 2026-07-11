@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الذاكرة البرمجية 🧠</title>
+    
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        mono: ['Courier New', 'monospace'],
+                    },
+                    colors: {
+                        warning: '#F59E0B',
+                        darker: '#0B1120',
+                    },
+                    animation: {
+                        'pop': 'pop 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        pop: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        
+        /* Memory Game Cards 3D CSS */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        
+        .flip-card-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Flip interaction */
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        /* Success Match styling */
+        .flip-card.matched .flip-card-inner {
+            transform: rotateY(180deg) scale(0.95);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); /* Green glow */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-darker text-slate-800 dark:text-slate-200 min-h-screen transition-colors duration-300 py-10 flex flex-col items-center justify-center">
+
+    <main class="w-full max-w-3xl p-4">
+        <div class="mb-4">
+            <a href="/mr_code_python.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold transition-all no-underline">
+                <i class="ti ti-arrow-right"></i> رجوع لصفحة الأنشطة
+            </a>
+        </div>
+        
+        <div class="text-center mb-8 animate-pop">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-3 text-warning">لعبة الذاكرة 🧠</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-sm md:text-base">اقلب البطاقات لتجد التطابق بين الكود ونتيجته!</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-lg border border-slate-200 dark:border-slate-700 flex justify-between items-center mb-8 px-6 animate-pop" style="animation-delay: 0.1s;">
+            <div class="text-center">
+                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">المحاولات</span>
+                <span id="memMoves" class="text-2xl font-bold text-warning">0</span>
+            </div>
+            
+            <button onclick="buildMemory()" class="p-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-full transition-colors text-slate-600 dark:text-slate-300 hover:text-warning" title="إعادة اللعب">
+                <i class="ti ti-refresh text-xl"></i>
+            </button>
+            
+            <div class="text-center">
+                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">الأزواج</span>
+                <span id="memMatches" class="text-2xl font-bold text-green-500">0 / 6</span>
+            </div>
+        </div>
+
+        <!-- Memory Grid Container -->
+        <div id="memoryGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-3 md:gap-4 perspective-1000">
+            <!-- Cards will be injected here via JavaScript -->
+        </div>
+
+        <!-- Success Message (Hidden by default) -->
+        <div id="successMsg" class="hidden mt-10 text-center animate-pop">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-2xl font-bold text-green-500 mb-4">أحسنت! أتممت اللعبة بنجاح.</h2>
+            <button onclick="buildMemory()" class="bg-warning hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg shadow-yellow-500/30 flex items-center justify-center gap-2 mx-auto">
+                <i class="ti ti-refresh"></i> العب مرة أخرى
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        // 1. Data: The pairs to match
+        const MEMORY_PAIRS = [
+            { id: 1, val1: 'print("Hi")', val2: 'Hi', type: 'code-result' },
+            { id: 2, val1: 'int("5")', val2: 'رقم 5', type: 'code-result' },
+            { id: 3, val1: '5 > 3', val2: 'True', type: 'code-result' },
+            { id: 4, val1: '10 % 2', val2: '0', type: 'code-result' },
+            { id: 5, val1: 'input()', val2: 'إدخال', type: 'concept-term' },
+            { id: 6, val1: 'علامة التعليق', val2: '#', type: 'concept-term' }
+        ];
+
+        // 2. Game State Variables
+        let memMoves = 0;
+        let memMatches = 0;
+        let hasFlippedCard = false;
+        let lockBoard = false;
+        let firstCard, secondCard;
+
+        // 3. Helper: Fisher-Yates Shuffle Array
+        function shuffleArr(arr) {
+            let b = [...arr];
+            for (let i = b.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [b[i], b[j]] = [b[j], b[i]];
+            }
+            return b;
+        }
+
+        // 4. Core Logic: Initialize and Build the Game
+        function buildMemory() {
+            const grid = document.getElementById('memoryGrid');
+            grid.innerHTML = ''; // Clear existing cards
+            
+            // Hide success message if visible
+            document.getElementById('successMsg').classList.add('hidden');
+            grid.classList.remove('hidden');
+            
+            // Reset state
+            memMoves = 0;
+            memMatches = 0;
+            hasFlippedCard = false;
+            lockBoard = false;
+            firstCard = null;
+            secondCard = null;
+            
+            // Update UI
+            document.getElementById('memMoves').textContent = '0';
+            document.getElementById('memMatches').textContent = '0 / 6';
+
+            // Generate 12 single cards from the 6 pairs
+            let cardsData = [];
+            MEMORY_PAIRS.forEach(pair => {
+                // Add the two parts of the pair as separate cards, sharing the same ID
+                cardsData.push({ id: pair.id, text: pair.val1, isMono: true });
+                cardsData.push({ id: pair.id, text: pair.val2, isMono: pair.type === 'code-result' });
+            });
+
+            // Shuffle the 12 cards
+            cardsData = shuffleArr(cardsData);
+
+            // Render cards to DOM
+            cardsData.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'flip-card w-full h-[110px] md:h-[130px] cursor-pointer group';
+                cardEl.dataset.id = card.id; // Store ID for matching
+                
+                // Styling based on content length and type
+                const monoClass = card.isMono ? 'font-mono' : 'font-sans';
+                const textSize = card.text.length > 8 ? 'text-xs sm:text-sm' : 'text-sm md:text-base md:text-lg';
+                
+                // Staggered entrance animation
+                cardEl.style.animation = `pop 0.4s ease-out forwards ${index * 0.05}s`;
+                cardEl.style.opacity = '0';
+
+                cardEl.innerHTML = `
+                    <div class="flip-card-inner relative w-full h-full text-center rounded-xl">
+                        <!-- Front of card (Question Mark) -->
+                        <div class="absolute w-full h-full backface-hidden bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center group-hover:border-warning group-hover:text-warning transition-colors shadow-sm">
+                            <i class="ti ti-question-mark text-3xl text-slate-300 dark:text-slate-600 transition-colors"></i>
+                        </div>
+                        <!-- Back of card (Content) -->
+                        <div class="absolute w-full h-full backface-hidden rotate-y-180 bg-warning text-white rounded-xl flex items-center justify-center p-3 shadow-lg border-2 border-warning">
+                            <span class="font-bold ${monoClass} ${textSize} leading-tight" dir="ltr">${card.text}</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click listener
+                cardEl.addEventListener('click', () => flipCard(cardEl));
+                grid.appendChild(cardEl);
+            });
+        }
+
+        // 5. Interaction: Flipping a card
+        function flipCard(card) {
+            // Prevent flipping if board is locked, or if clicking the same card, or if already matched
+            if (lockBoard) return;
+            if (card === firstCard) return;
+            if (card.classList.contains('matched')) return;
+
+            // Flip the card visually
+            card.classList.add('flipped');
+
+            if (!hasFlippedCard) {
+                // First card clicked
+                hasFlippedCard = true;
+                firstCard = card;
+                return;
+            }
+
+            // Second card clicked
+            secondCard = card;
+            memMoves++;
+            document.getElementById('memMoves').textContent = memMoves;
+            
+            checkForMatch();
+        }
+
+        // 6. Logic: Checking for a match
+        function checkForMatch() {
+            // Do the datasets match?
+            let isMatch = firstCard.dataset.id === secondCard.dataset.id;
+            
+            // Ternary operator: if match, disable them. If not, unflip them.
+            isMatch ? disableCards() : unflipCards();
+        }
+
+        // 7. Logic: Handle matched cards
+        function disableCards() {
+            // Mark as matched for CSS styling (green glow, scaled down)
+            firstCard.classList.add('matched');
+            secondCard.classList.add('matched');
+            
+            // Update matched score
+            memMatches++;
+            document.getElementById('memMatches').textContent = `${memMatches} / 6`;
+
+            // Check for game win
+            if(memMatches === 6) {
+                setTimeout(() => {
+                    document.getElementById('memoryGrid').classList.add('hidden');
+                    document.getElementById('successMsg').classList.remove('hidden');
+                }, 800);
+            }
+
+            resetBoard();
+        }
+
+        // 8. Logic: Handle mismatched cards
+        function unflipCards() {
+            lockBoard = true; // Prevent further clicking
+            
+            // Add error visual (turn red momentarily)
+            const fBack = firstCard.querySelector('.rotate-y-180');
+            const sBack = secondCard.querySelector('.rotate-y-180');
+            
+            fBack.classList.replace('bg-warning', 'bg-red-500');
+            fBack.classList.replace('border-warning', 'border-red-500');
+            sBack.classList.replace('bg-warning', 'bg-red-500');
+            sBack.classList.replace('border-warning', 'border-red-500');
+
+            // Wait a second, then unflip and reset colors
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                
+                // Reset colors after the unflip animation finishes
+                setTimeout(() => {
+                    fBack.classList.replace('bg-red-500', 'bg-warning');
+                    fBack.classList.replace('border-red-500', 'border-warning');
+                    sBack.classList.replace('bg-red-500', 'bg-warning');
+                    sBack.classList.replace('border-red-500', 'border-warning');
+                    resetBoard(); // Unlock board
+                }, 300);
+            }, 1000);
+        }
+
+        // 9. Logic: Reset variables for next turn
+        function resetBoard() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
+        }
+
+        // 10. Start the game when the page loads
+        window.onload = () => {
+            buildMemory();
+        };
+    </script>
+</body>
+</html>

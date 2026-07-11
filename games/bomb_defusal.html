@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفكيك القنبلة البرمجية 💣</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Cairo for Arabic, Share Tech Mono for the digital bomb timer -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    colors: {
+                        bombBg: '#222222',
+                        bombMetal: '#333333',
+                        ledRed: '#ff003c',
+                        ledDark: '#3a0000',
+                        lcdBg: '#0f1f0f',
+                        lcdGreen: '#4ade80',
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shake': 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
+                        'explosion': 'explode 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-2px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(4px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-6px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(6px, 0, 0)' }
+                        },
+                        explode: {
+                            '0%': { transform: 'scale(1)', opacity: '1', backgroundColor: '#ff003c' },
+                            '50%': { transform: 'scale(1.5)', opacity: '1', backgroundColor: '#ffffff' },
+                            '100%': { transform: 'scale(3)', opacity: '0', backgroundColor: '#ff9900' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #050505; 
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            color: #f8fafc;
+            font-family: 'Cairo', sans-serif; 
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Digital Timer Glow */
+        .digital-timer {
+            text-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c;
+        }
+
+        /* LCD Screen Glow */
+        .lcd-screen {
+            text-shadow: 0 0 5px #4ade80;
+            box-shadow: inset 0 0 15px rgba(74, 222, 128, 0.1);
+        }
+
+        /* Wires Styling */
+        .wire-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .wire-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.4s;
+        }
+        .wire-btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+        .wire-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+
+        /* Stripes for hazard effect */
+        .hazard-stripes {
+            background: repeating-linear-gradient(
+                45deg,
+                #111,
+                #111 10px,
+                #222 10px,
+                #222 20px
+            );
+        }
+
+        .screws {
+            position: absolute;
+            width: 12px; height: 12px;
+            background: #666;
+            border-radius: 50%;
+            box-shadow: inset 1px 1px 2px #fff, inset -1px -1px 2px #000;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-2xl mb-4">
+        <a href="/mr_code_python.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-bold transition-all no-underline">
+            <i class="ti ti-arrow-right"></i> رجوع لصفحة الأنشطة
+        </a>
+    </div>
+
+    <main class="w-full max-w-2xl relative z-10">
+        
+        <!-- Screen 1: Start Screen -->
+        <div id="startScreen" class="bg-bombBg border-4 border-bombMetal rounded-3xl p-8 text-center shadow-[0_0_50px_rgba(255,0,0,0.2)] relative hazard-stripes">
+            <!-- Decorative Screws -->
+            <div class="screws top-4 right-4"></div>
+            <div class="screws top-4 left-4"></div>
+            <div class="screws bottom-4 right-4"></div>
+            <div class="screws bottom-4 left-4"></div>
+
+            <i class="ti ti-bomb text-ledRed text-8xl mb-4 drop-shadow-[0_0_15px_rgba(255,0,60,0.5)] animate-pulse-fast"></i>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-widest">تفكيك القنبلة</h1>
+            
+            <div class="bg-black/50 p-4 rounded-xl mb-8 border border-white/10 text-right">
+                <p class="text-slate-300 text-lg leading-relaxed">
+                    <strong class="text-ledRed">تحذير:</strong> اختراق النظام تسبب في تفعيل قنبلة موقوتة! 
+                    أمامك <strong class="text-white">60 ثانية</strong> فقط لتفكيك 5 دوائر إلكترونية.
+                    <br><br>
+                    اقرأ كود بايثون، واقطع "السلك" الذي يحمل الإجابة الصحيحة. قطع السلك الخاطئ سيسرع المؤقت (خصم 10 ثوانٍ). هل أنت مستعد للضغط؟
+                </p>
+            </div>
+            
+            <button onclick="startGame()" class="bg-ledRed hover:bg-red-700 text-white font-bold py-4 px-12 rounded-full transition-all shadow-[0_0_20px_rgba(255,0,60,0.6)] text-xl uppercase tracking-widest border-2 border-red-400">
+                بدء التفكيك [INITIATE]
+            </button>
+        </div>
+
+        <!-- Screen 2: Bomb Game Screen -->
+        <div id="gameScreen" class="hidden flex-col gap-6 bg-bombMetal p-4 md:p-8 rounded-3xl border-8 border-[#1a1a1a] shadow-[0_20px_50px_rgba(0,0,0,0.9)] relative">
+            
+            <!-- Screws -->
+            <div class="screws top-3 right-3"></div>
+            <div class="screws top-3 left-3"></div>
+            <div class="screws bottom-3 right-3"></div>
+            <div class="screws bottom-3 left-3"></div>
+
+            <!-- Top Section: Timer & Modules -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 bg-[#111] p-6 rounded-2xl border-4 border-[#222] shadow-inner">
+                
+                <!-- Modules Progress -->
+                <div class="flex flex-col items-center">
+                    <span class="text-xs text-slate-500 font-bold tracking-widest mb-2 uppercase">Modules</span>
+                    <div class="flex gap-2" id="modulesIndicators">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Digital Timer -->
+                <div class="bg-ledDark p-4 rounded-xl border-2 border-[#4a0000] min-w-[200px] text-center">
+                    <span class="text-xs text-red-900 font-bold tracking-widest mb-1 block uppercase">Time Remaining</span>
+                    <div id="timerDisplay" class="font-mono text-5xl md:text-6xl text-ledRed digital-timer tracking-widest">
+                        00:60
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Section: LCD Code Display -->
+            <div class="bg-lcdBg p-6 rounded-xl border-4 border-[#222] relative">
+                <span class="absolute top-2 right-4 text-[10px] text-lcdGreen opacity-50 font-mono">SYS.OUTPUT</span>
+                <p class="text-slate-400 text-sm mb-4 font-bold">اقرأ الكود وتوقع المخرج (Output):</p>
+                <div class="font-mono text-lg md:text-xl text-lcdGreen lcd-screen whitespace-pre-wrap leading-relaxed min-h-[100px]" dir="ltr" id="codeDisplay">
+                    <!-- Code injected here -->
+                </div>
+            </div>
+
+            <!-- Bottom Section: The Wires -->
+            <div>
+                <p class="text-center text-slate-400 text-sm font-bold mb-4 uppercase tracking-widest">اقطع السلك الصحيح لتفكيك الدائرة</p>
+                <div id="wiresGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Wires injected here -->
+                </div>
+            </div>
+
+            <!-- Feedback Overlay -->
+            <div id="feedbackOverlay" class="absolute inset-0 bg-red-500/20 hidden rounded-2xl pointer-events-none"></div>
+        </div>
+
+        <!-- Screen 3: Victory / Game Over Screen -->
+        <div id="endScreen" class="hidden bg-bombBg border-4 border-bombMetal rounded-3xl p-8 md:p-12 text-center shadow-2xl relative hazard-stripes">
+            <div id="endIcon" class="text-8xl mb-6 inline-block"></div>
+            <h2 id="endTitle" class="text-4xl md:text-5xl font-extrabold mb-4 tracking-widest uppercase"></h2>
+            <p id="endDesc" class="text-lg text-slate-300 mb-8 max-w-lg mx-auto leading-relaxed"></p>
+            
+            <button onclick="location.reload()" class="bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mx-auto">
+                <i class="ti ti-refresh text-xl"></i> إعادة المحاولة
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Explosion Full Screen Effect -->
+    <div id="explosionDiv" class="fixed inset-0 z-50 pointer-events-none hidden"></div>
+
+    <script>
+        // --- Game Data (Python Output Tracing Questions) ---
+        const BOMB_MODULES = [
+            {
+                code: "x = 10\nx += 5\nprint(x)",
+                options: ["10", "15", "5", "105"],
+                correctAnswer: 1,
+                wireColors: ['bg-red-600', 'bg-blue-600', 'bg-yellow-500', 'bg-green-600']
+            },
+            {
+                code: "word = 'Python'\nprint(word[0])",
+                options: ["y", "n", "P", "0"],
+                correctAnswer: 2,
+                wireColors: ['bg-purple-600', 'bg-orange-500', 'bg-cyan-600', 'bg-pink-600']
+            },
+            {
+                code: "num = str(5) + '5'\nprint(num)",
+                options: ["10", "55", "5+5", "Error"],
+                correctAnswer: 1,
+                wireColors: ['bg-red-600', 'bg-green-600', 'bg-blue-600', 'bg-yellow-500']
+            },
+            {
+                code: "colors = ['Red', 'Green', 'Blue']\nprint(colors[-1])",
+                options: ["Red", "Blue", "Green", "Error"],
+                correctAnswer: 1,
+                wireColors: ['bg-orange-500', 'bg-purple-600', 'bg-cyan-600', 'bg-red-600']
+            },
+            {
+                code: "if 5 != 4:\n    print('Yes')\nelse:\n    print('No')",
+                options: ["No", "True", "False", "Yes"],
+                correctAnswer: 3,
+                wireColors: ['bg-blue-600', 'bg-yellow-500', 'bg-green-600', 'bg-pink-600']
+            }
+        ];
+
+        // --- State Variables ---
+        let currentModule = 0;
+        let timeLeft = 60; // 60 seconds total
+        let timerInterval;
+        let isProcessing = false;
+
+        // --- DOM Elements ---
+        const screens = {
+            start: document.getElementById('startScreen'),
+            game: document.getElementById('gameScreen'),
+            end: document.getElementById('endScreen')
+        };
+        const els = {
+            timerDisplay: document.getElementById('timerDisplay'),
+            modulesIndicators: document.getElementById('modulesIndicators'),
+            codeDisplay: document.getElementById('codeDisplay'),
+            wiresGrid: document.getElementById('wiresGrid'),
+            feedbackOverlay: document.getElementById('feedbackOverlay'),
+            explosionDiv: document.getElementById('explosionDiv')
+        };
+
+        // --- STREAMING_CHUNK:Implementing Core Game Logic... ---
+        
+        function startGame() {
+            screens.start.classList.add('hidden');
+            screens.game.classList.remove('hidden');
+            screens.game.classList.add('flex');
+            currentModule = 0;
+            timeLeft = 60;
+            updateTimerDisplay();
+            setupIndicators();
+            loadModule();
+            startTimer();
+        }
+
+        function setupIndicators() {
+            els.modulesIndicators.innerHTML = '';
+            for (let i = 0; i < BOMB_MODULES.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = `w-4 h-4 rounded-full border-2 border-[#555] bg-black transition-colors duration-300`;
+                dot.id = `mod-dot-${i}`;
+                els.modulesIndicators.appendChild(dot);
+            }
+        }
+
+        function loadModule() {
+            isProcessing = false;
+            if (currentModule >= BOMB_MODULES.length) {
+                defusedWin();
+                return;
+            }
+
+            // Update Indicators
+            for (let i = 0; i < BOMB_MODULES.length; i++) {
+                const dot = document.getElementById(`mod-dot-${i}`);
+                if (i < currentModule) {
+                    dot.className = `w-4 h-4 rounded-full border-2 border-green-500 bg-green-500 shadow-[0_0_10px_#4ade80]`;
+                } else if (i === currentModule) {
+                    dot.className = `w-4 h-4 rounded-full border-2 border-yellow-500 bg-yellow-500 animate-pulse shadow-[0_0_10px_#eab308]`;
+                } else {
+                    dot.className = `w-4 h-4 rounded-full border-2 border-[#555] bg-black`;
+                }
+            }
+
+            const mod = BOMB_MODULES[currentModule];
+            
+            // Render Code
+            els.codeDisplay.textContent = mod.code;
+            
+            // Render Wires (Options)
+            els.wiresGrid.innerHTML = '';
+            mod.options.forEach((optText, idx) => {
+                const wireColor = mod.wireColors[idx];
+                const btn = document.createElement('button');
+                btn.className = `wire-btn ${wireColor} text-white font-bold py-6 px-4 rounded-full border-b-8 border-black/40 shadow-lg flex flex-col items-center justify-center gap-2 relative group overflow-hidden`;
+                
+                // Texture for wire
+                const texture = document.createElement('div');
+                texture.className = 'absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_5px,#000_5px,#000_10px)]';
+                btn.appendChild(texture);
+
+                const textSpan = document.createElement('span');
+                textSpan.className = 'relative z-10 font-mono text-xl tracking-wider drop-shadow-md';
+                textSpan.dir = 'ltr';
+                textSpan.textContent = optText;
+                
+                btn.appendChild(textSpan);
+                btn.onclick = () => cutWire(idx, btn);
+                els.wiresGrid.appendChild(btn);
+            });
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 10) {
+                    // Flash red urgently
+                    els.timerDisplay.classList.add('animate-pulse-fast');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    explodeLose();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            // Prevent negative display
+            const displayTime = Math.max(0, timeLeft);
+            const seconds = displayTime.toString().padStart(2, '0');
+            els.timerDisplay.textContent = `00:${seconds}`;
+        }
+
+        function cutWire(selectedIdx, btnElement) {
+            if (isProcessing) return;
+            isProcessing = true;
+            
+            const mod = BOMB_MODULES[currentModule];
+            const allBtns = els.wiresGrid.querySelectorAll('button');
+            const isCorrect = selectedIdx === mod.correctAnswer;
+            
+            // Visually "cut" the wire
+            btnElement.classList.replace('border-b-8', 'border-b-0');
+            btnElement.style.transform = 'translateY(4px)';
+
+            allBtns.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                // Success
+                screens.game.classList.add('border-green-500');
+                screens.game.classList.remove('border-[#1a1a1a]');
+                
+                // Play small visual success
+                setTimeout(() => {
+                    screens.game.classList.remove('border-green-500');
+                    screens.game.classList.add('border-[#1a1a1a]');
+                    currentModule++;
+                    loadModule();
+                }, 800);
+
+            } else {
+                // Failure - Penalty
+                screens.game.classList.add('animate-shake');
+                els.feedbackOverlay.classList.remove('hidden');
+                
+                // Subtract time
+                timeLeft -= 10;
+                if(timeLeft < 0) timeLeft = 0;
+                updateTimerDisplay();
+                
+                // Show Correct Wire
+                allBtns[mod.correctAnswer].classList.add('ring-4', 'ring-white', 'shadow-[0_0_20px_#fff]');
+
+                setTimeout(() => {
+                    screens.game.classList.remove('animate-shake');
+                    els.feedbackOverlay.classList.add('hidden');
+                    
+                    if (timeLeft <= 0) {
+                        explodeLose();
+                    } else {
+                        // Move to next anyway to keep pace
+                        currentModule++;
+                        loadModule();
+                    }
+                }, 1500);
+            }
+        }
+
+        function explodeLose() {
+            clearInterval(timerInterval);
+            els.timerDisplay.textContent = `00:00`;
+            
+            // Full screen explosion effect
+            els.explosionDiv.classList.remove('hidden');
+            els.explosionDiv.classList.add('animate-explosion');
+            
+            setTimeout(() => {
+                els.explosionDiv.classList.add('hidden');
+                els.explosionDiv.classList.remove('animate-explosion');
+                
+                screens.game.classList.remove('flex');
+                screens.game.classList.add('hidden');
+                screens.end.classList.remove('hidden');
+                
+                const title = document.getElementById('endTitle');
+                const desc = document.getElementById('endDesc');
+                const icon = document.getElementById('endIcon');
+                
+                document.body.style.backgroundColor = '#220000'; // Dark red atmosphere
+
+                icon.innerHTML = '💥';
+                icon.className = 'text-8xl mb-6 inline-block animate-pulse-fast';
+                title.textContent = "انفجار النظام!";
+                title.className = "text-4xl md:text-5xl font-extrabold mb-4 tracking-widest uppercase text-ledRed drop-shadow-[0_0_10px_rgba(255,0,0,0.8)]";
+                desc.textContent = "لقد نفد الوقت أو قطعت الأسلاك الخاطئة وانفجرت القنبلة البرمجية. النظام معطل بالكامل الآن. حاول مرة أخرى!";
+            }, 800);
+        }
+
+        function defusedWin() {
+            clearInterval(timerInterval);
+            
+            screens.game.classList.remove('flex');
+            screens.game.classList.add('hidden');
+            screens.end.classList.remove('hidden');
+            
+            const title = document.getElementById('endTitle');
+            const desc = document.getElementById('endDesc');
+            const icon = document.getElementById('endIcon');
+            
+            document.body.style.backgroundColor = '#002200'; // Dark green atmosphere
+            
+            icon.innerHTML = '🛡️';
+            icon.className = 'text-8xl mb-6 inline-block drop-shadow-[0_0_15px_#4ade80]';
+            title.textContent = "تم التفكيك بنجاح!";
+            title.className = "text-4xl md:text-5xl font-extrabold mb-4 tracking-widest uppercase text-lcdGreen drop-shadow-[0_0_10px_#4ade80]";
+            desc.textContent = `عمل مذهل أيها المبرمج! لقد تمكنت من فك جميع الشفرات في الوقت المناسب وأنقذت النظام. (تبقى لك ${timeLeft} ثانية)`;
+        }
+    </script>
+</body>
+</html>
