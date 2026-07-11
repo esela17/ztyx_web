@@ -43,7 +43,8 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "postbuild": "node -e \"const fs=require('fs'); if(!fs.existsSync('out')) fs.mkdirSync('out'); fs.cpSync('public', 'out', {recursive:true}); if(fs.existsSync('mr_code_python.html')) fs.copyFileSync('mr_code_python.html', 'out/mr_code_python.html');\""
   },
   "keywords": [],
   "author": "",
