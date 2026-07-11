@@ -26,6 +26,19 @@ const nextConfig = {
   },
   
   compress: true,
+  async headers() {
+    return [
+      {
+        source: '/mr_code_python(:path*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
