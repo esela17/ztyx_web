@@ -74,7 +74,9 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: |
+          npm run build
+          node -e "const fs=require('fs'); if(!fs.existsSync('out')) fs.mkdirSync('out'); fs.cpSync('public', 'out', {recursive:true}); if(fs.existsSync('mr_code_python.html')) fs.copyFileSync('mr_code_python.html', 'out/mr_code_python.html'); if(fs.existsSync('games')) fs.cpSync('games', 'out/games', {recursive:true});"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
