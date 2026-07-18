@@ -25,7 +25,7 @@ export default function MrCodePythonPage() {
         }}
       >
         <iframe
-          src="/mr_code_python/index.html"
+          src="/mr_code_python/index.html?v=3"
           style={{
             width: '100%',
             height: '100%',
