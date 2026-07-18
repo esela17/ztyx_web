@@ -26,7 +26,7 @@ export default function PythonActivitiesPage() {
         }}
       >
         <iframe
-          src="/python-activities.html"
+          src="/python-activities/index.html"
           style={{
             width: '100%',
             height: '100%',
