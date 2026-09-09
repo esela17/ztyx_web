@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الامتحان الإلكتروني المعياري | تكنولوجيا المعلومات والذكاء الاصطناعي</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Merriweather:wght@400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box; margin: 0; padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+  body {
+    font-family: 'IBM Plex Sans Arabic', -apple-system, sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+    position: relative;
+  }
+  
+  /* Anti-Print Protection */
+  @media print {
+    body { display: none !important; }
+  }
+
+  /* Blur Shield overlay on loss of focus */
+  #blurShield {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(15, 23, 42, 0.97);
+    backdrop-filter: blur(20px);
+    color: #fff;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  #blurShield.active { display: flex; }
+
+  /* Dynamic Watermark Overlay */
+  .watermark-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: space-around;
+    opacity: 0.10;
+    overflow: hidden;
+  }
+  .wm-item {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #A51C30;
+    transform: rotate(-25deg);
+    white-space: nowrap;
+    padding: 1.5rem;
+    user-select: none;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+  
+  .container { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+  
+  /* Academic Card Style (Harvard Crimson & MIT Slate) */
+  .card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 2.25rem;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+    border: 1px solid #e2e8f0;
+    border-top: 5px solid #A51C30; /* Harvard Crimson Accent */
+  }
+  
+  .academic-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #A51C30;
+    background: #FFF5F5;
+    border: 1px solid #FECDD3;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'IBM Plex Sans Arabic', 'Merriweather', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.02em;
+  }
+  
+  .sub {
+    color: #475569;
+    font-size: 0.95rem;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+  }
+  
+  .info-pills {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+  }
+  .pill {
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #f1f5f9;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    font-family: 'Fira Code', 'IBM Plex Sans Arabic', monospace;
+  }
+  
+  .form-group { margin-bottom: 1.25rem; }
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: #334155;
+    margin-bottom: 0.4rem;
+  }
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5 solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    color: #0f172a;
+  }
+  input:focus {
+    outline: none;
+    border-color: #A51C30;
+    box-shadow: 0 0 0 3px rgba(165, 28, 48, 0.15);
+  }
+  
+  .btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.85rem 1.5rem;
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    background: #A51C30; /* Harvard Crimson */
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(165, 28, 48, 0.25);
+  }
+  .btn:hover:not(:disabled) {
+    background: #821425;
+    box-shadow: 0 6px 16px rgba(165, 28, 48, 0.35);
+  }
+  .btn:disabled {
+    background: #cbd5e1;
+    color: #94a3b8;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+  .btn-secondary {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    margin-top: 0.6rem;
+    font-size: 0.88rem;
+    padding: 0.5rem;
+    box-shadow: none;
+  }
+  .btn-secondary:hover { background: #e2e8f0; }
+
+  /* Exam Academic Styles */
+  .exam-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1.25rem;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    border-top: 3px solid #A51C30;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .level-tag {
+    padding: 0.25rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: 1px solid;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+  .level-tag.easy { color: #15803d; border-color: #bbf7d0; background: #f0fdf4; }
+  .level-tag.medium { color: #b45309; border-color: #fef08a; background: #fefce8; }
+  .level-tag.hard { color: #b91c1c; border-color: #fecdd3; background: #fff1f2; }
+
+  .timer-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .timer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+  }
+  .timer-count {
+    font-family: 'Fira Code', monospace;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #A51C30;
+  }
+  .timer-track {
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+  }
+  .timer-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.9s linear;
+  }
+
+  .question-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  }
+  .q-text {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+  .code-block {
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    color: #f8fafc;
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    direction: ltr;
+    text-align: left;
+    overflow-x: auto;
+    white-space: pre;
+    border: 1px solid #334155;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .code-block .kw { color: #c084fc; font-weight: 600; }
+  .code-block .str { color: #4ade80; }
+  .code-block .num { color: #fbbf24; }
+  .code-block .cmt { color: #94a3b8; font-style: italic; }
+
+  .options-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
+  .opt-btn {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.85rem 1.15rem;
+    text-align: right;
+    font-family: inherit;
+    font-size: 1rem;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+  }
+  .opt-btn:hover:not(:disabled) {
+    background: #fff5f5;
+    border-color: #A51C30;
+    color: #821425;
+    transform: translateY(-1px);
+  }
+  .opt-btn:disabled { opacity: 0.6; cursor: default; }
+
+  .progress-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+  }
+  .pdot {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #64748b;
+    font-family: 'Fira Code', monospace;
+    transition: all 0.15s ease;
+  }
+  .pdot.current { background: #A51C30; color: #fff; border-color: #A51C30; box-shadow: 0 2px 6px rgba(165,28,48,0.3); }
+  .pdot.answered { background: #16a34a; color: #fff; border-color: #16a34a; }
+  .pdot.skipped { background: #94a3b8; color: #fff; border-color: #94a3b8; }
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1rem;
+  }
+  .level-tag {
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid;
+  }
+  .level-tag.easy { color: #16a34a; border-color: #86efac; background: #dcfce7; }
+  .level-tag.medium { color: #ca8a04; border-color: #fde047; background: #fef9c3; }
+  .level-tag.hard { color: #dc2626; border-color: #fca5a5; background: #fee2e2; }
+
+  .timer-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .timer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .timer-count { font-weight: 700; font-size: 1.1rem; }
+  .timer-track {
+    height: 5px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    margin-top: 0.4rem;
+    overflow: hidden;
+  }
+  .timer-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.9s linear;
+  }
+
+  .question-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .q-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .code-block {
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    margin: 0.8rem 0;
+    color: #e2e8f0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    direction: ltr;
+    text-align: left;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .kw { color: #a78bfa; }
+  .code-block .str { color: #86efac; }
+  .code-block .num { color: #fcd34d; }
+  .code-block .cmt { color: #94a3b8; font-style: italic; }
+
+  .options-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.8rem; }
+  .opt-btn {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    text-align: right;
+    font-family: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .opt-btn:hover:not(:disabled) {
+    background: #eef2ff;
+    border-color: #6366f1;
+  }
+  .opt-btn:disabled { opacity: 0.6; cursor: default; }
+
+  .progress-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.6rem 0.8rem;
+  }
+  .pdot {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #64748b;
+    transition: 0.15s;
+  }
+  .pdot.current { background: #6366f1; color: #fff; }
+  .pdot.answered { background: #22c55e; color: #fff; }
+  .pdot.skipped { background: #94a3b8; color: #fff; }
+
+  /* Submit & Results */
+  .submit-wrap, .result-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+  }
+  .submit-card, .result-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+  }
+  .btn-submit {
+    background: #22c55e;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .score-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: conic-gradient(#6366f1 0deg, #e2e8f0 0deg);
+    position: relative;
+  }
+  .score-ring::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    background: #fff;
+    border-radius: 50%;
+  }
+  .score-txt {
+    position: relative;
+    z-index: 1;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e293b;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  .stat-box { background: #f1f5f9; padding: 0.5rem; border-radius: 10px; }
+  .stat-box .num { font-size: 1.5rem; font-weight: 800; }
+  .stat-box .lbl { font-size: 0.7rem; color: #64748b; }
+
+  .review-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 0.5fr;
+    gap: 0.3rem;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.85rem;
+    align-items: center;
+  }
+  .review-row.ok { border-right: 4px solid #22c55e; }
+  .review-row.bad { border-right: 4px solid #ef4444; }
+  .review-row.skip { border-right: 4px solid #94a3b8; }
+
+  .alert { padding: 0.75rem; border-radius: 10px; margin-top: 1rem; }
+  .alert.ok { background: #dcfce7; color: #16a34a; border: 1px solid #86efac; }
+  .alert.fail { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  @media(max-width: 500px) {
+    .card { padding: 1.25rem; }
+    .review-row { grid-template-columns: 1.5fr 1fr 1fr 0.4fr; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+<!-- Blur Shield Overlay -->
+<div id="blurShield">
+  <div style="font-size:3rem;margin-bottom:1rem;">⚠️</div>
+  <h2 style="font-size:1.4rem;margin-bottom:0.5rem;">محتوى الامتحان محمي</h2>
+  <p style="color:#94a3b8;font-size:0.95rem;">يرجى الرجوع لشاشة الامتحان للبدء أو الاستمرار في الحل.</p>
+</div>
+
+<!-- Dynamic Watermark Container -->
+<div id="watermarkOverlay" class="watermark-overlay"></div>
+
+<div class="container">
+
+<!-- Registration -->
+<div class="screen active" id="regScreen">
+  <div class="card">
+    <div class="academic-badge">🎓 تقييم تكنولوجيا المعلومات والذكاء الاصطناعي</div>
+    <h1>الامتحان الإلكتروني المعياري</h1>
+    <p class="sub">تكنولوجيا المعلومات والذكاء الاصطناعي — اختبار 40 سؤالاً وفق المعايير الأكاديمية</p>
+    <div class="info-pills">
+      <span class="pill">40 سؤالاً متنوعاً (اختر وصح/خطأ)</span>
+      <span class="pill">تغطية شاملة للمنهج</span>
+      <span class="pill">اختيار عشوائي ذكي وموزون</span>
+    </div>
+    <div class="form-group">
+      <label>الاسم الكامل</label>
+      <input type="text" id="inp-name" placeholder="أدخل اسمك">
+    </div>
+    <div class="form-group">
+      <label>رقم الهاتف</label>
+      <input type="tel" id="inp-phone" placeholder="05xxxxxxxx">
+    </div>
+    <div class="form-group">
+      <label>المدرسة</label>
+      <input type="text" id="inp-school" placeholder="اسم المدرسة">
+    </div>
+    <button class="btn" id="startBtn" disabled onclick="startExam()">ابدأ الامتحان</button>
+    <button class="btn btn-secondary" onclick="checkFields()">تحديث</button>
+    <p style="font-size:0.8rem;color:#94a3b8;margin-top:0.5rem;">املأ جميع الحقول ثم اضغط "ابدأ"</p>
+  </div>
+</div>
+
+<!-- Exam -->
+<div class="screen" id="examScreen">
+  <div class="exam-topbar">
+    <span>السؤال <strong id="qNum">1</strong> / 40</span>
+    <span class="level-tag easy" id="levelTag">سهل</span>
+  </div>
+  <div class="timer-section">
+    <div class="timer-row">
+      <span>الوقت المتبقي</span>
+      <span class="timer-count" id="timerCount">60ث</span>
+    </div>
+    <div class="timer-track"><div class="timer-fill" id="timerFill" style="width:100%;background:#22c55e;"></div></div>
+  </div>
+  <div class="question-card" id="questionCard">
+    <div class="q-text" id="qText"></div>
+    <div id="qCodeBlock"></div>
+    <div class="options-list" id="optsList"></div>
+  </div>
+  <div class="progress-strip" id="progressStrip"></div>
+</div>
+
+<!-- Submit -->
+<div class="screen" id="submitScreen">
+  <div class="submit-wrap">
+    <div class="submit-card">
+      <h2>📋 انتهى الامتحان</h2>
+      <p style="color:#64748b;margin:0.5rem 0 1.5rem;">أجبت على جميع الأسئلة. اضغط لإرسال النتيجة.</p>
+      <button class="btn-submit" id="submitBtn" onclick="submitExam()">إرسال النتيجة</button>
+    </div>
+  </div>
+</div>
+
+<!-- Results -->
+<div class="screen" id="resultScreen">
+  <div class="result-wrap">
+    <div class="result-card">
+      <div class="score-ring" id="scoreRing"><div class="score-txt" id="scorePct">0%</div></div>
+      <h3 id="resName"></h3>
+      <p id="resSubtitle" style="color:#64748b;margin-bottom:1rem;"></p>
+      <div class="stats">
+        <div class="stat-box"><div class="num" id="rcOk" style="color:#22c55e;">0</div><div class="lbl">صحيحة</div></div>
+        <div class="stat-box"><div class="num" id="rcBad" style="color:#ef4444;">0</div><div class="lbl">خاطئة</div></div>
+        <div class="stat-box"><div class="num" id="rcSkip" style="color:#64748b;">0</div><div class="lbl">لم يجب</div></div>
+      </div>
+      <div style="max-height:300px;overflow-y:auto;text-align:right;border-top:1px solid #e2e8f0;padding-top:0.8rem;">
+        <div id="reviewBody"></div>
+      </div>
+      <div id="sendAlert" class="alert" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ===================== QUESTION BANK (55) =====================
+const QUESTIONS = [
+  {
+    id: 1,
+    level: 1,
+    category: 'history_tech',
+    question: `في أي مرحلة زمنية ظهرت الحواسيب الشخصية (Personal Computers)؟`,
+    options: ["الأربعينيات - الستينيات","السبعينيات - الثمانينيات","التسعينيات","العقد الأول من الألفية"],
+    answer: 1
+  },
+  {
+    id: 2,
+    level: 1,
+    category: 'history_tech',
+    question: `في مرحلة الأربعينيات إلى الستينيات، كانت الحواسيب تُستخدم أساساً للأغراض العسكرية والحسابات العلمية.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 3,
+    level: 2,
+    category: 'history_tech',
+    question: `ما هو الترتيب الزمني الصحيح لتطور تكنولوجيا المعلومات؟`,
+    options: ["حواسيب ضخمة ← إنترنت ← هواتف ذكية ← سحابة وذكاء اصطناعي","إنترنت ← حواسيب ضخمة ← هواتف ذكية ← سحابة","هواتف ذكية ← حواسيب ضخمة ← إنترنت ← سحابة","سحابة ← إنترنت ← حواسيب ضخمة ← هواتف ذكية"],
+    answer: 0
+  },
+  {
+    id: 4,
+    level: 2,
+    category: 'history_tech',
+    question: `في مرحلة الأربعينيات إلى الستينيات، كانت الحواسيب صغيرة الحجم ومنتشرة بين عامة الأفراد.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 5,
+    level: 2,
+    category: 'history_tech',
+    question: `المرحلة التي شهدت تسويق الإنترنت تجارياً وظهور شبكة الويب هي:`,
+    options: ["السبعينيات","الثمانينيات","التسعينيات","العقد الثاني بعد 2010"],
+    answer: 2
+  },
+  {
+    id: 6,
+    level: 1,
+    category: 'history_tech',
+    question: `انتشار الهواتف الذكية والإنترنت عبر المحمول كان السمة المميزة لـ:`,
+    options: ["الأربعينيات","السبعينيات","التسعينيات","العقد الأول من الألفية (2000-2010)"],
+    answer: 3
+  },
+  {
+    id: 7,
+    level: 3,
+    category: 'history_tech',
+    question: `أي من التالي يُعد مرحلة تطور قديمة وليس من التقنيات الناشئة الحديثة؟`,
+    options: ["الحاسوب الشخصي","الحوسبة الكمومية","القيادة الذاتية","الواقع المعزز"],
+    answer: 0
+  },
+  {
+    id: 8,
+    level: 2,
+    category: 'history_tech',
+    question: `مرحلة الحوسبة السحابية والبيانات الضخمة والذكاء الاصطناعي بدأت من العقد الثاني من الألفية فصاعداً.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 9,
+    level: 3,
+    category: 'history_tech',
+    question: `السبب المباشر لظهور الحواسيب الشخصية في السبعينيات والثمانينيات هو تطور المعالجات الدقيقة وصغر حجمها.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 10,
+    level: 2,
+    category: 'history_tech',
+    question: `تطورت شبكات الحواسيب لتصبح عالمية ومتاحة للجمهور والشركات في مرحلة:`,
+    options: ["الستينيات","التسعينيات","السبعينيات","الأربعينيات"],
+    answer: 1
+  },
+  {
+    id: 11,
+    level: 1,
+    category: 'moore_law',
+    question: `قانون مور هو ملاحظة تجريبية تتعلق بمعدل تضاعف:`,
+    options: ["سرعة الإنترنت","عدد الترانزستورات في الدائرة المتكاملة","حجم الشاشات","سعر الأجهزة"],
+    answer: 1
+  },
+  {
+    id: 12,
+    level: 1,
+    category: 'moore_law',
+    question: `قانون مور هو قانون فيزيائي مطلق غير قابل للتغيير أو التحدي.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 13,
+    level: 2,
+    category: 'moore_law',
+    question: `وفقاً لقانون مور، يتضاعف عدد الترانزستورات في الدائرة المتكاملة تقريباً كل:`,
+    options: ["6 أشهر","عامين تقريباً","5 سنوات","10 سنوات"],
+    answer: 1
+  },
+  {
+    id: 14,
+    level: 2,
+    category: 'moore_law',
+    question: `من أبرز التحديات الهندسية والفيزيائية التي تواجه استمرار قانون مور:`,
+    options: ["تسريب التيار والتأثيرات الكمومية","نقص المستخدمين","بطء البرمجيات","حجم الشاشات"],
+    answer: 0
+  },
+  {
+    id: 15,
+    level: 3,
+    category: 'moore_law',
+    question: `ما العلاقة بين قانون مور وظهور الهواتف الذكية الحالية؟`,
+    options: ["تصغير الترانزستورات مكّن من وضع قوة حاسوب كامل داخل معالج صغير","قانون مور أدى لزيادة أسعار الهواتف","قانون مور منع تصغير حجم المعالجات","لا توجد علاقة بينهما إطلاقاً"],
+    answer: 0
+  },
+  {
+    id: 16,
+    level: 1,
+    category: 'moore_law',
+    question: `قانون مور يتعلق بعدد الترانزستورات في المعالج وليس بسرعة برامج السوفت وير.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 17,
+    level: 2,
+    category: 'moore_law',
+    question: `أجهزة الهواتف اليوم أقوى بآلاف المرات من أجهزة التسعينيات لأن معالجات اليوم تحتوي على مليارات الترانزستورات.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 18,
+    level: 3,
+    category: 'moore_law',
+    question: `عند وصول تصغير الترانزستور إلى مستوى النانومتر الذري، يبدأ الترانزستور في مواجهة تأثيرات كمومية تعيق عمله التقليدي.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 19,
+    level: 2,
+    category: 'moore_law',
+    question: `أي العبارات التالية صحيحة تماماً حول قانون مور؟`,
+    options: ["هو ملاحظة تجريبية صاغها جوردون مور وتواجه تحديات مع تصغير حجم العناصر","هو قانون كوني ثابت مثل قانون الجاذبية","ينطبق فقط على ذاكرة الوصول العشوائي RAM","توقف نهائياً في عام 1980"],
+    answer: 0
+  },
+  {
+    id: 20,
+    level: 2,
+    category: 'moore_law',
+    question: `تضاعف عدد الترانزستورات في المعالجات يسهم في رفع كفاءة استهلاك الطاقة وزيادة قدرة المعالجة الحسابية.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 21,
+    level: 1,
+    category: 'social_changes',
+    question: `أي من التالي ليس من التغيرات الاجتماعية الخمسة الناتجة عن تكنولوجيا المعلومات؟`,
+    options: ["التجارة الإلكترونية","شبكات التواصل الاجتماعي","الحوسبة الكمومية","الدفع غير النقدي"],
+    answer: 2
+  },
+  {
+    id: 22,
+    level: 1,
+    category: 'social_changes',
+    question: `يُعد تطبيق مثل منصة (ادرس) مثالاً تطبيقياً مباشراً على:`,
+    options: ["التعلم عبر الإنترنت","الواقع الافتراضي","الحوسبة الطرفية","قانون مور"],
+    answer: 0
+  },
+  {
+    id: 23,
+    level: 1,
+    category: 'social_changes',
+    question: `التجارة الإلكترونية تعني شراء وبيع السلع والخدمات في المتاجر الفعلية باستخدام الأوراق النقدية فقط.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 24,
+    level: 2,
+    category: 'social_changes',
+    question: `الدفع غير النقدي (Cashless Payment) يتمثل في استخدام:`,
+    options: ["البطاقات المصرفية وتطبيقات الهاتف ورموز QR","الذهب والفضة فقط","العملات الورقية والمعدنية فقط","الشيكات الورقية المؤجلة فقط"],
+    answer: 0
+  },
+  {
+    id: 25,
+    level: 2,
+    category: 'social_changes',
+    question: `من مميزات العمل عن بُعد (Remote Work) بالنسبة للشركات:`,
+    options: ["توفير تكاليف المكاتب وإمكانية توظيف كفاءات من أي مكان","صعوبة التواصل تماماً","زيادة تكلفة الإيجارات","إلغاء استخدام الحواسيب"],
+    answer: 0
+  },
+  {
+    id: 26,
+    level: 1,
+    category: 'social_changes',
+    question: `شبكات التواصل الاجتماعي (SNS) تتميز بقدرتها الفائقة على نشر ومشاركة المعلومات في ثوانٍ معدودة.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 27,
+    level: 2,
+    category: 'social_changes',
+    question: `تعتبر منصات أمازون ونون وجوميا من أشهر أمثلة:`,
+    options: ["التجارة الإلكترونية","الواقع المعزز","الحوسبة الكمومية","التعلم العميق"],
+    answer: 0
+  },
+  {
+    id: 28,
+    level: 2,
+    category: 'social_changes',
+    question: `أحد أهم المخاطر المرتبطة بالدفع غير النقدي هو احتمالية سرقة البيانات والقرصنة المالية إذا لم تُحمَ بحذر.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 29,
+    level: 3,
+    category: 'social_changes',
+    question: `التغيرات الاجتماعية الخمسة هي: شبكات التواصل، التجارة الإلكترونية، العمل عن بعد، التعلم عبر الإنترنت، والدفع غير النقدي.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 30,
+    level: 2,
+    category: 'social_changes',
+    question: `أي من المنصات التالية يُعد مثالاً على شبكات التواصل الاجتماعي؟`,
+    options: ["فيسبوك وإنستجرام","منصة ادرس","إنستاباي","سويفل"],
+    answer: 0
+  },
+  {
+    id: 31,
+    level: 1,
+    category: 'emerging_tech',
+    question: `الحوسبة الطرفية (Edge Computing) تعني:`,
+    options: ["معالجة البيانات محلياً على الجهاز نفسه لتقليل زمن الاستجابة","تخزين جميع البيانات دائماً في مراكز بيانات سحابية بعيدة","التوقف عن استخدام الإنترنت في كل المجالات","إلغاء المعالجات في الأجهزة"],
+    answer: 0
+  },
+  {
+    id: 32,
+    level: 1,
+    category: 'emerging_tech',
+    question: `لماذا تعتمد أنظمة القيادة الذاتية (Self-Driving) على الحوسبة الطرفية؟`,
+    options: ["لتقليل زمن الاستجابة وضمان السلامة الفورية في اتخاذ قرارات الفرملة والتوجيه","لتوفير شكل جمالي للسيارة","لأن السيارات لا تحتوي على كاميرات","لزيادة استهلاك بطارية السيارة فقط"],
+    answer: 0
+  },
+  {
+    id: 33,
+    level: 1,
+    category: 'emerging_tech',
+    question: `أي من التالي يُعد مثالاً حياً على الواقع المعزز (Augmented Reality - AR)؟`,
+    options: ["فلاتر سناب شات ولعبة بوكيمون جو","نظارات الواقع الافتراضي لعزل الرؤية تماماً","محاكي الطيران المغلق","شاشات السينما التقليدية"],
+    answer: 0
+  },
+  {
+    id: 34,
+    level: 2,
+    category: 'emerging_tech',
+    question: `الفرق الأساسي بين الواقع المعزز (AR) والواقع الافتراضي (VR) هو أن:`,
+    options: ["AR يضيف عناصر رقمية فوق مشهد العالم الحقيقي، بينما VR يغمر المستخدم ببيئة افتراضية كاملة","VR يضيف عناصر على الواقع و AR يعزلك تماماً","AR يعمل فقط على التلفزيون و VR على الهواتف","كلاهما يمثل نفس التقنية بدون أي فرق"],
+    answer: 0
+  },
+  {
+    id: 35,
+    level: 2,
+    category: 'emerging_tech',
+    question: `الحوسبة الكمومية ستحل محل جميع الحواسيب التقليدية والشخصية في الاستخدام اليومي قريباً.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 36,
+    level: 2,
+    category: 'emerging_tech',
+    question: `تعتمد الحوسبة الكمومية (Quantum Computing) على خصائص ميكانيكا الكم وتتفوق في فئات معينة ومعقدة من المسائل.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 37,
+    level: 3,
+    category: 'emerging_tech',
+    question: `أي من السيناريوهات التالية يمثل تطبيقاً عملياً للحوسبة الطرفية (Edge Computing)؟`,
+    options: ["نظام سيارة ذاتية القيادة يعالج بيانات الكاميرات والمستشعرات فوراً داخل السيارة دون انتظار السحابة","رفع صور العائلة على Google Drive للتخزين الأسبوعي","بث مباشر لمسلسل عبر منصة نتفليكس","تصفح موقع إخباري ثابت على الإنترنت"],
+    answer: 0
+  },
+  {
+    id: 38,
+    level: 2,
+    category: 'emerging_tech',
+    question: `الواقع الافتراضي (VR) يدمج معلومات رقمية فوق الأجسام الحقيقية دون عزل المستخدم عن العالم الخارجي.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 39,
+    level: 3,
+    category: 'emerging_tech',
+    question: `في المجال الطبي والجراحي، يعتبر الواقع المعزز (AR) مفيداً لأنه يمكن الجراح من رؤية المريض الحقيقي مع إظهار بيانات تشريحية رقمية فوقه.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 40,
+    level: 2,
+    category: 'emerging_tech',
+    question: `أي من التالي يُعتبر من التقنيات الناشئة (Emerging Technologies)؟`,
+    options: ["الحوسبة الكمومية والقيادة الذاتية","الحاسوب ذو الصمامات المفرغة","الشريط المغناطيسي القديم","القرص المرن Floppy Disk"],
+    answer: 0
+  },
+  {
+    id: 41,
+    level: 1,
+    category: 'ai_concepts',
+    question: `الذكاء الاصطناعي (AI) هو:`,
+    options: ["مجال عام يضم أنظمة حاسوبية قادرة على محاكاة مهام ذكية مثل التعلم والتنبؤ والاستنتاج","برنامج إكسل لحساب الرواتب فقط","جهاز راوتر لتوصيل شبكة الواي فاي","لغة برمجة مخصصة لتصميم واجهات المواقع فقط"],
+    answer: 0
+  },
+  {
+    id: 42,
+    level: 1,
+    category: 'ai_concepts',
+    question: `أي من التالي يُعتبر "فرعاً" مباشراً من الذكاء الاصطناعي يتعلّم الأنماط من البيانات؟`,
+    options: ["التعلم الآلي (Machine Learning)","لوحة المفاتيح","الذاكرة العشوائية RAM","نظام التبريد المائي"],
+    answer: 0
+  },
+  {
+    id: 43,
+    level: 2,
+    category: 'ai_concepts',
+    question: `ما هو الفرق الجوهري بين البرمجة التقليدية والتعلم الآلي (Machine Learning)؟`,
+    options: ["في البرمجة التقليدية يكتب المبرمج القواعد يدوياً، بينما في التعلم الآلي يكتشف النظام القواعد من البيانات","البرمجة التقليدية تستخدم الذكاء الاصطناعي دائماً والتعلم الآلي لا يستخدمه","التعلم الآلي لا يحتاج إلى حاسوب لتشغيله","لا يوجد أي فرق بينهما"],
+    answer: 0
+  },
+  {
+    id: 44,
+    level: 1,
+    category: 'ai_concepts',
+    question: `الذكاء الاصطناعي والتعلم الآلي هما نفس المفهوم تماماً دون أي اختلاف أو تدرج.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 45,
+    level: 2,
+    category: 'ai_concepts',
+    question: `يُصنف نظام تصفية وفرز البريد المزعج (Spam Filter) في Gmail كأحد تطبيقات:`,
+    options: ["التعلم الآلي في التصنيف","الواقع الافتراضي","الحوسبة الكمومية","الذكاء العام الفائق"],
+    answer: 0
+  },
+  {
+    id: 46,
+    level: 2,
+    category: 'ai_concepts',
+    question: `معظم أنظمة الذكاء الاصطناعي الموجودة حالياً تُعد ذكاءً اصطناعياً "ضيق النطاق" (Narrow AI) مخصصاً لمهام محددة.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 47,
+    level: 3,
+    category: 'ai_concepts',
+    question: `ما الترتيب الصحيح للمفاهيم الثلاثة من الأوسع مجالاً إلى الأضيق تخصصاً؟`,
+    options: ["الذكاء الاصطناعي (AI) ← التعلم الآلي (ML) ← التعلم العميق (DL)","التعلم العميق (DL) ← التعلم الآلي (ML) ← الذكاء الاصطناعي (AI)","التعلم الآلي (ML) ← الذكاء الاصطناعي (AI) ← التعلم العميق (DL)","الذكاء التوليدي ← الذكاء الاصطناعي ← التعلم الآلي"],
+    answer: 0
+  },
+  {
+    id: 48,
+    level: 2,
+    category: 'ai_concepts',
+    question: `كل نموذج تعلم آلي هو جزء من الذكاء الاصطناعي، ولكن ليس كل نظام ذكاء اصطناعي يعتمد على التعلم الآلي.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 49,
+    level: 1,
+    category: 'ai_concepts',
+    question: `أنظمة التوصية في منصات مثل يوتيوب ونتفليكس تعتمد على تقنيات التعلم الآلي لتحليل تفضيلات المستخدم.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 50,
+    level: 3,
+    category: 'ai_concepts',
+    question: `الأنظمة الخبيرة القديمة (Expert Systems) المعتمدة على قواعد شرطية صلبة تمثل ذكاءً اصطناعياً لا يعتمد على التعلم الآلي.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 51,
+    level: 1,
+    category: 'deep_learning',
+    question: `التعلم العميق (Deep Learning) هو أسلوب متقدم ضمن التعلم الآلي يعتمد أساساً على:`,
+    options: ["شبكات عصبية اصطناعية متعددة الطبقات","الجداول الحسابية البسيطة","أكواد HTML و CSS","بطاقات الذاكرة الخارجية"],
+    answer: 0
+  },
+  {
+    id: 52,
+    level: 2,
+    category: 'deep_learning',
+    question: `الشبكة العصبية الاصطناعية (ANN) هي نموذج حاسوبي مستوحى من فكرة ترابط العصبونات في الدماغ البشري.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 53,
+    level: 2,
+    category: 'deep_learning',
+    question: `كيف "تتعلم" الشبكة العصبية الاصطناعية أثناء عملية التدريب؟`,
+    options: ["بتعديل وتحديث \"أوزان\" الروابط بين الوحدات بناءً على مقدار الخطأ في التوقع","بزيادة حجم الشاشة وتغيير دقة العرض","بحذف نظام التشغيل وإعادة تثبيته","عن طريق حفظ نصوص برمجية يدوية فقط"],
+    answer: 0
+  },
+  {
+    id: 54,
+    level: 1,
+    category: 'deep_learning',
+    question: `الشبكة العصبية الاصطناعية تُعتبر نسخة بيولوجية مطابقة تماماً لمخ الإنسان في جميع وظائفه.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 55,
+    level: 2,
+    category: 'deep_learning',
+    question: `أي من التطبيقات التالية يعتمد بشكل رئيسي ومباشر على تقنيات التعلم العميق (Deep Learning)؟`,
+    options: ["التعرف على الوجوه وتحليل الصور الطبية المعقدة","الآلة الحاسبة البسيطة","برنامج المفكرة Notepad","عداد الثواني"],
+    answer: 0
+  },
+  {
+    id: 56,
+    level: 2,
+    category: 'deep_learning',
+    question: `سُمي التعلم العميق "عميقاً" (Deep) نظراً لوجود عدة طبقات خفية (Hidden Layers) بين طبقتي الإدخال والإخراج.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 57,
+    level: 3,
+    category: 'deep_learning',
+    question: `مقارنة بالتعلم الآلي التقليدي، فإن التعلم العميق يتميز بقدرته على استخراج أنماط معقدة جداً ولكنه يتطلب:`,
+    options: ["بيانات تدريب ضخمة جداً وقدرات معالجة حسابية عالية (مثل معالجات GPU)","بيانات أقل ودون الحاجة لأي حاسوب قوي","أجهزة لا تستهلك كهرباء إطلاقاً","برمجة يدوية لكل تفصيلة صغيرة"],
+    answer: 0
+  },
+  {
+    id: 58,
+    level: 3,
+    category: 'deep_learning',
+    question: `في الشبكة العصبية للتعرف على الصور، تقوم الطبقات الأولى غالباً باكتشاف الحواف البسيطة ثم تتدرج الطبقات اللاحقة لاكتشاف الأشكال والملامح المعقدة.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 59,
+    level: 2,
+    category: 'deep_learning',
+    question: `التعلم العميق لا يستخدم أي شبكات عصبية ويعتمد فقط على المعادلات الخطية المباشرة.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 60,
+    level: 3,
+    category: 'deep_learning',
+    question: `الذكاء الاصطناعي القابل للتفسير (Explainable AI - XAI) يهدف لمساعدة البشر على فهم كيفية وصول نماذج التعلم العميق لقراراتها ومواجهة مشكلة الصندوق الأسود.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 61,
+    level: 1,
+    category: 'generative_ai',
+    question: `ما هو "الذكاء الاصطناعي التوليدي" (Generative AI)؟`,
+    options: ["نظام ذكاء اصطناعي ينشئ محتوى جديداً أصيلاً (نصوص، صور، صوت، كود) استناداً للأنماط المتعلمة","نظام مخصص فقط لتخزين الملفات على القرص الصلب","محرك بحث يعرض روابط المواقع فقط دون أي صياغة","برنامج مكافحة فيروسات يقوم بفحص الذاكرة فقط"],
+    answer: 0
+  },
+  {
+    id: 62,
+    level: 1,
+    category: 'generative_ai',
+    question: `أي من النماذج التالية يُعد مثالاً شهيراً على الذكاء الاصطناعي التوليدي؟`,
+    options: ["ChatGPT وميدجورني (Midjourney)","نظام التشغيل ويندوز 98","برنامج الرسام Paint القديم","مشغل الوسائط VLC"],
+    answer: 0
+  },
+  {
+    id: 63,
+    level: 1,
+    category: 'generative_ai',
+    question: `جميع أنظمة الذكاء الاصطناعي في العالم هي أنظمة توليدية تقوم بإنشاء نصوص وصور جديدة.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 64,
+    level: 2,
+    category: 'generative_ai',
+    question: `تعتمد معظم أنظمة الذكاء الاصطناعي التوليدي الحديثة في بنيتها الأساسية على أساليب:`,
+    options: ["التعلم العميق (Deep Learning)","البرمجة اليدوية بقواعد if الثابتة","الحوسبة الميكانيكية اليدوية","نظام التشفير التناظري"],
+    answer: 0
+  },
+  {
+    id: 65,
+    level: 2,
+    category: 'generative_ai',
+    question: `الفرق الوظيفي بين نموذج تصنيف تقليدي ونموذج ذكاء توليدي هو أن الأول يحدد الفئة (مثل: مزعج/غير مزعج) بينما الثاني ينشئ محتوى جديداً.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 66,
+    level: 2,
+    category: 'generative_ai',
+    question: `نماذج توليد الأصوات (مثل ElevenLabs) تُعد تطبيقاً على الذكاء الاصطناعي التوليدي في مجال الصوتيات.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 67,
+    level: 3,
+    category: 'generative_ai',
+    question: `يستطيع الذكاء الاصطناعي التوليدي كتابة ملخصات، أكواد برمجية، وتأليف سيناريوهات بناءً على الأوامر (Prompts) المدخلة إليه.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 68,
+    level: 2,
+    category: 'generative_ai',
+    question: `الذكاء الاصطناعي التوليدي لا يحتاج إلى بيانات تدريب مسبقة لتوليد الصور والنصوص.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 69,
+    level: 3,
+    category: 'generative_ai',
+    question: `الترتيب الأكثر دقة للعلاقة الشاملة بين المجالات من الأعم إلى الأخص هو:`,
+    options: ["الذكاء الاصطناعي (AI) ← التعلم الآلي (ML) ← التعلم العميق (DL) ← الذكاء التوليدي (GenAI)","الذكاء التوليدي ← التعلم العميق ← التعلم الآلي ← الذكاء الاصطناعي","التعلم الآلي ← الذكاء الاصطناعي ← الذكاء التوليدي ← التعلم العميق","التعلم العميق ← الذكاء الاصطناعي ← التعلم الآلي ← الذكاء التوليدي"],
+    answer: 0
+  },
+  {
+    id: 70,
+    level: 2,
+    category: 'generative_ai',
+    question: `توليد الصور التعبيرية بواسطة Midjourney بناءً على وصف نصي هو مثال على تقنية Text-to-Image في الذكاء التوليدي.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 71,
+    level: 1,
+    category: 'hallucination_data',
+    question: `ما المقصود بمصطلح "الهلوسة" (Hallucination) في سياق الذكاء الاصطناعي التوليدي؟`,
+    options: ["إنتاج مخرجات تبدو مقنعة وفصيحة ظاهرياً ولكنها غير صحيحة واقعياً أو غير مدعومة بمصادر","سرعة استجابة النموذج وتوليد الكلمات بسرعة فائقة","قدرة النموذج على التعرف على صور الأشخاص بدقة 100%","توقف النموذج عن العمل وإعادة تشغيل الخادم تلقائياً"],
+    answer: 0
+  },
+  {
+    id: 72,
+    level: 1,
+    category: 'hallucination_data',
+    question: `مخرجات نماذج الذكاء الاصطناعي التوليدي صحيحة دائماً ومضمونة علمياً ولا تتطلب أي مراجعة بشرية.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 73,
+    level: 2,
+    category: 'hallucination_data',
+    question: `لماذا يُلزم الباحثون والطلاب بالتحقق والتدقيق البشري عند استخدام أدوات الذكاء التوليدي في الأبحاث؟`,
+    options: ["لاحتمالية وجود \"هلوسة\" ومعلومات مختلقة تبدو صحيحة دون سند حقيقي","لأن الذكاء التوليدي لا يمكنه الكتابة باللغة العربية","لأن الأبحاث تتطلب دفع مبالغ مالية عند كل استخدام","لأن الذكاء الاصطناعي لا يعمل إلا في فترة الليل"],
+    answer: 0
+  },
+  {
+    id: 74,
+    level: 2,
+    category: 'hallucination_data',
+    question: `ما هو دور "بيانات التدريب" (Training Data) في بناء نماذج التعلم الآلي؟`,
+    options: ["هي الأساس والأمثلة التي يكتشف النموذج الأنماط منها، وجودتها وتنوعها يحدد دقة النموذج","تُستخدم فقط لتزيين شاشة البرنامج للمستخدمين","تُمسح فوراً قبل بدء عمل النموذج لأنها غير مفيدة","هي مجرد أرقام سرية لتسجيل دخول المبرمجين"],
+    answer: 0
+  },
+  {
+    id: 75,
+    level: 2,
+    category: 'hallucination_data',
+    question: `إذا كانت بيانات التدريب تحتوي على معلومات مغلوطة أو غير متوازنة، سينتج نموذج متحيز وغير دقيق.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 76,
+    level: 3,
+    category: 'hallucination_data',
+    question: `أي من السيناريوهات التالية يمثل حالة "هلوسة" واضحة لنموذج ذكاء اصطناعي؟`,
+    options: ["ذكر تواريخ وتفاصيل مقنعة جداً لمعركة تاريخية وأسماء قادة لم يوجدوا في أي مرجع تاريخي موثوق","كتابة كود برمجي بلغة بايثون يعمل بشكل سليم تماماً","ترجمة نص إنجليزي إلى نص عربي مفهوم ودقيق","الاعتراف الصريح بعدم معرفة معلومة معينة لعدم توفرها في البيانات"],
+    answer: 0
+  },
+  {
+    id: 77,
+    level: 2,
+    category: 'hallucination_data',
+    question: `الهلوسة في الذكاء الاصطناعي تعني أن النظام يمتلك خيالاً ووعياً بشرياً حقيقياً ومشاعر مستقلة.`,
+    options: ["صح","خطأ"],
+    answer: 1
+  },
+  {
+    id: 78,
+    level: 3,
+    category: 'hallucination_data',
+    question: `في التطبيقات الحرجة (مثل تشخيص الأمراض الطبية)، يعد التدقيق البشري إلزامياً تماماً لتجنب مخاطر الهلوسة التي قد تهدد حياة المرضى.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 79,
+    level: 2,
+    category: 'hallucination_data',
+    question: `تحذير المنهج الدراسي بأن العلاقة بين مصطلحات الذكاء الاصطناعي هي "تسلسل تعليمي مبسط" يهدف إلى توضيح أنها ليست احتواءً رياضياً صارماً في كل الحالات.`,
+    options: ["صح","خطأ"],
+    answer: 0
+  },
+  {
+    id: 80,
+    level: 3,
+    category: 'hallucination_data',
+    question: `أفضل ممارسة لتفادي الوقوع في خطأ الهلوسة عند استخدام أدوات الذكاء الاصطناعي هي:`,
+    options: ["طلب المصادر ومقارنة المعلومات الناتجة مع مراجع وكتب علمية موثوقة","نسخ ولصق المخرجات فوراً دون قراءتها","الاعتقاد بأن الذكاء الاصطناعي لا يخطئ أبداً","إيقاف الاتصال بالإنترنت أثناء القراءة"],
+    answer: 0
+  }
+];
+
+// ===================== GLOBALS =====================
+let studentName = '', studentPhone = '', studentSchool = '';
+let examQuestions = [];
+let answers = [];
+let currentIndex = 0;
+let timerID = null;
+let timeLeft = 0;
+let totalTime = 0;
+let transitioning = false;
+
+const ACCESS_KEY = "5dbe84be-13ee-4e0e-a5f1-9c0c7f0d772c";
+
+// ===================== HELPERS =====================
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function detectDir(text) {
+  return /[\u0600-\u06FF]/.test(text) ? 'rtl' : 'ltr';
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===================== REGISTRATION =====================
+function checkFields() {
+  const name = document.getElementById('inp-name').value.trim();
+  const phone = document.getElementById('inp-phone').value.trim();
+  const school = document.getElementById('inp-school').value.trim();
+  const btn = document.getElementById('startBtn');
+  btn.disabled = !(name && phone && school);
+}
+
+['inp-name','inp-phone','inp-school'].forEach(id => {
+  document.getElementById(id).addEventListener('input', checkFields);
+});
+// Initial check
+checkFields();
+
+// ===================== START EXAM =====================
+function startExam() {
+  if (document.getElementById('startBtn').disabled) {
+    alert('يرجى ملء جميع الحقول أولاً');
+    return;
+  }
+  studentName  = document.getElementById('inp-name').value.trim();
+  studentPhone = document.getElementById('inp-phone').value.trim();
+  studentSchool= document.getElementById('inp-school').value.trim();
+
+  // Select 40 questions covering all concepts
+  const cats = [...new Set(QUESTIONS.map(q => q.category))];
+  let selected = [];
+  cats.forEach(c => {
+    let qForC = shuffle(QUESTIONS.filter(q => q.category === c));
+    selected.push(...qForC.slice(0, 5)); // up to 5 per category
+  });
+  if (selected.length < 40) {
+    let unpicked = shuffle(QUESTIONS.filter(q => !selected.includes(q)));
+    selected.push(...unpicked.slice(0, 40 - selected.length));
+  }
+  examQuestions = shuffle(selected).slice(0, 40);
+
+  if (examQuestions.length !== 40) {
+    alert('حدث خطأ في تحميل الأسئلة، حاول مرة أخرى.');
+    return;
+  }
+  answers = new Array(40).fill(null);
+  currentIndex = 0;
+
+  createWatermark();
+  buildProgressStrip();
+  showScreen('examScreen');
+  showQuestion(0);
+}
+
+function createWatermark() {
+  const container = document.getElementById('watermarkOverlay');
+  if (!container) return;
+  container.innerHTML = '';
+  const text = `${studentName} • ${studentPhone}`;
+  for (let i = 0; i < 20; i++) {
+    const div = document.createElement('div');
+    div.className = 'wm-item';
+    div.textContent = text;
+    container.appendChild(div);
+  }
+}
+
+// ===================== PROGRESS DOTS =====================
+function buildProgressStrip() {
+  const strip = document.getElementById('progressStrip');
+  strip.innerHTML = '';
+  for (let i=0; i<40; i++) {
+    const d = document.createElement('div');
+    d.className = 'pdot';
+    d.id = 'pdot-'+i;
+    d.textContent = i+1;
+    strip.appendChild(d);
+  }
+}
+
+function updateDot(idx, state) {
+  const d = document.getElementById('pdot-'+idx);
+  if (d) d.className = 'pdot '+state;
+}
+
+// ===================== RENDER QUESTION =====================
+function showQuestion(idx) {
+  currentIndex = idx;
+  const q = examQuestions[idx];
+  const card = document.getElementById('questionCard');
+
+  // Animate (simple)
+  card.style.opacity = 0.6;
+  setTimeout(() => {
+    renderQuestion(q, idx);
+    card.style.opacity = 1;
+  }, 150);
+}
+
+function renderQuestion(q, idx) {
+  document.getElementById('qNum').textContent = idx+1;
+  const tag = document.getElementById('levelTag');
+  const lvlMap = {1:['easy','سهل'], 2:['medium','متوسط'], 3:['hard','صعب']};
+  tag.className = 'level-tag '+lvlMap[q.level][0];
+  tag.textContent = lvlMap[q.level][1];
+
+  document.getElementById('qText').textContent = q.question;
+
+  const codeDiv = document.getElementById('qCodeBlock');
+  if (q.isCode && q.code) {
+    const highlighted = q.code
+      .replace(/\b(if|elif|else|and|or|not|True|False|None|print|input|type|int|float|str|bool|len)\b/g, '<span class="kw">$1</span>')
+      .replace(/(&quot;[^&]*&quot;|&#39;[^&]*&#39;)/g, '<span class="str">$1</span>')
+      .replace(/\b(\d+\.?\d*)\b/g, '<span class="num">$1</span>')
+      .replace(/(#.*)/g, '<span class="cmt">$1</span>');
+    codeDiv.innerHTML = `<div class="code-block">${escapeHtml(q.code).replace(/\n/g,'\n')}</div>`;
+    codeDiv.style.display = 'block';
+  } else {
+    codeDiv.innerHTML = '';
+    codeDiv.style.display = 'none';
+  }
+
+  const optsList = document.getElementById('optsList');
+  optsList.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt;
+    btn.setAttribute('dir', detectDir(opt));
+    btn.onclick = () => selectAnswer(i);
+    optsList.appendChild(btn);
+  });
+
+  document.querySelectorAll('.pdot').forEach(d => d.classList.remove('current'));
+  document.getElementById('pdot-'+idx)?.classList.add('current');
+
+  totalTime = 60;
+  startTimer(totalTime);
+}
+
+// ===================== TIMER =====================
+function startTimer(sec) {
+  clearInterval(timerID);
+  timeLeft = sec;
+  updateTimerUI();
+  timerID = setInterval(() => {
+    timeLeft--;
+    updateTimerUI();
+    if (timeLeft <= 0) {
+      clearInterval(timerID);
+      autoSkip();
+    }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const pct = (timeLeft / totalTime) * 100;
+  const fill = document.getElementById('timerFill');
+  const count = document.getElementById('timerCount');
+  fill.style.width = pct + '%';
+  count.textContent = timeLeft + ' ث';
+  if (pct > 50) fill.style.background = '#22c55e';
+  else if (pct > 20) fill.style.background = '#eab308';
+  else fill.style.background = '#ef4444';
+}
+
+// ===================== ANSWER & NAVIGATION =====================
+function selectAnswer(idx) {
+  if (transitioning) return;
+  clearInterval(timerID);
+  disableOptions();
+  answers[currentIndex] = idx;
+  updateDot(currentIndex, 'answered');
+  transitioning = true;
+  setTimeout(() => { transitioning = false; nextQuestion(); }, 250);
+}
+
+function autoSkip() {
+  if (transitioning) return;
+  disableOptions();
+  answers[currentIndex] = null;
+  updateDot(currentIndex, 'skipped');
+  transitioning = true;
+  setTimeout(() => { transitioning = false; nextQuestion(); }, 300);
+}
+
+function disableOptions() {
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+}
+
+function nextQuestion() {
+  if (currentIndex < 39) showQuestion(currentIndex+1);
+  else showScreen('submitScreen');
+}
+
+// ===================== SUBMIT & RESULTS =====================
+function submitExam() {
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').textContent = 'جاري الإرسال...';
+  showResults();
+  sendToForms();
+}
+
+async function sendToForms() {
+  const correct = examQuestions.filter((q,i) => answers[i] === q.answer).length;
+  const pct = Math.round(correct/40*100);
+  const scoreStr = `${correct}/40 - ${pct}%`;
+  const alertEl = document.getElementById('sendAlert');
+  alertEl.style.display = 'block';
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: ACCESS_KEY,
+        name: studentName,
+        phone: studentPhone,
+        school: studentSchool,
+        score: scoreStr
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alertEl.className = 'alert ok';
+      alertEl.textContent = '✔ تم إرسال النتيجة بنجاح';
+    } else throw new Error('fail');
+  } catch {
+    alertEl.className = 'alert fail';
+    alertEl.textContent = '✘ فشل الإرسال – تحقق من المفتاح والاتصال';
+  }
+}
+
+function showResults() {
+  const correct = examQuestions.filter((q,i) => answers[i] === q.answer).length;
+  const skipped = answers.filter(a => a === null).length;
+  const wrong = 40 - correct - skipped;
+  const pct = Math.round(correct/40*100);
+
+  document.getElementById('scorePct').textContent = pct + '%';
+  document.getElementById('scoreRing').style.background =
+    `conic-gradient(${pct>=60?'#6366f1':'#ef4444'} ${pct*3.6}deg, #e2e8f0 0deg)`;
+  document.getElementById('resName').textContent = studentName;
+  document.getElementById('resSubtitle').textContent = `أجبت على ${correct} من 40 سؤالاً بشكل صحيح`;
+  document.getElementById('rcOk').textContent = correct;
+  document.getElementById('rcBad').textContent = wrong;
+  document.getElementById('rcSkip').textContent = skipped;
+
+  const body = document.getElementById('reviewBody');
+  body.innerHTML = '';
+  examQuestions.forEach((q,i) => {
+    const userAns = answers[i];
+    const isCorrect = userAns === q.answer;
+    const isSkipped = userAns === null;
+    const row = document.createElement('div');
+    row.className = 'review-row ' + (isSkipped ? 'skip' : isCorrect ? 'ok' : 'bad');
+
+    const userText = isSkipped ? 'لم يجب' : q.options[userAns];
+    const corrText = q.options[q.answer];
+    const icon = isSkipped ? '—' : isCorrect ? '✔' : '✘';
+    const qLabel = q.isCode ?
+      `${q.question} <code style="font-size:0.7rem;background:#f1f5f9;padding:0 4px;border-radius:4px;">${escapeHtml(q.code?.split('\n')[0] || '')}…</code>`
+      : q.question;
+
+    row.innerHTML = `
+      <div>${qLabel}</div>
+      <div dir="${detectDir(userText)}">${userText}</div>
+      <div dir="${detectDir(corrText)}">${corrText}</div>
+      <div>${icon}</div>
+    `;
+    body.appendChild(row);
+  });
+
+  showScreen('resultScreen');
+}
+
+// ===================== ANTI-COPY & PROTECTION =====================
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('cut', e => e.preventDefault());
+document.addEventListener('dragstart', e => e.preventDefault());
+
+// Block key shortcuts and PrintScreen
+document.addEventListener('keydown', e => {
+  if (
+    (e.ctrlKey && ['c', 'v', 'x', 'a', 'u', 's', 'p'].includes(e.key.toLowerCase())) ||
+    e.key === 'F12' ||
+    e.key === 'PrintScreen' ||
+    (e.ctrlKey && e.shiftKey && ['i', 'j', 'c', 's'].includes(e.key.toLowerCase()))
+  ) {
+    e.preventDefault();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText('');
+    }
+  }
+});
+
+document.addEventListener('keyup', e => {
+  if (e.key === 'PrintScreen') {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText('');
+    }
+    const shield = document.getElementById('blurShield');
+    if (shield) {
+      shield.classList.add('active');
+      setTimeout(() => shield.classList.remove('active'), 2000);
+    }
+  }
+});
+
+// Hide content when window loses focus or tab changes
+window.addEventListener('blur', () => {
+  document.getElementById('blurShield')?.classList.add('active');
+});
+
+window.addEventListener('focus', () => {
+  document.getElementById('blurShield')?.classList.remove('active');
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    document.getElementById('blurShield')?.classList.add('active');
+  } else {
+    document.getElementById('blurShield')?.classList.remove('active');
+  }
+});
+</script>
+</body>
+</html>
