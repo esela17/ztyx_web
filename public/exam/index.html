@@ -1532,6 +1532,9 @@ async function sendToForms() {
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
         access_key: ACCESS_KEY,
+        subject: `نتيجة امتحان IT & AI — ${studentName}`,
+        from_name: "الامتحان الإلكتروني المعياري",
+        email: "cureztyx@xyz.com",
         name: studentName,
         phone: studentPhone,
         school: studentSchool,
